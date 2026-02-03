@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safalta Express 2.0 | Next-Gen Hostel</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --neon: #00f3ff; --purple: #bc13fe; }
+        body { background: #020202; color: white; font-family: 'Outfit', sans-serif; cursor: none; }
+        .font-cyber { font-family: 'Orbitron', sans-serif; }
+
+        /* Custom Cursor Glow */
+        #cursor-glow {
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(0, 243, 255, 0.15) 0%, transparent 70%);
+            border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999;
+            transform: translate(-50%, -50%); transition: 0.1s ease-out;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass:hover {
+            border-color: var(--neon);
+            box-shadow: 0 0 40px rgba(0, 243, 255, 0.2);
+            transform: perspective(1000px) rotateX(2deg) rotateY(2deg);
+        }
+
+        .neon-border-btn {
+            position: relative; overflow: hidden;
+            border: 1px solid rgba(0, 243, 255, 0.3);
+        }
+        .neon-border-btn::before {
+            content: ''; position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: conic-gradient(transparent, transparent, transparent, var(--neon));
+            animation: rotate 4s linear infinite;
+        }
+        @keyframes rotate { 100% { transform: rotate(360deg); } }
+
+        .inner-btn {
+            position: relative; z-index: 1; background: #000;
+            width: calc(100% - 2px); height: calc(100% - 2px);
+            margin: 1px; border-radius: inherit;
+        }
+
+        .marquee-fast { animation: marquee 15s linear infinite; }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    </style>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "react": "https://esm.sh/react@18.2.0",
+                "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+                "lucide-react": "https://esm.sh/lucide-react@0.344.0?external=react"
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="cursor-glow"></div>
+    <div id="root"></div>
+
+    <script type="module">
+        import React, { useState, useEffect, useRef } from 'react';
+        import ReactDOM from 'react-dom/client';
+        import { 
+            Star, MapPin, Zap, ShieldCheck, Utensils, 
+            Phone, Menu, X, CheckCircle, Smartphone, 
+            Send, Coffee, GraduationCap, LogIn, MessageCircle, Quote
+        } from 'lucide-react';
+
+        // Custom Hook for Cursor Tracking
+        const useCursor = () => {
+            useEffect(() => {
+                const glow = document.getElementById('cursor-glow');
+                const moveCursor = (e) => {
+                    glow.style.left = e.clientX + 'px';
+                    glow.style.top = e.clientY + 'px';
+                };
+                window.addEventListener('mousemove', moveCursor);
+                return () => window.removeEventListener('mousemove', moveCursor);
+            }, []);
+        };
+
+        const App = () => {
+            useCursor();
+            const [activeTab, setActiveTab] = useState('Monday');
+
+            const stats = [
+                { label: "Active Students", value: "120+" },
+                { label: "Selection Rate", value: "85%" },
+                { label: "CCTV Cameras", value: "24" },
+                { label: "Star Rating", value: "4.9" }
+            ];
+
+            const reviews = [
+                { name: "Ankit Jha", role: "JEE Aspirant", text: "Begusarai ka best hostel. Padhai ka mahaul bahut sahi hai." },
+                { name: "Sumit Kumar", role: "NEET Student", text: "Mess ka khana bilkul ghar jaisa hai. Safai top level hai." },
+                { name: "Vikash", role: "GD College Student", text: "Location is perfect. College just 2 minute door hai." }
+            ];
+
+            return React.createElement('div', { className: "relative min-h-screen" },
+                // --- HERO SECTION ---
+                React.createElement('section', { className: "relative h-[90vh] flex items-center justify-center overflow-hidden px-4" },
+                    React.createElement('div', { className: "absolute inset-0 z-0" },
+                        React.createElement('div', { className: "absolute inset-0 bg-[url('https://images.unsplash.com/photo-1555854877-bab0e564b8d5?q=80&w=2000')] bg-cover bg-center opacity-20" }),
+                        React.createElement('div', { className: "absolute inset-0 bg-gradient-to-b from-transparent via-black/60 to-[#020202]" })
+                    ),
+                    
+                    React.createElement('div', { className: "relative z-10 text-center" },
+                        React.createElement('div', { className: "mb-6 flex justify-center" },
+                            React.createElement('div', { className: "px-4 py-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 text-xs font-bold tracking-[0.2em] uppercase" }, "Standard Living Since 2018")
+                        ),
+                        React.createElement('h1', { className: "font-cyber text-6xl md:text-9xl font-black mb-6" }, 
+                            "SAFALTA", React.createElement('br'), 
+                            React.createElement('span', { className: "text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600" }, "EXPRESS")
+                        ),
+                        React.createElement('div', { className: "flex flex-wrap justify-center gap-4" },
+                            React.createElement('button', { className: "px-10 py-4 bg-white text-black font-bold rounded-full hover:scale-105 transition" }, "Reserve Seat - ₹4000"),
+                            React.createElement('button', { className: "px-10 py-4 glass text-white font-bold rounded-full" }, "Take Virtual Tour")
+                        )
+                    )
+                ),
+
+                // --- STATS TICKER ---
+                React.createElement('div', { className: "py-12 border-y border-white/5" },
+                    React.createElement('div', { className: "max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8" },
+                        stats.map((s, i) => React.createElement('div', { key: i, className: "text-center" },
+                            React.createElement('h3', { className: "text-4xl font-cyber font-bold text-white mb-1" }, s.value),
+                            React.createElement('p', { className: "text-gray-500 text-sm uppercase tracking-widest" }, s.label)
+                        ))
+                    )
+                ),
+
+                // --- REVIEWS SECTION ---
+                React.createElement('section', { className: "py-24 max-w-7xl mx-auto px-4" },
+                    React.createElement('h2', { className: "font-cyber text-3xl mb-12 text-center" }, "STUDENT ", React.createElement('span', { className: "text-cyan-500" }, "VOICES")),
+                    React.createElement('div', { className: "grid md:grid-cols-3 gap-6" },
+                        reviews.map((r, i) => React.createElement('div', { key: i, className: "glass p-8 rounded-3xl relative" },
+                            React.createElement(Quote, { className: "absolute top-6 right-6 text-cyan-500/20", size: 40 }),
+                            React.createElement('div', { className: "flex gap-1 mb-4" }, [1,2,3,4,5].map(s => React.createElement(Star, { size: 14, className: "fill-cyan-500 text-cyan-500" }))),
+                            React.createElement('p', { className: "text-gray-300 italic mb-6" }, `"${r.text}"`),
+                            React.createElement('div', null,
+                                React.createElement('h4', { className: "font-bold text-white" }, r.name),
+                                React.createElement('p', { className: "text-xs text-cyan-500 uppercase tracking-tighter" }, r.role)
+                            )
+                        ))
+                    )
+                ),
+
+                // --- DYNAMIC CONTACT BAR ---
+                React.createElement('div', { className: "fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 p-2 glass rounded-full border-cyan-500/20 shadow-2xl" },
+                    React.createElement('a', { href: "tel:9122802016", className: "flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full font-bold text-sm" },
+                        React.createElement(Phone, { size: 16 }), "Call Now"
+                    ),
+                    React.createElement('a', { href: "https://wa.me/919122802016", className: "p-3 bg-[#25D366] text-white rounded-full" },
+                        React.createElement(MessageCircle, { size: 24 })
+                    )
+                )
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(App));
+    </script>
+</body>
+</html>
