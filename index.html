@@ -1,527 +1,525 @@
-import React, { useState, useEffect } from 'react';
-import { initializeApp } from "firebase/app";
-import { 
-  getAuth, 
-  signInWithPopup, 
-  GoogleAuthProvider, 
-  signOut, 
-  onAuthStateChanged 
-} from "firebase/auth";
-import { 
-  Phone, MapPin, Wifi, Zap, ShieldCheck, Utensils, 
-  Home, Menu, X, CheckCircle, Smartphone, 
-  Send, Coffee, BookOpen, Library, GraduationCap,
-  User, Star, ArrowRight, LogIn, LogOut
-} from 'lucide-react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safalta Express Boys Hostel | Begusarai</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-purple: #bc13fe;
+            --gold: #ffd700;
+        }
 
-// --- FIREBASE CONFIGURATION ---
-const firebaseConfig = {
-  apiKey: "AIzaSyBbwul_dbciJX3SQIVFQqXktmCsCghJRHU",
-  authDomain: "safalta-express-boys-hostel.firebaseapp.com",
-  projectId: "safalta-express-boys-hostel",
-  storageBucket: "safalta-express-boys-hostel.firebasestorage.app",
-  messagingSenderId: "943963131070",
-  appId: "1:943963131070:web:48db2233c27d7ae15562ef",
-  measurementId: "G-WSVD0553T0"
-};
+        body {
+            background-color: #050505;
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+            color: white;
+        }
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const googleProvider = new GoogleAuthProvider();
+        .font-cyber {
+            font-family: 'Orbitron', sans-serif;
+        }
 
-/* --- HYPERBEAST CSS --- */
-const styleTag = `
-  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Orbitron:wght@500;700;900&display=swap');
-  
-  :root {
-    --neon-blue: #00f3ff;
-    --neon-purple: #bc13fe;
-    --gold: #ffd700;
-  }
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
 
-  body {
-    background-color: #050505;
-    font-family: 'Outfit', sans-serif;
-    overflow-x: hidden;
-    color: white;
-  }
+        .neon-text {
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.7), 0 0 20px rgba(0, 243, 255, 0.5);
+        }
 
-  .font-cyber {
-    font-family: 'Orbitron', sans-serif;
-  }
+        .gold-text {
+            background: linear-gradient(to bottom, #cfc09f 22%, #634f2c 24%, #cfc09f 26%, #cfc09f 27%, #ffecb3 40%, #3a2c0f 78%); 
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-  .glass-morphism {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  }
+        .card-hover {
+            transition: all 0.4s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 30px rgba(79, 70, 229, 0.3);
+            border-color: rgba(79, 70, 229, 0.5);
+        }
 
-  .neon-text {
-    text-shadow: 0 0 10px rgba(0, 243, 255, 0.7), 0 0 20px rgba(0, 243, 255, 0.5);
-  }
+        /* Hide Scrollbar but keep functionality */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
 
-  .gold-text {
-    background: linear-gradient(to bottom, #cfc09f 22%, #634f2c 24%, #cfc09f 26%, #cfc09f 27%, #ffecb3 40%, #3a2c0f 78%); 
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
 
-  .card-hover {
-    transition: all 0.4s ease;
-  }
-  .card-hover:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 0 30px rgba(79, 70, 229, 0.3);
-    border-color: rgba(79, 70, 229, 0.5);
-  }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
 
-  .food-image {
-    mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
-  }
-`;
+    <!-- Import Map for React & Dependencies -->
+    <script type="importmap">
+        {
+            "imports": {
+                "react": "https://esm.sh/react@18.2.0",
+                "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+                "lucide-react": "https://esm.sh/lucide-react@0.344.0?external=react",
+                "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
+                "firebase/auth": "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="root"></div>
 
-// --- DATA ---
-const FOOD_IMAGES = {
-  poha: "https://images.unsplash.com/photo-1595350794711-a83236c58971?w=500&q=80",
-  roti: "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=500&q=80",
-  paneer: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=500&q=80",
-  dal: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=500&q=80",
-  chicken: "https://images.unsplash.com/photo-1610057099443-fde8c4d28557?w=500&q=80",
-  salad: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&q=80",
-  paratha: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500&q=80",
-  kheer: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=500&q=80",
-  egg: "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=500&q=80"
-};
+    <script type="module">
+        import React, { useState, useEffect } from 'react';
+        import ReactDOM from 'react-dom/client';
+        import { 
+            Phone, MapPin, Wifi, Zap, ShieldCheck, Utensils, 
+            Home, Menu, X, CheckCircle, Smartphone, 
+            Send, Coffee, BookOpen, Library, GraduationCap,
+            User, Star, ArrowRight, LogIn, LogOut
+        } from 'lucide-react';
+        import { initializeApp } from "firebase/app";
+        import { 
+            getAuth, 
+            signInWithPopup, 
+            GoogleAuthProvider, 
+            signOut, 
+            onAuthStateChanged 
+        } from "firebase/auth";
 
-const MENU_DATA = {
-  Monday: { 
-    b: { item: "Poha, Achar", img: FOOD_IMAGES.poha }, 
-    l: { item: "Chawal-Dal, Chicken/Paneer", img: FOOD_IMAGES.chicken }, 
-    d: { item: "Roti-Sabji", img: FOOD_IMAGES.roti } 
-  },
-  Tuesday: { 
-    b: { item: "Roti-Sabji", img: FOOD_IMAGES.roti }, 
-    l: { item: "Chawal-Dal, Sabji", img: FOOD_IMAGES.dal }, 
-    d: { item: "Puri-Cholla, Kheer", img: FOOD_IMAGES.kheer } 
-  },
-  Wednesday: { 
-    b: { item: "Aloo Paratha", img: FOOD_IMAGES.paratha }, 
-    l: { item: "Chawal-Dal, Sabji", img: FOOD_IMAGES.dal }, 
-    d: { item: "Roti-Sabji", img: FOOD_IMAGES.roti } 
-  },
-  Thursday: { 
-    b: { item: "Puri-Rajma", img: FOOD_IMAGES.paratha }, 
-    l: { item: "Chawal-Dal, Bhujiya", img: FOOD_IMAGES.dal }, 
-    d: { item: "Roti-Mix Veg", img: FOOD_IMAGES.roti } 
-  },
-  Friday: { 
-    b: { item: "Roti-Sabji", img: FOOD_IMAGES.roti }, 
-    l: { item: "Egg Curry/Paneer", img: FOOD_IMAGES.egg }, 
-    d: { item: "Roti-Sabji", img: FOOD_IMAGES.roti } 
-  },
-  Saturday: { 
-    b: { item: "Roti-Sabji", img: FOOD_IMAGES.roti }, 
-    l: { item: "Khichri-Chokha", img: FOOD_IMAGES.dal }, 
-    d: { item: "Puri-Channa, Sewai", img: FOOD_IMAGES.kheer } 
-  },
-  Sunday: { 
-    b: { item: "Sattu Paratha", img: FOOD_IMAGES.paratha }, 
-    l: { item: "Kadhi-Chawal", img: FOOD_IMAGES.dal }, 
-    d: { item: "Roti-Bhujiya", img: FOOD_IMAGES.roti } 
-  },
-};
+        // --- FIREBASE CONFIGURATION ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyBbwul_dbciJX3SQIVFQqXktmCsCghJRHU",
+            authDomain: "safalta-express-boys-hostel.firebaseapp.com",
+            projectId: "safalta-express-boys-hostel",
+            storageBucket: "safalta-express-boys-hostel.firebasestorage.app",
+            messagingSenderId: "943963131070",
+            appId: "1:943963131070:web:48db2233c27d7ae15562ef",
+            measurementId: "G-WSVD0553T0"
+        };
 
-const NEARBY_LOCATIONS = [
-  { name: "GD College Campus", dist: "50 Steps", type: "Education", img: "https://images.unsplash.com/photo-1562774053-701939374585?w=500&q=80" },
-  { name: "The Readers Library", dist: "2 Min Walk", type: "Study Zone", img: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=500&q=80" },
-  { name: "Saraswati Book Depot", dist: "5 Min Walk", type: "Resources", img: "https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=500&q=80" },
-  { name: "Allen/PW Center", dist: "Nearby", type: "Coaching", img: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=500&q=80" }
-];
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const googleProvider = new GoogleAuthProvider();
 
-// --- COMPONENTS ---
+        // --- DATA ---
+        const FOOD_IMAGES = {
+            poha: "https://images.unsplash.com/photo-1595350794711-a83236c58971?w=500&q=80",
+            roti: "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=500&q=80",
+            paneer: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=500&q=80",
+            dal: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=500&q=80",
+            chicken: "https://images.unsplash.com/photo-1610057099443-fde8c4d28557?w=500&q=80",
+            salad: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&q=80",
+            paratha: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500&q=80",
+            kheer: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=500&q=80",
+            egg: "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=500&q=80"
+        };
 
-const Navbar = ({ scrollTo, user, handleLogin, handleLogout }) => {
-  const [scrolled, setScrolled] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+        const MENU_DATA = {
+            Monday: { b: { item: "Poha, Achar", img: FOOD_IMAGES.poha }, l: { item: "Chawal-Dal, Chicken/Paneer", img: FOOD_IMAGES.chicken }, d: { item: "Roti-Sabji", img: FOOD_IMAGES.roti } },
+            Tuesday: { b: { item: "Roti-Sabji", img: FOOD_IMAGES.roti }, l: { item: "Chawal-Dal, Sabji", img: FOOD_IMAGES.dal }, d: { item: "Puri-Cholla, Kheer", img: FOOD_IMAGES.kheer } },
+            Wednesday: { b: { item: "Aloo Paratha", img: FOOD_IMAGES.paratha }, l: { item: "Chawal-Dal, Sabji", img: FOOD_IMAGES.dal }, d: { item: "Roti-Sabji", img: FOOD_IMAGES.roti } },
+            Thursday: { b: { item: "Puri-Rajma", img: FOOD_IMAGES.paratha }, l: { item: "Chawal-Dal, Bhujiya", img: FOOD_IMAGES.dal }, d: { item: "Roti-Mix Veg", img: FOOD_IMAGES.roti } },
+            Friday: { b: { item: "Roti-Sabji", img: FOOD_IMAGES.roti }, l: { item: "Egg Curry/Paneer", img: FOOD_IMAGES.egg }, d: { item: "Roti-Sabji", img: FOOD_IMAGES.roti } },
+            Saturday: { b: { item: "Roti-Sabji", img: FOOD_IMAGES.roti }, l: { item: "Khichri-Chokha", img: FOOD_IMAGES.dal }, d: { item: "Puri-Channa, Sewai", img: FOOD_IMAGES.kheer } },
+            Sunday: { b: { item: "Sattu Paratha", img: FOOD_IMAGES.paratha }, l: { item: "Kadhi-Chawal", img: FOOD_IMAGES.dal }, d: { item: "Roti-Bhujiya", img: FOOD_IMAGES.roti } },
+        };
 
-  useEffect(() => window.addEventListener('scroll', () => setScrolled(window.scrollY > 20)), []);
+        const NEARBY_LOCATIONS = [
+            { name: "GD College Campus", dist: "50 Steps", type: "Education", img: "https://images.unsplash.com/photo-1562774053-701939374585?w=500&q=80" },
+            { name: "The Readers Library", dist: "2 Min Walk", type: "Study Zone", img: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=500&q=80" },
+            { name: "Saraswati Book Depot", dist: "5 Min Walk", type: "Resources", img: "https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=500&q=80" },
+            { name: "Allen/PW Center", dist: "Nearby", type: "Coaching", img: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=500&q=80" }
+        ];
 
-  return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-black/80 backdrop-blur-xl border-b border-white/10' : 'bg-transparent'}`}>
-      <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-        <div className="flex items-center gap-2" onClick={() => scrollTo('hero')}>
-          <div className="bg-gradient-to-tr from-blue-600 to-purple-600 p-2 rounded-lg">
-            <GraduationCap className="text-white" size={24} />
-          </div>
-          <div>
-            <h1 className="font-cyber text-2xl tracking-wider text-white">SAFALTA<span className="text-blue-500">EXPRESS</span></h1>
-            <p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase">Boys Hostel</p>
-          </div>
-        </div>
+        // --- COMPONENTS ---
 
-        <div className="hidden md:flex items-center gap-8">
-          {['Location', 'Menu', 'Rooms', 'Contact'].map(item => (
-            <button key={item} onClick={() => scrollTo(item.toLowerCase())} className="text-sm font-semibold hover:text-blue-400 transition-colors uppercase tracking-widest">{item}</button>
-          ))}
-          
-          {user ? (
-            <div className="flex items-center gap-3 bg-white/5 px-4 py-1.5 rounded-full border border-white/10">
-              <img src={user.photoURL} alt="Profile" className="w-8 h-8 rounded-full border border-blue-500" />
-              <button onClick={handleLogout} className="text-red-400 hover:text-red-300"><LogOut size={18} /></button>
-            </div>
-          ) : (
-            <button onClick={handleLogin} className="flex items-center gap-2 text-sm font-bold bg-white text-black px-4 py-2 rounded-full hover:scale-105 transition">
-              <LogIn size={16} /> Login
-            </button>
-          )}
+        const Navbar = ({ scrollTo, user, handleLogin, handleLogout }) => {
+            const [scrolled, setScrolled] = useState(false);
+            const [isOpen, setIsOpen] = useState(false);
 
-          <button onClick={() => scrollTo('booking')} className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-full font-bold uppercase tracking-wider shadow-[0_0_20px_rgba(37,99,235,0.5)] transition-all">
-            Book Now
-          </button>
-        </div>
+            useEffect(() => {
+                const handleScroll = () => setScrolled(window.scrollY > 20);
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
 
-        <button className="md:hidden text-white" onClick={() => setIsOpen(!isOpen)}>{isOpen ? <X /> : <Menu />}</button>
-      </div>
+            return React.createElement('nav', {
+                className: `fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-black/80 backdrop-blur-xl border-b border-white/10' : 'bg-transparent'}`
+            }, 
+                React.createElement('div', { className: "max-w-7xl mx-auto px-4 py-4 flex justify-between items-center" },
+                    React.createElement('div', { className: "flex items-center gap-2 cursor-pointer", onClick: () => scrollTo('hero') },
+                        React.createElement('div', { className: "bg-gradient-to-tr from-blue-600 to-purple-600 p-2 rounded-lg" },
+                            React.createElement(GraduationCap, { className: "text-white", size: 24 })
+                        ),
+                        React.createElement('div', null,
+                            React.createElement('h1', { className: "font-cyber text-2xl tracking-wider text-white leading-none" }, 
+                                "SAFALTA", React.createElement('span', { className: "text-blue-500" }, "EXPRESS")
+                            ),
+                            React.createElement('p', { className: "text-[10px] text-gray-400 tracking-[0.3em] uppercase" }, "Boys Hostel")
+                        )
+                    ),
+                    
+                    /* Desktop Menu */
+                    React.createElement('div', { className: "hidden md:flex items-center gap-8" },
+                        ['Location', 'Menu', 'Rooms', 'Contact'].map(item => 
+                            React.createElement('button', { 
+                                key: item, 
+                                onClick: () => scrollTo(item.toLowerCase()),
+                                className: "text-sm font-semibold text-gray-300 hover:text-blue-400 transition-colors uppercase tracking-widest"
+                            }, item)
+                        ),
+                        user ? (
+                            React.createElement('div', { className: "flex items-center gap-3 bg-white/5 px-4 py-1.5 rounded-full border border-white/10" },
+                                React.createElement('img', { src: user.photoURL, alt: "Profile", className: "w-8 h-8 rounded-full border border-blue-500" }),
+                                React.createElement('button', { onClick: handleLogout, className: "text-red-400 hover:text-red-300" }, React.createElement(LogOut, { size: 18 }))
+                            )
+                        ) : (
+                            React.createElement('button', { onClick: handleLogin, className: "flex items-center gap-2 text-sm font-bold bg-white text-black px-4 py-2 rounded-full hover:scale-105 transition" },
+                                React.createElement(LogIn, { size: 16 }), " Login"
+                            )
+                        ),
+                        React.createElement('button', { 
+                            onClick: () => scrollTo('booking'),
+                            className: "bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-full font-bold uppercase tracking-wider shadow-[0_0_20px_rgba(37,99,235,0.5)] transition-all text-white"
+                        }, "Book Now")
+                    ),
 
-      {isOpen && (
-        <div className="md:hidden bg-black/95 backdrop-blur-xl p-6 border-b border-white/10">
-          <div className="flex flex-col gap-4">
-             {user ? (
-               <div className="flex items-center gap-3 pb-4 border-b border-white/10">
-                 <img src={user.photoURL} className="w-10 h-10 rounded-full" />
-                 <div className="text-white font-bold">Hi, {user.displayName.split(' ')[0]}</div>
-                 <button onClick={handleLogout} className="ml-auto text-red-500 text-sm">Logout</button>
-               </div>
-             ) : (
-               <button onClick={handleLogin} className="flex items-center gap-2 text-blue-400 font-bold">Login with Google</button>
-             )}
-             {['Location', 'Menu', 'Rooms', 'Contact', 'Booking'].map(item => (
-               <button key={item} onClick={() => { scrollTo(item.toLowerCase()); setIsOpen(false); }} className="text-left text-lg font-bold text-gray-300 py-2 border-b border-white/5">{item}</button>
-             ))}
-          </div>
-        </div>
-      )}
-    </nav>
-  );
-};
+                    /* Mobile Toggle */
+                    React.createElement('button', { className: "md:hidden text-white", onClick: () => setIsOpen(!isOpen) },
+                        isOpen ? React.createElement(X) : React.createElement(Menu)
+                    )
+                ),
 
-const Hero = () => (
-  <section id="hero" className="relative h-screen flex items-center justify-center overflow-hidden">
-    {/* Background Video/Image with Overlay */}
-    <div className="absolute inset-0 z-0">
-      <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2000&auto=format&fit=crop" className="w-full h-full object-cover opacity-40 scale-105" alt="Campus Life" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
-    </div>
+                /* Mobile Menu */
+                isOpen && React.createElement('div', { className: "md:hidden bg-black/95 backdrop-blur-xl p-6 border-b border-white/10 absolute w-full" },
+                    React.createElement('div', { className: "flex flex-col gap-4" },
+                        user ? (
+                            React.createElement('div', { className: "flex items-center gap-3 pb-4 border-b border-white/10" },
+                                React.createElement('img', { src: user.photoURL, className: "w-10 h-10 rounded-full" }),
+                                React.createElement('div', { className: "text-white font-bold" }, "Hi, ", user.displayName.split(' ')[0]),
+                                React.createElement('button', { onClick: handleLogout, className: "ml-auto text-red-500 text-sm" }, "Logout")
+                            )
+                        ) : (
+                            React.createElement('button', { onClick: handleLogin, className: "flex items-center gap-2 text-blue-400 font-bold" }, "Login with Google")
+                        ),
+                        ['Location', 'Menu', 'Rooms', 'Contact', 'Booking'].map(item => 
+                            React.createElement('button', { 
+                                key: item, 
+                                onClick: () => { scrollTo(item.toLowerCase()); setIsOpen(false); },
+                                className: "text-left text-lg font-bold text-gray-300 py-2 border-b border-white/5"
+                            }, item)
+                        )
+                    )
+                )
+            );
+        };
 
-    <div className="relative z-10 text-center max-w-5xl px-4 mt-20">
-      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-900/30 border border-blue-500/30 text-blue-400 text-xs font-bold tracking-widest uppercase mb-6 animate-bounce">
-        <Star size={14} fill="currentColor" /> Ritesh Kumar Presents
-      </div>
-      
-      <h1 className="font-cyber text-5xl md:text-8xl text-white mb-6 leading-tight">
-        LEGACY OF <br />
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600 neon-text">SUCCESS</span>
-      </h1>
-      
-      <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto font-light">
-        More than just a hostel. Located at the <span className="text-white font-bold">Heart of Begusarai's Education Hub</span> (Behind GD College). 
-        The ecosystem for JEE, NEET & Exam Toppers.
-      </p>
+        const Hero = () => {
+            return React.createElement('section', { id: "hero", className: "relative h-screen flex items-center justify-center overflow-hidden" },
+                React.createElement('div', { className: "absolute inset-0 z-0" },
+                    React.createElement('img', { src: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2000&auto=format&fit=crop", className: "w-full h-full object-cover opacity-40 scale-105" }),
+                    React.createElement('div', { className: "absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" })
+                ),
+                React.createElement('div', { className: "relative z-10 text-center max-w-5xl px-4 mt-20" },
+                    React.createElement('div', { className: "inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-900/30 border border-blue-500/30 text-blue-400 text-xs font-bold tracking-widest uppercase mb-6 animate-float" },
+                        React.createElement(Star, { size: 14, fill: "currentColor" }), " Ritesh Kumar Presents"
+                    ),
+                    React.createElement('h1', { className: "font-cyber text-5xl md:text-8xl text-white mb-6 leading-tight" },
+                        "LEGACY OF ", React.createElement('br'),
+                        React.createElement('span', { className: "text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600 neon-text" }, "SUCCESS")
+                    ),
+                    React.createElement('p', { className: "text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto font-light" },
+                        "More than just a hostel. Located at the ", React.createElement('span', { className: "text-white font-bold" }, "Heart of Begusarai's Education Hub"), " (Behind GD College). The ecosystem for JEE, NEET & Exam Toppers."
+                    ),
+                    React.createElement('div', { className: "flex flex-col sm:flex-row gap-4 justify-center" },
+                        React.createElement('a', { href: "tel:9122802016", className: "flex items-center justify-center gap-2 bg-white text-black px-8 py-4 rounded-xl font-bold text-lg hover:scale-105 transition-transform shadow-[0_0_30px_rgba(255,255,255,0.3)]" },
+                            React.createElement(Phone, { size: 20 }), " Call 9122802016"
+                        ),
+                        React.createElement('a', { href: "https://www.google.com/maps/search/?api=1&query=Behind+GD+College+Begusarai+Bihar", target: "_blank", className: "flex items-center justify-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/20 transition-colors" },
+                            React.createElement(MapPin, { size: 20 }), " View Location"
+                        )
+                    )
+                )
+            );
+        };
 
-      <div className="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="tel:9122802016" className="flex items-center justify-center gap-2 bg-white text-black px-8 py-4 rounded-xl font-bold text-lg hover:scale-105 transition-transform shadow-[0_0_30px_rgba(255,255,255,0.3)]">
-          <Phone size={20} /> Call 9122802016
-        </a>
-        <a href="https://www.google.com/maps/search/?api=1&query=Behind+GD+College+Begusarai+Bihar" target="_blank" className="flex items-center justify-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/20 transition-colors">
-          <MapPin size={20} /> View Location
-        </a>
-      </div>
-    </div>
-  </section>
-);
+        const LocationLegacy = () => {
+            return React.createElement('section', { id: "location", className: "py-24 bg-black relative" },
+                React.createElement('div', { className: "max-w-7xl mx-auto px-4" },
+                    React.createElement('div', { className: "text-center mb-16" },
+                        React.createElement('h2', { className: "font-cyber text-3xl md:text-5xl mb-4 text-white" }, "THE ", React.createElement('span', { className: "text-blue-500" }, "STRATEGIC"), " ADVANTAGE"),
+                        React.createElement('p', { className: "text-gray-400" }, "Why Toppers Choose Safalta Express? Because Time = Rank.")
+                    ),
+                    React.createElement('div', { className: "grid md:grid-cols-4 gap-6" },
+                        NEARBY_LOCATIONS.map((loc, idx) => 
+                            React.createElement('div', { key: idx, className: "glass-morphism rounded-2xl overflow-hidden group card-hover" },
+                                React.createElement('div', { className: "h-40 overflow-hidden relative" },
+                                    React.createElement('img', { src: loc.img, className: "w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" }),
+                                    React.createElement('div', { className: "absolute inset-0 bg-black/50 flex items-center justify-center" },
+                                        React.createElement('span', { className: "text-2xl font-bold text-white" }, loc.dist)
+                                    )
+                                ),
+                                React.createElement('div', { className: "p-6" },
+                                    React.createElement('span', { className: "text-xs text-blue-400 font-bold uppercase tracking-wider" }, loc.type),
+                                    React.createElement('h3', { className: "text-xl font-bold mt-1 group-hover:text-blue-400 transition-colors text-white" }, loc.name)
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        };
 
-const LocationLegacy = () => (
-  <section id="location" className="py-24 bg-black relative">
-    <div className="max-w-7xl mx-auto px-4">
-      <div className="text-center mb-16">
-        <h2 className="font-cyber text-3xl md:text-5xl mb-4">THE <span className="text-blue-500">STRATEGIC</span> ADVANTAGE</h2>
-        <p className="text-gray-400">Why Toppers Choose Safalta Express? Because Time = Rank.</p>
-      </div>
+        const VisualMenu = () => {
+            const [activeDay, setActiveDay] = useState('Monday');
+            const days = Object.keys(MENU_DATA);
 
-      <div className="grid md:grid-cols-4 gap-6">
-        {NEARBY_LOCATIONS.map((loc, idx) => (
-          <div key={idx} className="glass-morphism rounded-2xl overflow-hidden group card-hover">
-            <div className="h-40 overflow-hidden relative">
-              <img src={loc.img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                <span className="text-2xl font-bold">{loc.dist}</span>
-              </div>
-            </div>
-            <div className="p-6">
-              <span className="text-xs text-blue-400 font-bold uppercase tracking-wider">{loc.type}</span>
-              <h3 className="text-xl font-bold mt-1 group-hover:text-blue-400 transition-colors">{loc.name}</h3>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-);
+            return React.createElement('section', { id: "menu", className: "py-24 bg-[#0a0a0a]" },
+                React.createElement('div', { className: "max-w-7xl mx-auto px-4" },
+                    React.createElement('h2', { className: "font-cyber text-3xl md:text-5xl mb-12 text-center text-white" }, "FUEL FOR ", React.createElement('span', { className: "text-yellow-400" }, "BRAINS")),
+                    
+                    React.createElement('div', { className: "flex overflow-x-auto gap-3 pb-8 justify-start md:justify-center scrollbar-hide" },
+                        days.map(day => 
+                            React.createElement('button', { 
+                                key: day, 
+                                onClick: () => setActiveDay(day),
+                                className: `px-6 py-2 rounded-full font-bold whitespace-nowrap transition-all ${activeDay === day ? 'bg-yellow-500 text-black shadow-[0_0_20px_rgba(234,179,8,0.5)]' : 'bg-white/5 text-gray-400 hover:bg-white/10'}`
+                            }, day)
+                        )
+                    ),
 
-const VisualMenu = () => {
-  const [activeDay, setActiveDay] = useState('Monday');
-  const days = Object.keys(MENU_DATA);
+                    React.createElement('div', { className: "grid md:grid-cols-3 gap-8 mt-8" },
+                        [
+                            { type: 'Breakfast', data: MENU_DATA[activeDay].b, Icon: Coffee },
+                            { type: 'Lunch', data: MENU_DATA[activeDay].l, Icon: Utensils },
+                            { type: 'Dinner', data: MENU_DATA[activeDay].d, Icon: Star }
+                        ].map((meal, idx) => 
+                            React.createElement('div', { key: idx, className: "glass-morphism rounded-3xl p-4 relative group hover:border-yellow-500/50 transition-all duration-500" },
+                                React.createElement('div', { className: "absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase text-yellow-400 border border-yellow-500/30 flex items-center gap-2 z-10" },
+                                    React.createElement(meal.Icon, { size: 14 }), meal.type
+                                ),
+                                React.createElement('div', { className: "h-48 rounded-2xl overflow-hidden mb-4 relative" },
+                                    React.createElement('img', { src: meal.data.img, alt: meal.data.item, className: "w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" }),
+                                    React.createElement('div', { className: "absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" })
+                                ),
+                                React.createElement('h3', { className: "text-2xl font-bold text-white mb-2" }, meal.data.item),
+                                React.createElement('p', { className: "text-gray-400 text-sm" }, "Prepared hygienically with verified ingredients.")
+                            )
+                        )
+                    )
+                )
+            );
+        };
 
-  return (
-    <section id="menu" className="py-24 bg-[#0a0a0a]">
-      <div className="max-w-7xl mx-auto px-4">
-        <h2 className="font-cyber text-3xl md:text-5xl mb-12 text-center">FUEL FOR <span className="text-yellow-400">BRAINS</span></h2>
-        
-        {/* Day Selector */}
-        <div className="flex overflow-x-auto gap-3 pb-8 justify-start md:justify-center scrollbar-hide">
-          {days.map(day => (
-            <button 
-              key={day} 
-              onClick={() => setActiveDay(day)}
-              className={`px-6 py-2 rounded-full font-bold whitespace-nowrap transition-all ${activeDay === day ? 'bg-yellow-500 text-black shadow-[0_0_20px_rgba(234,179,8,0.5)]' : 'bg-white/5 text-gray-400 hover:bg-white/10'}`}
-            >
-              {day}
-            </button>
-          ))}
-        </div>
+        const RoomShowcase = () => {
+            return React.createElement('section', { id: "rooms", className: "py-24 bg-black" },
+                React.createElement('div', { className: "max-w-7xl mx-auto px-4" },
+                    React.createElement('div', { className: "flex flex-col md:flex-row justify-between items-end mb-12" },
+                        React.createElement('div', null,
+                            React.createElement('h2', { className: "font-cyber text-3xl md:text-5xl mb-2 text-white" }, "LIVING ", React.createElement('span', { className: "text-purple-500" }, "STANDARDS")),
+                            React.createElement('p', { className: "text-gray-400" }, "Sneak peek into your future home.")
+                        ),
+                        React.createElement('div', { className: "bg-purple-900/20 px-4 py-2 rounded border border-purple-500/30 text-purple-300 text-sm mt-4 md:mt-0" },
+                            "✨ Hint: Actual rooms are even better"
+                        )
+                    ),
+                    React.createElement('div', { className: "grid md:grid-cols-2 lg:grid-cols-3 gap-6" },
+                        [
+                            { title: "2-Seater Premium", desc: "Space for focused study.", img: "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=600&q=80" },
+                            { title: "Spotless Washrooms", desc: "Daily cleaning protocols.", img: "https://images.unsplash.com/photo-1584622050111-993a426fbf0a?w=600&q=80" },
+                            { title: "Study Corridors", desc: "Peaceful ambiance.", img: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80", full: true }
+                        ].map((item, idx) => 
+                            React.createElement('div', { key: idx, className: `glass-morphism rounded-2xl overflow-hidden group relative h-80 ${item.full ? 'md:col-span-2 lg:col-span-1' : ''}` },
+                                React.createElement('img', { src: item.img, className: "w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" }),
+                                React.createElement('div', { className: "absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black via-black/80 to-transparent" },
+                                    React.createElement('h3', { className: "text-xl font-bold text-white" }, item.title),
+                                    React.createElement('p', { className: "text-sm text-gray-300" }, item.desc)
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        };
 
-        {/* Food Cards */}
-        <div className="grid md:grid-cols-3 gap-8 mt-8">
-          {[
-            { type: 'Breakfast', data: MENU_DATA[activeDay].b, icon: <Coffee /> },
-            { type: 'Lunch', data: MENU_DATA[activeDay].l, icon: <Utensils /> },
-            { type: 'Dinner', data: MENU_DATA[activeDay].d, icon: <Star /> }
-          ].map((meal, idx) => (
-            <div key={idx} className="glass-morphism rounded-3xl p-4 relative group hover:border-yellow-500/50 transition-all duration-500">
-              <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase text-yellow-400 border border-yellow-500/30 flex items-center gap-2">
-                {meal.icon} {meal.type}
-              </div>
-              
-              <div className="h-48 rounded-2xl overflow-hidden mb-4 relative">
-                <img src={meal.data.img} alt={meal.data.item} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
-              </div>
-              
-              <h3 className="text-2xl font-bold text-white mb-2">{meal.data.item}</h3>
-              <p className="text-gray-400 text-sm">Prepared hygienically with verified ingredients.</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
+        const BookingSection = ({ user }) => {
+            const [showQR, setShowQR] = useState(false);
 
-const RoomShowcase = () => (
-  <section id="rooms" className="py-24 bg-black">
-    <div className="max-w-7xl mx-auto px-4">
-      <div className="flex flex-col md:flex-row justify-between items-end mb-12">
-        <div>
-           <h2 className="font-cyber text-3xl md:text-5xl mb-2">LIVING <span className="text-purple-500">STANDARDS</span></h2>
-           <p className="text-gray-400">Sneak peek into your future home.</p>
-        </div>
-        <div className="bg-purple-900/20 px-4 py-2 rounded border border-purple-500/30 text-purple-300 text-sm">
-           ✨ Hint: Actual rooms are even better
-        </div>
-      </div>
+            const handlePay = () => {
+                window.location.href = "upi://pay?pa=riteshs9122@ybl&pn=SafaltaExpress&am=5500&cu=INR&tn=HostelBooking";
+                setTimeout(() => setShowQR(true), 1500);
+            };
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="glass-morphism rounded-2xl overflow-hidden group relative h-80">
-          <img src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=600&q=80" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-          <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black via-black/80 to-transparent">
-            <h3 className="text-xl font-bold">2-Seater Premium</h3>
-            <p className="text-sm text-gray-300">Space for focused study.</p>
-          </div>
-        </div>
-        
-        <div className="glass-morphism rounded-2xl overflow-hidden group relative h-80">
-          <img src="https://images.unsplash.com/photo-1584622050111-993a426fbf0a?w=600&q=80" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-          <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black via-black/80 to-transparent">
-            <h3 className="text-xl font-bold">Spotless Washrooms</h3>
-            <p className="text-sm text-gray-300">Daily cleaning protocols.</p>
-          </div>
-        </div>
+            return React.createElement('section', { id: "booking", className: "py-24 relative overflow-hidden bg-[#050505]" },
+                React.createElement('div', { className: "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[150px]" }),
+                
+                React.createElement('div', { className: "max-w-4xl mx-auto px-4 relative z-10" },
+                    React.createElement('div', { className: "glass-morphism rounded-[2.5rem] p-1 border border-blue-500/30 shadow-[0_0_50px_rgba(37,99,235,0.2)]" },
+                        React.createElement('div', { className: "bg-[#0a0a0a] rounded-[2.4rem] p-8 md:p-16 text-center relative overflow-hidden" },
+                            React.createElement('div', { className: "absolute top-6 left-6 flex items-center gap-2 text-gray-500 text-sm" },
+                                React.createElement(ShieldCheck, { size: 16, className: "text-green-500" }), " Managed by Ritesh Kumar"
+                            ),
+                            React.createElement('h2', { className: "font-cyber text-4xl md:text-6xl text-white mb-2 mt-8" }, "SECURE YOUR ", React.createElement('span', { className: "text-blue-500" }, "SEAT")),
+                            user && React.createElement('p', { className: "text-blue-300 mb-6" }, "Welcome, ", user.displayName, "!"),
+                            
+                            React.createElement('div', { className: "flex justify-center items-end gap-2 mb-8" },
+                                React.createElement('span', { className: "text-gray-400 text-lg mb-4 line-through" }, "₹6500"),
+                                React.createElement('span', { className: "text-7xl font-cyber text-white tracking-tighter" }, "₹5500"),
+                                React.createElement('span', { className: "text-gray-500 text-lg mb-4" }, "/mo")
+                            ),
 
-        <div className="glass-morphism rounded-2xl overflow-hidden group relative h-80 md:col-span-2 lg:col-span-1">
-          <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-          <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black via-black/80 to-transparent">
-            <h3 className="text-xl font-bold">Study Corridors</h3>
-            <p className="text-sm text-gray-300">Peaceful ambiance.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-);
+                            React.createElement('div', { className: "grid grid-cols-2 gap-4 max-w-lg mx-auto mb-10 text-left" },
+                                [
+                                    "Furnished Room", "3-Time Meals", "24/7 Power", "RO Water"
+                                ].map((feature, i) => 
+                                    React.createElement('div', { key: i, className: "flex items-center gap-2 text-gray-300" },
+                                        React.createElement(CheckCircle, { size: 16, className: "text-green-500" }), feature
+                                    )
+                                )
+                            ),
 
-const BookingSection = ({ user }) => {
-  const [showQR, setShowQR] = useState(false);
+                            React.createElement('button', { onClick: handlePay, className: "w-full md:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xl px-12 py-5 rounded-2xl shadow-lg transform transition hover:scale-105 flex items-center justify-center gap-3 mx-auto" },
+                                React.createElement(Smartphone), " Pay via UPI"
+                            ),
+                            React.createElement('p', { className: "mt-4 text-xs text-gray-500" }, "Official UPI: riteshs9122@ybl")
+                        )
+                    )
+                ),
 
-  const handlePay = () => {
-    window.location.href = "upi://pay?pa=riteshs9122@ybl&pn=SafaltaExpress&am=5500&cu=INR&tn=HostelBooking";
-    setTimeout(() => setShowQR(true), 1500);
-  };
+                showQR && React.createElement('div', { className: "fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-xl p-4 animate-in fade-in" },
+                    React.createElement('div', { className: "bg-[#111] border border-white/10 rounded-3xl p-8 max-w-sm w-full text-center relative" },
+                        React.createElement('button', { onClick: () => setShowQR(false), className: "absolute top-4 right-4 text-gray-400 hover:text-white" }, React.createElement(X)),
+                        React.createElement(CheckCircle, { size: 48, className: "text-green-500 mx-auto mb-4" }),
+                        React.createElement('h3', { className: "text-2xl font-bold text-white mb-2" }, "Final Step"),
+                        React.createElement('p', { className: "text-gray-400 text-sm mb-6" }, "To confirm your booking immediately, please send the payment screenshot to Ritesh Kumar."),
+                        React.createElement('a', { 
+                            href: `https://wa.me/919122802016?text=${encodeURIComponent(`Hello Ritesh Sir, I have paid ₹5500 for the hostel booking. Here is the proof.`)}`,
+                            target: "_blank",
+                            className: "block w-full bg-[#25D366] hover:bg-[#1ebc57] text-white font-bold py-4 rounded-xl transition flex items-center justify-center gap-2"
+                        }, React.createElement(Send, { size: 18 }), " WhatsApp Screenshot"),
+                        React.createElement('div', { className: "mt-4 text-xs text-gray-500" }, "Official Numbers:", React.createElement('br'), "9122802016 | 8976852604")
+                    )
+                )
+            );
+        };
 
-  return (
-    <section id="booking" className="py-24 relative overflow-hidden bg-[#050505]">
-      {/* Abstract Background */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[150px]"></div>
+        const Footer = () => {
+            return React.createElement('footer', { id: "contact", className: "bg-black border-t border-white/5 pt-20 pb-10" },
+                React.createElement('div', { className: "max-w-7xl mx-auto px-4" },
+                    React.createElement('div', { className: "grid md:grid-cols-2 gap-16 mb-16" },
+                        React.createElement('div', null,
+                            React.createElement('h3', { className: "font-cyber text-2xl text-white mb-8" }, "SAFALTA", React.createElement('span', { className: "text-blue-500" }, "EXPRESS")),
+                            React.createElement('div', { className: "space-y-6" },
+                                React.createElement('div', { className: "flex items-start gap-4 group cursor-pointer", onClick: () => window.open("https://www.google.com/maps/search/?api=1&query=Behind+GD+College+Begusarai+Bihar") },
+                                    React.createElement('div', { className: "p-4 bg-gray-900 rounded-xl text-blue-500 group-hover:scale-110 transition-transform" }, React.createElement(MapPin)),
+                                    React.createElement('div', null,
+                                        React.createElement('p', { className: "text-gray-500 text-xs uppercase tracking-widest mb-1" }, "Address"),
+                                        React.createElement('h4', { className: "text-xl font-bold text-white" }, "Behind GD College"),
+                                        React.createElement('p', { className: "text-gray-400" }, "Begusarai, Bihar")
+                                    )
+                                ),
+                                React.createElement('div', { className: "flex items-center gap-4" },
+                                    React.createElement('div', { className: "p-4 bg-gray-900 rounded-xl text-green-500" }, React.createElement(Phone)),
+                                    React.createElement('div', null,
+                                        React.createElement('p', { className: "text-gray-500 text-xs uppercase tracking-widest mb-1" }, "Direct Contact"),
+                                        React.createElement('div', { className: "flex flex-col" },
+                                            React.createElement('a', { href: "tel:9122802016", className: "text-xl font-bold text-white hover:text-green-500 transition" }, "9122802016"),
+                                            React.createElement('a', { href: "tel:8976852604", className: "text-lg font-bold text-gray-400 hover:text-green-500 transition" }, "8976852604")
+                                        )
+                                    )
+                                ),
+                                React.createElement('div', { className: "flex items-center gap-4" },
+                                    React.createElement('div', { className: "p-4 bg-gray-900 rounded-xl text-red-500" }, React.createElement(Send)),
+                                    React.createElement('div', null,
+                                        React.createElement('p', { className: "text-gray-500 text-xs uppercase tracking-widest mb-1" }, "Email"),
+                                        React.createElement('a', { href: "mailto:riteshs9122@gmail.com", className: "text-lg font-bold text-white hover:text-red-500 transition" }, "riteshs9122@gmail.com")
+                                    )
+                                )
+                            )
+                        ),
+                        React.createElement('div', { 
+                            className: "relative rounded-3xl overflow-hidden border border-white/10 h-80 group cursor-pointer",
+                            onClick: () => window.open("https://www.google.com/maps/search/?api=1&query=Behind+GD+College+Begusarai+Bihar")
+                        },
+                            React.createElement('img', { src: "https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?w=800&q=80", className: "w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 transition-all duration-700" }),
+                            React.createElement('div', { className: "absolute inset-0 flex items-center justify-center" },
+                                React.createElement('div', { className: "bg-white/10 backdrop-blur-md px-6 py-3 rounded-full border border-white/20 text-white font-bold group-hover:bg-white group-hover:text-black transition-all" },
+                                    "Open in Google Maps"
+                                )
+                            )
+                        )
+                    )
+                ),
+                React.createElement('div', { className: "text-center border-t border-white/5 pt-10" },
+                    React.createElement('p', { className: "text-gray-600 text-sm" }, "© 2025 Safalta Express. Owner: Ritesh Kumar.")
+                )
+            );
+        };
 
-      <div className="max-w-4xl mx-auto px-4 relative z-10">
-        <div className="glass-morphism rounded-[2.5rem] p-1 border border-blue-500/30 shadow-[0_0_50px_rgba(37,99,235,0.2)]">
-          <div className="bg-[#0a0a0a] rounded-[2.4rem] p-8 md:p-16 text-center relative overflow-hidden">
-            
-            {/* Owner Badge */}
-            <div className="absolute top-6 left-6 flex items-center gap-2 text-gray-500 text-sm">
-               <ShieldCheck size={16} className="text-green-500" /> Managed by Ritesh Kumar
-            </div>
+        const App = () => {
+            const [user, setUser] = useState(null);
 
-            <h2 className="font-cyber text-4xl md:text-6xl text-white mb-2 mt-8">SECURE YOUR <span className="text-blue-500">SEAT</span></h2>
-            {user && <p className="text-blue-300 mb-6">Welcome, {user.displayName}!</p>}
-            
-            <div className="flex justify-center items-end gap-2 mb-8">
-               <span className="text-gray-400 text-lg mb-4 line-through">₹6500</span>
-               <span className="text-7xl font-cyber text-white tracking-tighter">₹5500</span>
-               <span className="text-gray-500 text-lg mb-4">/mo</span>
-            </div>
+            useEffect(() => {
+                const unsubscribe = onAuthStateChanged(auth, (currentUser) => setUser(currentUser));
+                return () => unsubscribe();
+            }, []);
 
-            <div className="grid grid-cols-2 gap-4 max-w-lg mx-auto mb-10 text-left">
-               <div className="flex items-center gap-2 text-gray-300"><CheckCircle size={16} className="text-green-500" /> Furnished Room</div>
-               <div className="flex items-center gap-2 text-gray-300"><CheckCircle size={16} className="text-green-500" /> 3-Time Meals</div>
-               <div className="flex items-center gap-2 text-gray-300"><CheckCircle size={16} className="text-green-500" /> 24/7 Power</div>
-               <div className="flex items-center gap-2 text-gray-300"><CheckCircle size={16} className="text-green-500" /> RO Water</div>
-            </div>
+            const handleLogin = async () => {
+                try { await signInWithPopup(auth, googleProvider); } 
+                catch (error) { console.error("Login failed:", error); }
+            };
 
-            <button onClick={handlePay} className="w-full md:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xl px-12 py-5 rounded-2xl shadow-lg transform transition hover:scale-105 flex items-center justify-center gap-3 mx-auto">
-              <Smartphone /> Pay via UPI
-            </button>
-            <p className="mt-4 text-xs text-gray-500">Official UPI: riteshs9122@ybl</p>
-          </div>
-        </div>
-      </div>
+            const handleLogout = async () => {
+                try { await signOut(auth); } 
+                catch (error) { console.error("Logout failed:", error); }
+            };
 
-      {showQR && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-xl p-4 animate-in fade-in">
-          <div className="bg-[#111] border border-white/10 rounded-3xl p-8 max-w-sm w-full text-center relative">
-            <button onClick={() => setShowQR(false)} className="absolute top-4 right-4 text-gray-400 hover:text-white"><X /></button>
-            
-            <CheckCircle size={48} className="text-green-500 mx-auto mb-4" />
-            <h3 className="text-2xl font-bold text-white mb-2">Final Step</h3>
-            <p className="text-gray-400 text-sm mb-6">To confirm your booking immediately, please send the payment screenshot to Ritesh Kumar.</p>
-            
-            <a 
-              href={`https://wa.me/919122802016?text=${encodeURIComponent(`Hello Ritesh Sir, I have paid ₹5500 for the hostel booking. Here is the proof.`)}`}
-              target="_blank"
-              className="block w-full bg-[#25D366] hover:bg-[#1ebc57] text-white font-bold py-4 rounded-xl transition flex items-center justify-center gap-2"
-            >
-              <Send size={18} /> WhatsApp Screenshot
-            </a>
-            <div className="mt-4 text-xs text-gray-500">
-               Official Numbers:<br/>9122802016 | 8976852604
-            </div>
-          </div>
-        </div>
-      )}
-    </section>
-  );
-};
+            const scrollTo = (id) => {
+                const el = document.getElementById(id);
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+            };
 
-const Footer = () => (
-  <footer id="contact" className="bg-black border-t border-white/5 pt-20 pb-10">
-    <div className="max-w-7xl mx-auto px-4">
-      <div className="grid md:grid-cols-2 gap-16 mb-16">
-        <div>
-          <h3 className="font-cyber text-2xl text-white mb-8">SAFALTA<span className="text-blue-500">EXPRESS</span></h3>
-          
-          <div className="space-y-6">
-            <div className="flex items-start gap-4 group cursor-pointer" onClick={() => window.open("https://www.google.com/maps/search/?api=1&query=Behind+GD+College+Begusarai+Bihar")}>
-              <div className="p-4 bg-gray-900 rounded-xl text-blue-500 group-hover:scale-110 transition-transform"><MapPin /></div>
-              <div>
-                <p className="text-gray-500 text-xs uppercase tracking-widest mb-1">Address</p>
-                <h4 className="text-xl font-bold text-white">Behind GD College</h4>
-                <p className="text-gray-400">Begusarai, Bihar</p>
-              </div>
-            </div>
+            return React.createElement('div', { className: "min-h-screen" },
+                React.createElement(Navbar, { scrollTo, user, handleLogin, handleLogout }),
+                React.createElement(Hero),
+                React.createElement(LocationLegacy),
+                React.createElement(VisualMenu),
+                React.createElement(RoomShowcase),
+                React.createElement(BookingSection, { user }),
+                React.createElement(Footer)
+            );
+        };
 
-            <div className="flex items-center gap-4">
-              <div className="p-4 bg-gray-900 rounded-xl text-green-500"><Phone /></div>
-              <div>
-                <p className="text-gray-500 text-xs uppercase tracking-widest mb-1">Direct Contact</p>
-                <div className="flex flex-col">
-                  <a href="tel:9122802016" className="text-xl font-bold text-white hover:text-green-500 transition">9122802016</a>
-                  <a href="tel:8976852604" className="text-lg font-bold text-gray-400 hover:text-green-500 transition">8976852604</a>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <div className="p-4 bg-gray-900 rounded-xl text-red-500"><Send /></div>
-              <div>
-                <p className="text-gray-500 text-xs uppercase tracking-widest mb-1">Email</p>
-                <a href="mailto:riteshs9122@gmail.com" className="text-lg font-bold text-white hover:text-red-500 transition">riteshs9122@gmail.com</a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="relative rounded-3xl overflow-hidden border border-white/10 h-80 group cursor-pointer" onClick={() => window.open("https://www.google.com/maps/search/?api=1&query=Behind+GD+College+Begusarai+Bihar")}>
-           <img src="https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?w=800&q=80" className="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 transition-all duration-700" />
-           <div className="absolute inset-0 flex items-center justify-center">
-             <div className="bg-white/10 backdrop-blur-md px-6 py-3 rounded-full border border-white/20 text-white font-bold group-hover:bg-white group-hover:text-black transition-all">
-               Open in Google Maps
-             </div>
-           </div>
-        </div>
-      </div>
-      
-      <div className="text-center border-t border-white/5 pt-10">
-        <p className="text-gray-600 text-sm">© 2025 Safalta Express. Owner: Ritesh Kumar.</p>
-      </div>
-    </div>
-  </footer>
-);
-
-export default function App() {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => setUser(currentUser));
-    return () => unsubscribe();
-  }, []);
-
-  const handleLogin = async () => {
-    try { await signInWithPopup(auth, googleProvider); } 
-    catch (error) { console.error("Login failed:", error); }
-  };
-
-  const handleLogout = async () => {
-    try { await signOut(auth); } 
-    catch (error) { console.error("Logout failed:", error); }
-  };
-
-  const scrollTo = (id) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  return (
-    <div className="min-h-screen">
-      <style>{styleTag}</style>
-      <Navbar scrollTo={scrollTo} user={user} handleLogin={handleLogin} handleLogout={handleLogout} />
-      <Hero />
-      <LocationLegacy />
-      <VisualMenu />
-      <RoomShowcase />
-      <BookingSection user={user} />
-      <Footer />
-    </div>
-  );
-}
-
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(App));
+    </script>
+</body>
+</html>
 
