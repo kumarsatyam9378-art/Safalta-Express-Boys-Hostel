@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safalta Express 3.0 | Premium Student Housing</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --neon: #00f3ff; --purple: #bc13fe; }
+        body { background: #050505; color: white; font-family: 'Outfit', sans-serif; overflow-x: hidden; }
+        .font-cyber { font-family: 'Orbitron', sans-serif; }
+
+        /* Animated Grid Background */
+        .grid-bg {
+            background-image: linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            perspective: 1000px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            background: rgba(0, 243, 255, 0.05);
+            border-color: var(--neon);
+            transform: translateY(-10px);
+        }
+
+        /* Glitch Effect */
+        .glitch-text:hover {
+            animation: glitch 0.3s cubic-bezier(.25,.46,.45,.94) both infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0) }
+            20% { transform: translate(-2px, 2px) }
+            40% { transform: translate(-2px, -2px) }
+            60% { transform: translate(2px, 2px) }
+            80% { transform: translate(2px, -2px) }
+            100% { transform: translate(0) }
+        }
+
+        input[type="range"] { appearance: none; background: rgba(255,255,255,0.1); border-radius: 10px; height: 8px; }
+        input[type="range"]::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; background: var(--neon); border-radius: 50%; cursor: pointer; box-shadow: 0 0 10px var(--neon); }
+    </style>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "react": "https://esm.sh/react@18.2.0",
+                "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+                "lucide-react": "https://esm.sh/lucide-react@0.344.0?external=react",
+                "framer-motion": "https://esm.sh/framer-motion@11.0.8"
+            }
+        }
+    </script>
+</head>
+<body class="grid-bg">
+    <div id="root"></div>
+
+    <script type="module">
+        import React, { useState, useEffect } from 'react';
+        import ReactDOM from 'react-dom/client';
+        import { 
+            Wifi, Coffee, Shield, Zap, Home, 
+            ChevronRight, CreditCard, Users, Clock
+        } from 'lucide-react';
+
+        const App = () => {
+            const [rent, setRent] = useState(4000);
+            const [selectedRoom, setSelectedRoom] = useState('Double');
+
+            const facilities = [
+                { icon: Wifi, title: "High-Speed WiFi", desc: "24/7 Unlimited Access" },
+                { icon: Coffee, title: "Hygienic Mess", desc: "Fresh Home-style Food" },
+                { icon: Shield, title: "CCTV Security", desc: "Safe Environment" },
+                { icon: Zap, title: "24/7 Power", desc: "No Power Cut Issues" }
+            ];
+
+            return React.createElement('div', { className: "min-h-screen p-4 md:p-8" },
+                // --- NAV BAR ---
+                React.createElement('nav', { className: "flex justify-between items-center max-w-7xl mx-auto mb-16" },
+                    React.createElement('div', { className: "font-cyber text-xl font-bold tracking-tighter" }, 
+                        "SE", React.createElement('span', { className: "text-cyan-400" }, "XPRESS")
+                    ),
+                    React.createElement('div', { className: "hidden md:flex gap-8 text-sm uppercase tracking-widest text-gray-400" },
+                        ['Rooms', 'Menu', 'Location', 'About'].map(item => 
+                            React.createElement('a', { key: item, href: "#", className: "hover:text-cyan-400 transition" }, item)
+                        )
+                    ),
+                    React.createElement('button', { className: "px-6 py-2 border border-cyan-400 text-cyan-400 text-xs font-bold rounded-full hover:bg-cyan-400 hover:text-black transition" }, "PORTAL LOGIN")
+                ),
+
+                // --- FEE CALCULATOR SECTION ---
+                React.createElement('section', { className: "max-w-5xl mx-auto mb-24" },
+                    React.createElement('div', { className: "grid md:grid-cols-2 gap-12 items-center" },
+                        React.createElement('div', null,
+                            React.createElement('h2', { className: "font-cyber text-4xl mb-6 leading-tight" }, "PLAN YOUR ", React.createElement('br'), React.createElement('span', { className: "text-cyan-400" }, "STAY AT SE")),
+                            React.createElement('p', { className: "text-gray-400 mb-8" }, "Choose your preferences and see the estimated monthly budget. No hidden charges."),
+                            
+                            React.createElement('div', { className: "space-y-6" },
+                                React.createElement('div', null,
+                                    React.createElement('label', { className: "block text-xs uppercase tracking-widest text-gray-500 mb-2" }, "Room Occupancy"),
+                                    React.createElement('div', { className: "flex gap-4" },
+                                        ['Single', 'Double', 'Triple'].map(type => 
+                                            React.createElement('button', {
+                                                key: type,
+                                                onClick: () => setSelectedRoom(type),
+                                                className: `px-6 py-2 rounded-lg border ${selectedRoom === type ? 'bg-cyan-400 text-black border-cyan-400' : 'border-white/10 text-white'}`
+                                            }, type)
+                                        )
+                                    )
+                                ),
+                                React.createElement('div', null,
+                                    React.createElement('label', { className: "block text-xs uppercase tracking-widest text-gray-500 mb-2" }, "Budget Range"),
+                                    React.createElement('input', { 
+                                        type: "range", min: "3500", max: "6000", step: "500",
+                                        value: rent, onChange: (e) => setRent(e.target.value),
+                                        className: "w-full"
+                                    }),
+                                    React.createElement('div', { className: "flex justify-between text-xs mt-2 text-gray-500" }, 
+                                        React.createElement('span', null, "₹3500"), React.createElement('span', null, "₹6000")
+                                    )
+                                )
+                            )
+                        ),
+                        
+                        React.createElement('div', { className: "feature-card p-10 rounded-[40px] text-center relative overflow-hidden" },
+                            React.createElement('div', { className: "absolute top-0 right-0 p-4" }, React.createElement(CreditCard, { className: "text-cyan-400/20", size: 60 })),
+                            React.createElement('h3', { className: "text-gray-400 uppercase tracking-widest text-sm mb-2" }, "Estimated Rent"),
+                            React.createElement('div', { className: "text-7xl font-cyber font-black text-white mb-4" }, `₹${rent}`),
+                            React.createElement('p', { className: "text-cyan-400 text-sm mb-8" }, `Per Month for ${selectedRoom} Sharing`),
+                            React.createElement('button', { className: "w-full py-4 bg-cyan-400 text-black font-black rounded-2xl hover:scale-105 transition" }, "BOOK THIS ROOM")
+                        )
+                    )
+                ),
+
+                // --- MODERN FEATURES GRID ---
+                React.createElement('div', { className: "max-w-7xl mx-auto grid md:grid-cols-4 gap-6 mb-24" },
+                    facilities.map((f, i) => React.createElement('div', { key: i, className: "feature-card p-8 rounded-3xl group" },
+                        React.createElement(f.icon, { className: "text-cyan-400 mb-6 group-hover:scale-110 transition", size: 32 }),
+                        React.createElement('h4', { className: "font-bold text-lg mb-2" }, f.title),
+                        React.createElement('p', { className: "text-gray-500 text-sm" }, f.desc)
+                    ))
+                )
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(App));
+    </script>
+</body>
+</html>
