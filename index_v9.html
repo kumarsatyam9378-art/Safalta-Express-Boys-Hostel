@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safalta Express 9.0 | The Singularity</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --cyan: #00f3ff;
+            --danger: #ff2a6d;
+            --bg: #020202;
+        }
+
+        body { 
+            background-color: var(--bg); 
+            color: var(--cyan); 
+            font-family: 'Rajdhani', sans-serif; 
+            overflow: hidden; 
+            user-select: none;
+        }
+
+        .font-mono { font-family: 'Share Tech Mono', monospace; }
+
+        /* Biometric Scanner Animation */
+        .scanner-line {
+            width: 100%; height: 2px; background: var(--cyan);
+            box-shadow: 0 0 10px var(--cyan);
+            animation: scan 1.5s ease-in-out infinite;
+        }
+        @keyframes scan { 0%, 100% { transform: translateY(0); opacity: 0; } 50% { transform: translateY(100px); opacity: 1; } }
+
+        /* Fingerprint Pulse */
+        .fingerprint { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 0.5; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1.05); } 100% { opacity: 0.5; transform: scale(0.95); } }
+
+        /* Holographic Card */
+        .holo-card {
+            background: rgba(0, 243, 255, 0.02);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
+            position: relative;
+        }
+        .holo-card::after {
+            content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, transparent 40%, rgba(0, 243, 255, 0.3) 50%, transparent 60%);
+            z-index: -1; animation: border-flow 4s linear infinite;
+        }
+
+        /* Glitch Text */
+        .glitch { position: relative; }
+        .glitch::before, .glitch::after {
+            content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        }
+        .glitch::before { left: 2px; text-shadow: -1px 0 #ff00c1; clip: rect(44px, 450px, 56px, 0); animation: glitch-anim 5s infinite linear alternate-reverse; }
+        .glitch::after { left: -2px; text-shadow: -1px 0 #00fff9; clip: rect(44px, 450px, 56px, 0); animation: glitch-anim2 5s infinite linear alternate-reverse; }
+        
+        @keyframes glitch-anim { 0% { clip: rect(10px, 9999px, 30px, 0); } 100% { clip: rect(50px, 9999px, 80px, 0); } }
+        @keyframes glitch-anim2 { 0% { clip: rect(80px, 9999px, 100px, 0); } 100% { clip: rect(10px, 9999px, 40px, 0); } }
+
+        /* Canvas Background */
+        canvas { position: fixed; top: 0; left: 0; z-index: -1; }
+    </style>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "react": "https://esm.sh/react@18.2.0",
+                "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+                "lucide-react": "https://esm.sh/lucide-react@0.344.0?external=react"
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="module">
+        import React, { useState, useEffect, useRef } from 'react';
+        import ReactDOM from 'react-dom/client';
+        import { 
+            Fingerprint, Lock, Unlock, Cpu, Activity, 
+            Wifi, Battery, ShieldCheck, Zap, Database 
+        } from 'lucide-react';
+
+        // --- 1. NEURAL BACKGROUND (Canvas) ---
+        const NeuralNet = () => {
+            const canvasRef = useRef(null);
+            
+            useEffect(() => {
+                const canvas = canvasRef.current;
+                const ctx = canvas.getContext('2d');
+                let width, height;
+                let particles = [];
+
+                const resize = () => {
+                    width = canvas.width = window.innerWidth;
+                    height = canvas.height = window.innerHeight;
+                };
+                
+                class Particle {
+                    constructor() {
+                        this.x = Math.random() * width;
+                        this.y = Math.random() * height;
+                        this.vx = (Math.random() - 0.5) * 1.5;
+                        this.vy = (Math.random() - 0.5) * 1.5;
+                    }
+                    update() {
+                        this.x += this.vx;
+                        this.y += this.vy;
+                        if (this.x < 0 || this.x > width) this.vx *= -1;
+                        if (this.y < 0 || this.y > height) this.vy *= -1;
+                    }
+                    draw() {
+                        ctx.fillStyle = '#00f3ff';
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, 1.5, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+
+                const init = () => {
+                    resize();
+                    particles = [];
+                    for(let i = 0; i < 60; i++) particles.push(new Particle());
+                };
+
+                const animate = () => {
+                    ctx.clearRect(0, 0, width, height);
+                    particles.forEach(p => {
+                        p.update();
+                        p.draw();
+                        // Connect particles
+                        particles.forEach(p2 => {
+                            const dx = p.x - p2.x;
+                            const dy = p.y - p2.y;
+                            const dist = Math.sqrt(dx * dx + dy * dy);
+                            if (dist < 150) {
+                                ctx.strokeStyle = `rgba(0, 243, 255, ${1 - dist/150})`;
+                                ctx.lineWidth = 0.5;
+                                ctx.beginPath();
+                                ctx.moveTo(p.x, p.y);
+                                ctx.lineTo(p2.x, p2.y);
+                                ctx.stroke();
+                            }
+                        });
+                    });
+                    requestAnimationFrame(animate);
+                };
+
+                window.addEventListener('resize', resize);
+                init();
+                animate();
+
+                return () => window.removeEventListener('resize', resize);
+            }, []);
+
+            return React.createElement('canvas', { ref: canvasRef });
+        };
+
+        // --- 2. BIOMETRIC ACCESS SCREEN ---
+        const BiometricLock = ({ onUnlock }) => {
+            const [progress, setProgress] = useState(0);
+            const intervalRef = useRef(null);
+
+            const startScan = () => {
+                intervalRef.current = setInterval(() => {
+                    setProgress(prev => {
+                        if (prev >= 100) {
+                            clearInterval(intervalRef.current);
+                            onUnlock();
+                            return 100;
+                        }
+                        return prev + 2;
+                    });
+                }, 20);
+            };
+
+            const stopScan = () => {
+                clearInterval(intervalRef.current);
+                setProgress(0);
+            };
+
+            return React.createElement('div', { className: "fixed inset-0 z-50 bg-black flex flex-col items-center justify-center" },
+                React.createElement('div', { className: "relative group cursor-pointer", onMouseDown: startScan, onMouseUp: stopScan, onTouchStart: startScan, onTouchEnd: stopScan },
+                    React.createElement(Fingerprint, { size: 120, className: `text-[var(--cyan)] transition-all duration-100 ${progress > 0 ? 'scale-110 opacity-100' : 'opacity-50'}` }),
+                    React.createElement('div', { className: "absolute top-0 left-0 w-full h-full scanner-line", style: { display: progress > 0 ? 'block' : 'none' } })
+                ),
+                React.createElement('div', { className: "mt-8 w-64 h-2 bg-gray-900 rounded-full overflow-hidden border border-gray-800" },
+                    React.createElement('div', { className: "h-full bg-[var(--cyan)] transition-all ease-out", style: { width: `${progress}%` } })
+                ),
+                React.createElement('p', { className: "mt-4 text-[var(--cyan)] font-mono text-sm tracking-widest animate-pulse" }, 
+                    progress > 0 ? `IDENTIFYING... ${progress}%` : "HOLD FINGERPRINT TO ACCESS"
+                )
+            );
+        };
+
+        // --- 3. CRYPTO MINER SIMULATION ---
+        const SafaltaMiner = () => {
+            const [coins, setCoins] = useState(124.00);
+            const [hashRate, setHashRate] = useState(45);
+
+            useEffect(() => {
+                const interval = setInterval(() => {
+                    setCoins(c => c + 0.005);
+                    setHashRate(45 + Math.random() * 5);
+                }, 100);
+                return () => clearInterval(interval);
+            }, []);
+
+            return React.createElement('div', { className: "holo-card p-4 rounded-lg font-mono text-xs mb-6" },
+                React.createElement('div', { className: "flex justify-between items-center mb-2 border-b border-[var(--cyan)]/30 pb-2" },
+                    React.createElement('span', { className: "flex items-center gap-2" }, React.createElement(Cpu, { size: 14 }), "SAFALTA_MINER_v9.exe"),
+                    React.createElement('span', { className: "text-green-400" }, "RUNNING")
+                ),
+                React.createElement('div', { className: "grid grid-cols-2 gap-4" },
+                    React.createElement('div', null,
+                        React.createElement('p', { className: "text-gray-500" }, "HASH RATE"),
+                        React.createElement('p', { className: "text-xl font-bold" }, `${hashRate.toFixed(1)} MH/s`)
+                    ),
+                    React.createElement('div', { className: "text-right" },
+                        React.createElement('p', { className: "text-gray-500" }, "BALANCE (SFL)"),
+                        React.createElement('p', { className: "text-xl font-bold text-[var(--cyan)]" }, coins.toFixed(4))
+                    )
+                ),
+                React.createElement('div', { className: "mt-2 text-[10px] text-gray-600 truncate" },
+                    "0x3f...8a92 mined block #99281 success."
+                )
+            );
+        };
+
+        // --- MAIN DASHBOARD ---
+        const Dashboard = () => {
+            return React.createElement('div', { className: "min-h-screen p-6 relative z-10 animate-in fade-in zoom-in duration-1000" },
+                
+                // HUD Header
+                React.createElement('header', { className: "flex justify-between items-center mb-12 border-b border-[var(--cyan)]/20 pb-4" },
+                    React.createElement('div', null,
+                        React.createElement('h1', { className: "text-4xl font-bold glitch", "data-text": "SAFALTA OS" }, "SAFALTA OS"),
+                        React.createElement('p', { className: "text-xs font-mono text-[var(--cyan)]/60" }, "SECURE CONNECTION ESTABLISHED")
+                    ),
+                    React.createElement('div', { className: "flex gap-6 text-xs font-mono" },
+                        React.createElement('div', { className: "flex items-center gap-2" }, React.createElement(Wifi, { size: 14 }), "LINK: 100%"),
+                        React.createElement('div', { className: "flex items-center gap-2" }, React.createElement(Battery, { size: 14 }), "PWR: STABLE")
+                    )
+                ),
+
+                React.createElement('div', { className: "grid lg:grid-cols-3 gap-8" },
+                    
+                    // Column 1: Status
+                    React.createElement('div', { className: "space-y-6" },
+                        React.createElement(SafaltaMiner),
+                        React.createElement('div', { className: "holo-card p-6 rounded-lg" },
+                            React.createElement('h3', { className: "text-xl font-bold mb-4 flex items-center gap-2" }, React.createElement(ShieldCheck), "SECTOR STATUS"),
+                            ['Main Gate: LOCKED', 'Mess Hall: ACTIVE', 'Library: SILENT', 'Server: ONLINE'].map((s, i) =>
+                                React.createElement('div', { key: i, className: "flex items-center gap-3 mb-2 text-sm" },
+                                    React.createElement('div', { className: "w-2 h-2 bg-green-500 rounded-full animate-pulse" }),
+                                    s
+                                )
+                            )
+                        )
+                    ),
+
+                    // Column 2: Center Piece (Holographic Info)
+                    React.createElement('div', { className: "text-center pt-10" },
+                        React.createElement('div', { className: "inline-block relative" },
+                            React.createElement('div', { className: "absolute inset-0 bg-[var(--cyan)] blur-[40px] opacity-20" }),
+                            React.createElement('img', { 
+                                src: "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?q=80&w=600",
+                                className: "w-64 h-64 object-cover rounded-full border-4 border-[var(--cyan)] relative z-10"
+                            })
+                        ),
+                        React.createElement('h2', { className: "text-5xl font-bold mt-8 mb-2" }, "LEVEL 9"),
+                        React.createElement('p', { className: "text-xl text-[var(--cyan)] font-mono tracking-[0.5em]" }, "THE SINGULARITY"),
+                        
+                        React.createElement('button', { className: "mt-8 px-10 py-4 bg-[var(--cyan)] text-black font-bold text-lg hover:bg-white hover:scale-110 transition shadow-[0_0_30px_rgba(0,243,255,0.6)] clip-path-polygon" }, 
+                            "INITIATE BOOKING"
+                        )
+                    ),
+
+                    // Column 3: Data Feed
+                    React.createElement('div', { className: "space-y-6" },
+                        React.createElement('div', { className: "holo-card p-6 rounded-lg h-full" },
+                            React.createElement('h3', { className: "text-xl font-bold mb-4 flex items-center gap-2" }, React.createElement(Database), "LIVE ADMISSIONS"),
+                            React.createElement('div', { className: "space-y-4 font-mono text-xs" },
+                                [
+                                    { id: "A-902", name: "Rahul K.", status: "VERIFIED" },
+                                    { id: "A-903", name: "Amit S.", status: "PENDING" },
+                                    { id: "A-904", name: "Vikram R.", status: "VERIFIED" },
+                                    { id: "A-905", name: "Saurabh J.", status: "PROCESSING..." }
+                                ].map((u, i) => 
+                                    React.createElement('div', { key: i, className: "flex justify-between border-b border-white/10 pb-2" },
+                                        React.createElement('span', { className: "text-gray-400" }, u.id),
+                                        React.createElement('span', null, u.name),
+                                        React.createElement('span', { className: u.status === "VERIFIED" ? "text-green-400" : "text-yellow-400" }, u.status)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        };
+
+        const App = () => {
+            const [locked, setLocked] = useState(true);
+
+            return React.createElement('div', { className: "relative min-h-screen" },
+                React.createElement(NeuralNet),
+                locked 
+                    ? React.createElement(BiometricLock, { onUnlock: () => setLocked(false) })
+                    : React.createElement(Dashboard)
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(App));
+    </script>
+</body>
+</html>
