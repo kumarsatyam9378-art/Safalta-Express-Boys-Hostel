@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safalta Express 5.0 | The Digital Campus</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --neon: #00f3ff; --matrix: #0f0; --bg: #030303; }
+        body { background: var(--bg); color: white; font-family: 'Outfit', sans-serif; overflow-x: hidden; }
+        .font-cyber { font-family: 'Orbitron', sans-serif; }
+        .font-mono { font-family: 'Share Tech Mono', monospace; }
+
+        /* Matrix Background Animation */
+        .matrix-bg {
+            background: linear-gradient(180deg, rgba(0, 243, 255, 0.03) 0%, transparent 100%);
+            background-size: 100% 3px;
+            animation: scan 3s linear infinite;
+        }
+        @keyframes scan { 0% { background-position: 0 0; } 100% { background-position: 0 100%; } }
+
+        /* 3D Tilt Effect */
+        .tilt-card {
+            transition: transform 0.1s ease;
+            transform-style: preserve-3d;
+        }
+        
+        /* Terminal Cursor */
+        .cursor-blink { animation: blink 1s step-end infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* Notification Slide In */
+        .toast-enter { animation: slideIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        .glass-panel {
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "react": "https://esm.sh/react@18.2.0",
+                "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+                "lucide-react": "https://esm.sh/lucide-react@0.344.0?external=react"
+            }
+        }
+    </script>
+</head>
+<body class="matrix-bg">
+    <div id="root"></div>
+
+    <script type="module">
+        import React, { useState, useEffect, useRef } from 'react';
+        import ReactDOM from 'react-dom/client';
+        import { 
+            Terminal, Cpu, Clock, Bell, Check, X, 
+            ShieldCheck, Wifi, Coffee, Zap 
+        } from 'lucide-react';
+
+        // --- COMPONENTS ---
+
+        // 1. Live Notification System
+        const LiveToasts = () => {
+            const [toast, setToast] = useState(null);
+            const messages = [
+                "🚀 Rahul from Samastipur booked a bed!",
+                "🔥 Only 3 seats left on 1st Floor",
+                "👨‍💻 Aman just checked in",
+                "🍲 Today's Special: Matar Paneer"
+            ];
+
+            useEffect(() => {
+                const interval = setInterval(() => {
+                    const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+                    setToast(randomMsg);
+                    setTimeout(() => setToast(null), 4000);
+                }, 8000);
+                return () => clearInterval(interval);
+            }, []);
+
+            if (!toast) return null;
+
+            return React.createElement('div', { className: "fixed bottom-10 right-10 z-50 toast-enter" },
+                React.createElement('div', { className: "flex items-center gap-3 bg-white text-black px-6 py-4 rounded-xl font-bold shadow-[0_0_30px_rgba(255,255,255,0.3)]" },
+                    React.createElement(Bell, { size: 18, className: "text-blue-600" }),
+                    toast
+                )
+            );
+        };
+
+        // 2. Hacker Style Admission Form
+        const AdmissionTerminal = () => {
+            const [step, setStep] = useState(0);
+            const [input, setInput] = useState('');
+            const [history, setHistory] = useState([
+                { type: 'system', text: 'INITIALIZING SECURE CONNECTION...' },
+                { type: 'system', text: 'ACCESSING SAFALTA SERVER V5.0...' },
+                { type: 'bot', text: 'Welcome to Admission Protocol. Enter your Full Name:' }
+            ]);
+            const scrollRef = useRef(null);
+
+            useEffect(() => {
+                if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+            }, [history]);
+
+            const handleEnter = (e) => {
+                if (e.key === 'Enter' && input.trim()) {
+                    const newHistory = [...history, { type: 'user', text: `> ${input}` }];
+                    setHistory(newHistory);
+                    setInput('');
+                    
+                    // Simulate processing delay
+                    setTimeout(() => {
+                        let response = "";
+                        if (step === 0) response = `Hello ${input}. Enter your Phone Number:`;
+                        else if (step === 1) response = "Verifying Number... Success. Which Course? (JEE/NEET/11th/12th):";
+                        else if (step === 2) response = "Target locked. Final Step: Type 'CONFIRM' to book demo visit.";
+                        else if (step === 3) response = "BOOKING CONFIRMED. Ritesh Sir will contact you shortly. Terminating session...";
+                        
+                        setHistory(prev => [...prev, { type: 'bot', text: response }]);
+                        setStep(step + 1);
+                    }, 800);
+                }
+            };
+
+            return React.createElement('div', { className: "glass-panel p-2 rounded-xl w-full max-w-2xl mx-auto font-mono text-sm" },
+                React.createElement('div', { className: "bg-[#0a0a0a] rounded-lg p-6 h-80 overflow-y-auto border border-white/10", ref: scrollRef },
+                    history.map((line, i) => 
+                        React.createElement('div', { key: i, className: `mb-2 ${line.type === 'system' ? 'text-green-500' : line.type === 'bot' ? 'text-cyan-400' : 'text-white'}` }, line.text)
+                    ),
+                    React.createElement('div', { className: "flex items-center gap-2 mt-4" },
+                        React.createElement('span', { className: "text-green-500" }, "$"),
+                        React.createElement('input', { 
+                            type: "text", 
+                            value: input,
+                            onChange: (e) => setInput(e.target.value),
+                            onKeyDown: handleEnter,
+                            className: "bg-transparent border-none outline-none text-white w-full",
+                            placeholder: "Type here...",
+                            autoFocus: true
+                        })
+                    )
+                )
+            );
+        };
+
+        // 3. 3D Tilt Card Component
+        const TiltCard = ({ icon: Icon, title, desc }) => {
+            const cardRef = useRef(null);
+
+            const handleMove = (e) => {
+                const card = cardRef.current;
+                const { left, top, width, height } = card.getBoundingClientRect();
+                const x = (e.clientX - left - width / 2) / 20;
+                const y = (e.clientY - top - height / 2) / 20;
+                card.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+            };
+
+            const handleLeave = () => {
+                cardRef.current.style.transform = `rotateY(0) rotateX(0)`;
+            };
+
+            return React.createElement('div', { 
+                className: "perspective-1000",
+                onMouseMove: handleMove,
+                onMouseLeave: handleLeave
+            },
+                React.createElement('div', { 
+                    ref: cardRef,
+                    className: "tilt-card glass-panel p-8 rounded-2xl h-full hover:border-cyan-500/50 transition-colors"
+                },
+                    React.createElement('div', { className: "w-14 h-14 bg-cyan-500/10 rounded-xl flex items-center justify-center text-cyan-400 mb-6" },
+                        React.createElement(Icon, { size: 28 })
+                    ),
+                    React.createElement('h3', { className: "text-xl font-bold mb-2 font-cyber" }, title),
+                    React.createElement('p', { className: "text-gray-400 text-sm" }, desc)
+                )
+            );
+        };
+
+        // 4. Productivity Timer Widget
+        const StudyTimer = () => {
+            const [time, setTime] = useState(25 * 60);
+            const [isActive, setIsActive] = useState(false);
+
+            useEffect(() => {
+                let interval = null;
+                if (isActive && time > 0) {
+                    interval = setInterval(() => setTime(time - 1), 1000);
+                }
+                return () => clearInterval(interval);
+            }, [isActive, time]);
+
+            const formatTime = (seconds) => {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+            };
+
+            return React.createElement('div', { className: "bg-gradient-to-br from-purple-900/50 to-blue-900/50 p-6 rounded-2xl border border-white/10 text-center" },
+                React.createElement('div', { className: "flex items-center justify-center gap-2 mb-4 text-purple-300 text-xs font-bold uppercase tracking-widest" },
+                    React.createElement(Clock, { size: 14 }), "Focus Zone"
+                ),
+                React.createElement('div', { className: "text-5xl font-mono font-bold text-white mb-6" }, formatTime(time)),
+                React.createElement('button', { 
+                    onClick: () => setIsActive(!isActive),
+                    className: `px-8 py-2 rounded-full font-bold text-sm transition ${isActive ? 'bg-red-500 text-white' : 'bg-white text-black'}`
+                }, isActive ? "PAUSE" : "START STUDY")
+            );
+        };
+
+        const App = () => {
+            return React.createElement('div', { className: "min-h-screen pb-20" },
+                React.createElement(LiveToasts),
+                
+                // Hero Section
+                React.createElement('section', { className: "pt-32 pb-20 px-4 text-center max-w-5xl mx-auto" },
+                    React.createElement('div', { className: "inline-block mb-4 px-4 py-1 rounded-full border border-green-500/30 bg-green-500/10 text-green-400 text-xs font-mono" },
+                        "SYSTEM STATUS: ONLINE | SEATS: FILLING FAST"
+                    ),
+                    React.createElement('h1', { className: "text-5xl md:text-8xl font-black font-cyber mb-6 leading-none" },
+                        "FUTURE ", React.createElement('span', { className: "text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600" }, "READY")
+                    ),
+                    React.createElement('p', { className: "text-xl text-gray-400 mb-12" }, "Hostel Rent: ₹4000/mo. Everything else is Priceless."),
+                ),
+
+                // Main Grid
+                React.createElement('div', { className: "max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-12 mb-24" },
+                    // Left Column: Interactive Terminal
+                    React.createElement('div', null,
+                        React.createElement('h2', { className: "font-cyber text-2xl mb-6 flex items-center gap-3" },
+                            React.createElement(Terminal, { className: "text-cyan-400" }), "DIRECT ADMISSION PROTOCOL"
+                        ),
+                        React.createElement(AdmissionTerminal),
+                        React.createElement('div', { className: "mt-8" },
+                            React.createElement(StudyTimer)
+                        )
+                    ),
+
+                    // Right Column: 3D Cards
+                    React.createElement('div', { className: "grid sm:grid-cols-2 gap-4" },
+                        React.createElement(TiltCard, { icon: Wifi, title: "Gigabit WiFi", desc: "Fiber optic connection for seamless lectures." }),
+                        React.createElement(TiltCard, { icon: ShieldCheck, title: "Bio-Metric", desc: "Advanced security entry systems." }),
+                        React.createElement(TiltCard, { icon: Coffee, title: "Smart Mess", desc: "Nutritional planning for exam focus." }),
+                        React.createElement(TiltCard, { icon: Zap, title: "Power Grid", desc: "24/7 Backup with Inverter support." })
+                    )
+                ),
+
+                // Footer CTA
+                React.createElement('div', { className: "text-center py-12 border-t border-white/5" },
+                    React.createElement('p', { className: "font-mono text-gray-500 text-sm" }, "ID: SAFALTA_EXPRESS_V5 // INIT_SEQ_COMPLETE")
+                )
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(App));
+    </script>
+</body>
+</html>
