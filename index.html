@@ -10,10 +10,11 @@ import {
 import { 
   Phone, MapPin, Wifi, Zap, ShieldCheck, Utensils, 
   Home, Menu, X, CheckCircle, Smartphone, 
-  Send, Coffee, Music, LogIn, LogOut, User
+  Send, Coffee, BookOpen, Library, GraduationCap,
+  User, Star, ArrowRight, LogIn, LogOut
 } from 'lucide-react';
 
-// --- FIREBASE CONFIGURATION (Provided by You) ---
+// --- FIREBASE CONFIGURATION ---
 const firebaseConfig = {
   apiKey: "AIzaSyBbwul_dbciJX3SQIVFQqXktmCsCghJRHU",
   authDomain: "safalta-express-boys-hostel.firebaseapp.com",
@@ -24,204 +25,181 @@ const firebaseConfig = {
   measurementId: "G-WSVD0553T0"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
-/* --- CUSTOM CSS ANIMATIONS --- */
+/* --- HYPERBEAST CSS --- */
 const styleTag = `
-  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Russo+One&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Orbitron:wght@500;700;900&display=swap');
   
   :root {
-    --primary: #4F46E5;
-    --secondary: #EAB308;
-    --dark: #0F172A;
+    --neon-blue: #00f3ff;
+    --neon-purple: #bc13fe;
+    --gold: #ffd700;
   }
 
   body {
-    background-color: #020617;
+    background-color: #050505;
     font-family: 'Outfit', sans-serif;
     overflow-x: hidden;
+    color: white;
   }
 
-  .font-heading {
-    font-family: 'Russo One', sans-serif;
+  .font-cyber {
+    font-family: 'Orbitron', sans-serif;
   }
 
-  .glass-panel {
-    background: rgba(15, 23, 42, 0.6);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
-  .glass-card {
-    background: linear-gradient(145deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8));
-    backdrop-filter: blur(10px);
+  .glass-morphism {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   }
 
-  .text-glow {
-    text-shadow: 0 0 20px rgba(79, 70, 229, 0.6);
+  .neon-text {
+    text-shadow: 0 0 10px rgba(0, 243, 255, 0.7), 0 0 20px rgba(0, 243, 255, 0.5);
   }
 
-  .gold-glow {
-    text-shadow: 0 0 20px rgba(234, 179, 8, 0.5);
+  .gold-text {
+    background: linear-gradient(to bottom, #cfc09f 22%, #634f2c 24%, #cfc09f 26%, #cfc09f 27%, #ffecb3 40%, #3a2c0f 78%); 
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
+  .card-hover {
+    transition: all 0.4s ease;
+  }
+  .card-hover:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 30px rgba(79, 70, 229, 0.3);
+    border-color: rgba(79, 70, 229, 0.5);
   }
 
-  @keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
-    100% { transform: translateY(0px); }
-  }
-
-  .animate-pulse-slow {
-    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: .5; }
-  }
-
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
+  .food-image {
+    mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
   }
 `;
 
-// --- DATA CONSTANTS ---
-const MENU_DATA = {
-  Monday: { b: "Poha, Achar/Sauce", l: "Chawal-Dal, Chicken/Matar Paneer", d: "Roti-Sabji, Achar" },
-  Tuesday: { b: "Roti-Sabji", l: "Chawal-Dal, Sabji, Salad", d: "Puri-Cholla, Kheer" },
-  Wednesday: { b: "Sattu/Aloo Paratha", l: "Chawal-Dal, Sabji, Salad", d: "Roti-Sabji" },
-  Thursday: { b: "Puri-Rajma", l: "Chawal-Dal, Bhujiya", d: "Roti-Mix Veg" },
-  Friday: { b: "Roti-Sabji", l: "Chawal-Dal, Egg Curry/Paneer", d: "Roti-Sabji" },
-  Saturday: { b: "Roti-Sabji", l: "Khichri-Chokha, Papad", d: "Puri-Channa, Sewai" },
-  Sunday: { b: "Sattu/Aloo Paratha", l: "Kadhi-Chawal", d: "Roti-Bhujiya, Tarka" },
+// --- DATA ---
+const FOOD_IMAGES = {
+  poha: "https://images.unsplash.com/photo-1595350794711-a83236c58971?w=500&q=80",
+  roti: "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=500&q=80",
+  paneer: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=500&q=80",
+  dal: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=500&q=80",
+  chicken: "https://images.unsplash.com/photo-1610057099443-fde8c4d28557?w=500&q=80",
+  salad: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&q=80",
+  paratha: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500&q=80",
+  kheer: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=500&q=80",
+  egg: "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=500&q=80"
 };
+
+const MENU_DATA = {
+  Monday: { 
+    b: { item: "Poha, Achar", img: FOOD_IMAGES.poha }, 
+    l: { item: "Chawal-Dal, Chicken/Paneer", img: FOOD_IMAGES.chicken }, 
+    d: { item: "Roti-Sabji", img: FOOD_IMAGES.roti } 
+  },
+  Tuesday: { 
+    b: { item: "Roti-Sabji", img: FOOD_IMAGES.roti }, 
+    l: { item: "Chawal-Dal, Sabji", img: FOOD_IMAGES.dal }, 
+    d: { item: "Puri-Cholla, Kheer", img: FOOD_IMAGES.kheer } 
+  },
+  Wednesday: { 
+    b: { item: "Aloo Paratha", img: FOOD_IMAGES.paratha }, 
+    l: { item: "Chawal-Dal, Sabji", img: FOOD_IMAGES.dal }, 
+    d: { item: "Roti-Sabji", img: FOOD_IMAGES.roti } 
+  },
+  Thursday: { 
+    b: { item: "Puri-Rajma", img: FOOD_IMAGES.paratha }, 
+    l: { item: "Chawal-Dal, Bhujiya", img: FOOD_IMAGES.dal }, 
+    d: { item: "Roti-Mix Veg", img: FOOD_IMAGES.roti } 
+  },
+  Friday: { 
+    b: { item: "Roti-Sabji", img: FOOD_IMAGES.roti }, 
+    l: { item: "Egg Curry/Paneer", img: FOOD_IMAGES.egg }, 
+    d: { item: "Roti-Sabji", img: FOOD_IMAGES.roti } 
+  },
+  Saturday: { 
+    b: { item: "Roti-Sabji", img: FOOD_IMAGES.roti }, 
+    l: { item: "Khichri-Chokha", img: FOOD_IMAGES.dal }, 
+    d: { item: "Puri-Channa, Sewai", img: FOOD_IMAGES.kheer } 
+  },
+  Sunday: { 
+    b: { item: "Sattu Paratha", img: FOOD_IMAGES.paratha }, 
+    l: { item: "Kadhi-Chawal", img: FOOD_IMAGES.dal }, 
+    d: { item: "Roti-Bhujiya", img: FOOD_IMAGES.roti } 
+  },
+};
+
+const NEARBY_LOCATIONS = [
+  { name: "GD College Campus", dist: "50 Steps", type: "Education", img: "https://images.unsplash.com/photo-1562774053-701939374585?w=500&q=80" },
+  { name: "The Readers Library", dist: "2 Min Walk", type: "Study Zone", img: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=500&q=80" },
+  { name: "Saraswati Book Depot", dist: "5 Min Walk", type: "Resources", img: "https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=500&q=80" },
+  { name: "Allen/PW Center", dist: "Nearby", type: "Coaching", img: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=500&q=80" }
+];
 
 // --- COMPONENTS ---
 
 const Navbar = ({ scrollTo, user, handleLogin, handleLogout }) => {
   const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  useEffect(() => window.addEventListener('scroll', () => setScrolled(window.scrollY > 20)), []);
 
   return (
-    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'glass-panel shadow-2xl py-2' : 'bg-transparent py-4'}`}>
-      <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
-        <div className="flex items-center gap-2 group cursor-pointer" onClick={() => scrollTo('hero')}>
-          <div className="bg-gradient-to-tr from-indigo-600 to-purple-600 p-2 rounded-lg group-hover:rotate-12 transition-transform duration-300 shadow-lg shadow-indigo-500/30">
-            <Home className="text-white h-6 w-6" />
+    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-black/80 backdrop-blur-xl border-b border-white/10' : 'bg-transparent'}`}>
+      <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+        <div className="flex items-center gap-2" onClick={() => scrollTo('hero')}>
+          <div className="bg-gradient-to-tr from-blue-600 to-purple-600 p-2 rounded-lg">
+            <GraduationCap className="text-white" size={24} />
           </div>
           <div>
-            <h1 className="font-heading text-xl md:text-2xl text-white tracking-wider">SAFALTA<span className="text-indigo-400">EXPRESS</span></h1>
-            <p className="text-[10px] text-gray-400 tracking-[0.2em] uppercase hidden sm:block">Boys Hostel</p>
+            <h1 className="font-cyber text-2xl tracking-wider text-white">SAFALTA<span className="text-blue-500">EXPRESS</span></h1>
+            <p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase">Boys Hostel</p>
           </div>
         </div>
 
-        {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-6">
-          {['Facilities', 'Menu', 'Location'].map((item) => (
-            <button 
-              key={item} 
-              onClick={() => scrollTo(item.toLowerCase())}
-              className="text-gray-300 hover:text-white text-sm font-semibold tracking-wide hover:scale-105 transition-all relative group"
-            >
-              {item}
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-indigo-500 transition-all group-hover:w-full"></span>
-            </button>
+        <div className="hidden md:flex items-center gap-8">
+          {['Location', 'Menu', 'Rooms', 'Contact'].map(item => (
+            <button key={item} onClick={() => scrollTo(item.toLowerCase())} className="text-sm font-semibold hover:text-blue-400 transition-colors uppercase tracking-widest">{item}</button>
           ))}
           
-          <div className="h-6 w-px bg-gray-700 mx-2"></div>
-
-          {/* User Auth Section */}
           {user ? (
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded-full border border-white/10">
-                <img 
-                  src={user.photoURL || "https://ui-avatars.com/api/?name=" + user.displayName} 
-                  alt="User" 
-                  className="w-6 h-6 rounded-full border border-indigo-400"
-                />
-                <span className="text-sm font-medium text-indigo-200 hidden lg:block">
-                  {user.displayName?.split(' ')[0]}
-                </span>
-              </div>
-              <button 
-                onClick={handleLogout}
-                className="text-gray-400 hover:text-red-400 transition"
-                title="Logout"
-              >
-                <LogOut size={18} />
-              </button>
+            <div className="flex items-center gap-3 bg-white/5 px-4 py-1.5 rounded-full border border-white/10">
+              <img src={user.photoURL} alt="Profile" className="w-8 h-8 rounded-full border border-blue-500" />
+              <button onClick={handleLogout} className="text-red-400 hover:text-red-300"><LogOut size={18} /></button>
             </div>
           ) : (
-            <button 
-              onClick={handleLogin}
-              className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-200 transition shadow-[0_0_15px_rgba(255,255,255,0.3)]"
-            >
-              <img src="https://www.google.com/favicon.ico" alt="G" className="w-4 h-4" />
-              Login
+            <button onClick={handleLogin} className="flex items-center gap-2 text-sm font-bold bg-white text-black px-4 py-2 rounded-full hover:scale-105 transition">
+              <LogIn size={16} /> Login
             </button>
           )}
 
-          <button 
-            onClick={() => scrollTo('booking')}
-            className="bg-gradient-to-r from-yellow-500 to-amber-600 text-black font-bold px-6 py-2.5 rounded-full hover:shadow-[0_0_20px_rgba(234,179,8,0.6)] transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-2"
-          >
-            <Phone size={16} fill="black" /> Book Now
+          <button onClick={() => scrollTo('booking')} className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-full font-bold uppercase tracking-wider shadow-[0_0_20px_rgba(37,99,235,0.5)] transition-all">
+            Book Now
           </button>
         </div>
 
-        {/* Mobile Toggle */}
-        <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-white">
-          {menuOpen ? <X /> : <Menu />}
-        </button>
+        <button className="md:hidden text-white" onClick={() => setIsOpen(!isOpen)}>{isOpen ? <X /> : <Menu />}</button>
       </div>
 
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="absolute top-full left-0 w-full bg-[#0F172A] border-b border-gray-800 p-4 flex flex-col gap-4 animate-in slide-in-from-top-5 md:hidden shadow-2xl">
-          {user ? (
-             <div className="flex items-center gap-3 pb-4 border-b border-gray-800">
-               <img src={user.photoURL} alt="User" className="w-10 h-10 rounded-full" />
-               <div>
-                 <p className="text-white font-bold">{user.displayName}</p>
-                 <button onClick={handleLogout} className="text-xs text-red-400 flex items-center gap-1 mt-1">
-                   <LogOut size={12} /> Logout
-                 </button>
+      {isOpen && (
+        <div className="md:hidden bg-black/95 backdrop-blur-xl p-6 border-b border-white/10">
+          <div className="flex flex-col gap-4">
+             {user ? (
+               <div className="flex items-center gap-3 pb-4 border-b border-white/10">
+                 <img src={user.photoURL} className="w-10 h-10 rounded-full" />
+                 <div className="text-white font-bold">Hi, {user.displayName.split(' ')[0]}</div>
+                 <button onClick={handleLogout} className="ml-auto text-red-500 text-sm">Logout</button>
                </div>
-             </div>
-          ) : (
-            <button 
-              onClick={() => { handleLogin(); setMenuOpen(false); }}
-              className="flex items-center gap-2 text-white font-bold pb-4 border-b border-gray-800"
-            >
-              <LogIn size={20} className="text-indigo-400" /> Login with Google
-            </button>
-          )}
-
-          {['Facilities', 'Menu', 'Location', 'Booking'].map((item) => (
-            <button 
-              key={item}
-              onClick={() => { scrollTo(item.toLowerCase()); setMenuOpen(false); }}
-              className="text-left text-gray-300 font-bold py-2"
-            >
-              {item}
-            </button>
-          ))}
+             ) : (
+               <button onClick={handleLogin} className="flex items-center gap-2 text-blue-400 font-bold">Login with Google</button>
+             )}
+             {['Location', 'Menu', 'Rooms', 'Contact', 'Booking'].map(item => (
+               <button key={item} onClick={() => { scrollTo(item.toLowerCase()); setIsOpen(false); }} className="text-left text-lg font-bold text-gray-300 py-2 border-b border-white/5">{item}</button>
+             ))}
+          </div>
         </div>
       )}
     </nav>
@@ -229,227 +207,224 @@ const Navbar = ({ scrollTo, user, handleLogin, handleLogout }) => {
 };
 
 const Hero = () => (
-  <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+  <section id="hero" className="relative h-screen flex items-center justify-center overflow-hidden">
+    {/* Background Video/Image with Overlay */}
     <div className="absolute inset-0 z-0">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#020617] via-transparent to-[#020617] z-10"></div>
-      <img 
-        src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?q=80&w=2069&auto=format&fit=crop" 
-        className="w-full h-full object-cover opacity-30 scale-105 animate-pulse-slow"
-        alt="Hostel Building" 
-      />
+      <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2000&auto=format&fit=crop" className="w-full h-full object-cover opacity-40 scale-105" alt="Campus Life" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
     </div>
 
-    <div className="relative z-20 text-center px-4 max-w-5xl mx-auto">
-      <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-indigo-500/20 border border-indigo-500/50 backdrop-blur-md animate-float">
-        <span className="text-indigo-300 text-xs md:text-sm font-bold tracking-widest uppercase">✨ Ghar Se Bahar, Humara Apna Ghar</span>
+    <div className="relative z-10 text-center max-w-5xl px-4 mt-20">
+      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-900/30 border border-blue-500/30 text-blue-400 text-xs font-bold tracking-widest uppercase mb-6 animate-bounce">
+        <Star size={14} fill="currentColor" /> Ritesh Kumar Presents
       </div>
       
-      <h1 className="font-heading text-5xl md:text-7xl lg:text-8xl text-white mb-6 leading-tight">
-        SAFALTA <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400 text-glow">EXPRESS</span><br />
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500 gold-glow text-4xl md:text-6xl">BOYS HOSTEL</span>
+      <h1 className="font-cyber text-5xl md:text-8xl text-white mb-6 leading-tight">
+        LEGACY OF <br />
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600 neon-text">SUCCESS</span>
       </h1>
-
-      <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light">
-        A premium living space designed for dedicated students. Located at <span className="text-white font-semibold">Mokama House, Patna</span>.
+      
+      <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto font-light">
+        More than just a hostel. Located at the <span className="text-white font-bold">Heart of Begusarai's Education Hub</span> (Behind GD College). 
+        The ecosystem for JEE, NEET & Exam Toppers.
       </p>
 
-      <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <a href="tel:8002244989" className="group relative px-8 py-4 bg-white text-black font-bold rounded-xl overflow-hidden transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.3)]">
-          <span className="relative z-10 flex items-center gap-2">
-            <Phone size={20} /> Call 8002244989
-          </span>
-          <div className="absolute inset-0 bg-gradient-to-r from-indigo-400 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="tel:9122802016" className="flex items-center justify-center gap-2 bg-white text-black px-8 py-4 rounded-xl font-bold text-lg hover:scale-105 transition-transform shadow-[0_0_30px_rgba(255,255,255,0.3)]">
+          <Phone size={20} /> Call 9122802016
         </a>
-        <a href="#booking" className="px-8 py-4 bg-transparent border border-gray-600 text-white font-bold rounded-xl hover:bg-white/5 hover:border-white transition-all backdrop-blur-sm">
-          View Details
+        <a href="https://www.google.com/maps/search/?api=1&query=Behind+GD+College+Begusarai+Bihar" target="_blank" className="flex items-center justify-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/20 transition-colors">
+          <MapPin size={20} /> View Location
         </a>
       </div>
     </div>
   </section>
 );
 
-const FeaturesBento = () => (
-  <section id="facilities" className="py-24 bg-[#020617] relative">
+const LocationLegacy = () => (
+  <section id="location" className="py-24 bg-black relative">
     <div className="max-w-7xl mx-auto px-4">
       <div className="text-center mb-16">
-        <h2 className="font-heading text-3xl md:text-5xl text-white mb-4">PREMIUM <span className="text-indigo-500">FACILITIES</span></h2>
-        <div className="w-24 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 mx-auto rounded-full"></div>
+        <h2 className="font-cyber text-3xl md:text-5xl mb-4">THE <span className="text-blue-500">STRATEGIC</span> ADVANTAGE</h2>
+        <p className="text-gray-400">Why Toppers Choose Safalta Express? Because Time = Rank.</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-4 md:grid-rows-2 gap-4 h-auto md:h-[600px]">
-        <div className="md:col-span-2 md:row-span-2 glass-card rounded-3xl p-8 relative overflow-hidden group hover:border-indigo-500/50 transition-colors">
-          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-            <Wifi size={200} />
-          </div>
-          <div className="relative z-10 h-full flex flex-col justify-end">
-            <div className="bg-indigo-600 w-12 h-12 rounded-full flex items-center justify-center mb-4 shadow-lg shadow-indigo-500/50">
-              <Wifi className="text-white" />
+      <div className="grid md:grid-cols-4 gap-6">
+        {NEARBY_LOCATIONS.map((loc, idx) => (
+          <div key={idx} className="glass-morphism rounded-2xl overflow-hidden group card-hover">
+            <div className="h-40 overflow-hidden relative">
+              <img src={loc.img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+              <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                <span className="text-2xl font-bold">{loc.dist}</span>
+              </div>
             </div>
-            <h3 className="text-2xl font-bold text-white mb-2">High Speed Wi-Fi</h3>
-            <p className="text-gray-400">24x7 Wi-Fi Facility available so your studies never stop. Connect multiple devices with ease.</p>
+            <div className="p-6">
+              <span className="text-xs text-blue-400 font-bold uppercase tracking-wider">{loc.type}</span>
+              <h3 className="text-xl font-bold mt-1 group-hover:text-blue-400 transition-colors">{loc.name}</h3>
+            </div>
           </div>
-        </div>
-
-        <div className="glass-card rounded-3xl p-6 group hover:bg-white/5 transition-colors">
-          <Zap className="text-yellow-400 mb-4 h-8 w-8" />
-          <h3 className="text-lg font-bold text-white">24/7 Electricity</h3>
-          <p className="text-sm text-gray-400 mt-2">Uninterrupted power supply with backup.</p>
-        </div>
-
-        <div className="glass-card rounded-3xl p-6 group hover:bg-white/5 transition-colors">
-          <ShieldCheck className="text-green-400 mb-4 h-8 w-8" />
-          <h3 className="text-lg font-bold text-white">Secure Environment</h3>
-          <p className="text-sm text-gray-400 mt-2">CCTV Security & Emergency room for parents.</p>
-        </div>
-
-        <div className="md:col-span-2 glass-card rounded-3xl p-6 flex items-center gap-6 group hover:border-pink-500/50 transition-colors relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          <div className="flex-1">
-            <h3 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
-              <Utensils className="text-pink-400" /> Hygienic Food
-            </h3>
-            <p className="text-sm text-gray-400">Healthy & Tasty Breakfast, Lunch, and Dinner. RO Chilled Water included.</p>
-          </div>
-          <div className="bg-gray-700/50 w-24 h-24 rounded-2xl flex items-center justify-center">
-            <Coffee className="text-white/50" />
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   </section>
 );
 
-const InteractiveMenu = () => {
+const VisualMenu = () => {
   const [activeDay, setActiveDay] = useState('Monday');
   const days = Object.keys(MENU_DATA);
 
   return (
-    <section id="menu" className="py-20 bg-[#0B1121]">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="flex flex-col md:flex-row gap-12 items-center">
-          <div className="md:w-1/3">
-            <h2 className="font-heading text-4xl text-white mb-4">DAILY <br /><span className="text-yellow-400">DIET MENU</span></h2>
-            <p className="text-gray-400 mb-8">Swachh evam sakaratmak vatavaran ke sath swadisht khana.</p>
-            <div className="flex flex-wrap gap-2">
-              {days.map(day => (
-                <button
-                  key={day}
-                  onClick={() => setActiveDay(day)}
-                  className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${activeDay === day ? 'bg-yellow-500 text-black shadow-lg shadow-yellow-500/50 scale-110' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}`}
-                >
-                  {day.slice(0, 3)}
-                </button>
-              ))}
-            </div>
-          </div>
+    <section id="menu" className="py-24 bg-[#0a0a0a]">
+      <div className="max-w-7xl mx-auto px-4">
+        <h2 className="font-cyber text-3xl md:text-5xl mb-12 text-center">FUEL FOR <span className="text-yellow-400">BRAINS</span></h2>
+        
+        {/* Day Selector */}
+        <div className="flex overflow-x-auto gap-3 pb-8 justify-start md:justify-center scrollbar-hide">
+          {days.map(day => (
+            <button 
+              key={day} 
+              onClick={() => setActiveDay(day)}
+              className={`px-6 py-2 rounded-full font-bold whitespace-nowrap transition-all ${activeDay === day ? 'bg-yellow-500 text-black shadow-[0_0_20px_rgba(234,179,8,0.5)]' : 'bg-white/5 text-gray-400 hover:bg-white/10'}`}
+            >
+              {day}
+            </button>
+          ))}
+        </div>
 
-          <div className="md:w-2/3 w-full">
-            <div className="glass-card rounded-3xl p-8 md:p-12 relative min-h-[300px] flex flex-col justify-center border-t-4 border-yellow-500">
-              <div className="absolute top-4 right-4 text-gray-500 font-heading text-6xl opacity-10 uppercase">{activeDay}</div>
-              
-              <div className="space-y-8 relative z-10">
-                <div className="flex items-center gap-4 group">
-                  <div className="p-3 bg-orange-500/20 rounded-xl text-orange-400 group-hover:scale-110 transition-transform"><Coffee /></div>
-                  <div>
-                    <p className="text-xs text-gray-500 uppercase tracking-wider font-bold">Breakfast (8:30-10:30)</p>
-                    <h4 className="text-xl text-white font-medium">{MENU_DATA[activeDay].b}</h4>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4 group">
-                  <div className="p-3 bg-green-500/20 rounded-xl text-green-400 group-hover:scale-110 transition-transform"><Utensils /></div>
-                  <div>
-                    <p className="text-xs text-gray-500 uppercase tracking-wider font-bold">Lunch (1:00-3:15)</p>
-                    <h4 className="text-xl text-white font-medium">{MENU_DATA[activeDay].l}</h4>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4 group">
-                  <div className="p-3 bg-blue-500/20 rounded-xl text-blue-400 group-hover:scale-110 transition-transform"><Music /></div>
-                  <div>
-                    <p className="text-xs text-gray-500 uppercase tracking-wider font-bold">Dinner (8:00-9:30)</p>
-                    <h4 className="text-xl text-white font-medium">{MENU_DATA[activeDay].d}</h4>
-                  </div>
-                </div>
+        {/* Food Cards */}
+        <div className="grid md:grid-cols-3 gap-8 mt-8">
+          {[
+            { type: 'Breakfast', data: MENU_DATA[activeDay].b, icon: <Coffee /> },
+            { type: 'Lunch', data: MENU_DATA[activeDay].l, icon: <Utensils /> },
+            { type: 'Dinner', data: MENU_DATA[activeDay].d, icon: <Star /> }
+          ].map((meal, idx) => (
+            <div key={idx} className="glass-morphism rounded-3xl p-4 relative group hover:border-yellow-500/50 transition-all duration-500">
+              <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase text-yellow-400 border border-yellow-500/30 flex items-center gap-2">
+                {meal.icon} {meal.type}
               </div>
+              
+              <div className="h-48 rounded-2xl overflow-hidden mb-4 relative">
+                <img src={meal.data.img} alt={meal.data.item} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+              </div>
+              
+              <h3 className="text-2xl font-bold text-white mb-2">{meal.data.item}</h3>
+              <p className="text-gray-400 text-sm">Prepared hygienically with verified ingredients.</p>
             </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>
   );
 };
 
-const PricingBooking = ({ user }) => {
+const RoomShowcase = () => (
+  <section id="rooms" className="py-24 bg-black">
+    <div className="max-w-7xl mx-auto px-4">
+      <div className="flex flex-col md:flex-row justify-between items-end mb-12">
+        <div>
+           <h2 className="font-cyber text-3xl md:text-5xl mb-2">LIVING <span className="text-purple-500">STANDARDS</span></h2>
+           <p className="text-gray-400">Sneak peek into your future home.</p>
+        </div>
+        <div className="bg-purple-900/20 px-4 py-2 rounded border border-purple-500/30 text-purple-300 text-sm">
+           ✨ Hint: Actual rooms are even better
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="glass-morphism rounded-2xl overflow-hidden group relative h-80">
+          <img src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=600&q=80" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+          <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black via-black/80 to-transparent">
+            <h3 className="text-xl font-bold">2-Seater Premium</h3>
+            <p className="text-sm text-gray-300">Space for focused study.</p>
+          </div>
+        </div>
+        
+        <div className="glass-morphism rounded-2xl overflow-hidden group relative h-80">
+          <img src="https://images.unsplash.com/photo-1584622050111-993a426fbf0a?w=600&q=80" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+          <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black via-black/80 to-transparent">
+            <h3 className="text-xl font-bold">Spotless Washrooms</h3>
+            <p className="text-sm text-gray-300">Daily cleaning protocols.</p>
+          </div>
+        </div>
+
+        <div className="glass-morphism rounded-2xl overflow-hidden group relative h-80 md:col-span-2 lg:col-span-1">
+          <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+          <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black via-black/80 to-transparent">
+            <h3 className="text-xl font-bold">Study Corridors</h3>
+            <p className="text-sm text-gray-300">Peaceful ambiance.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+const BookingSection = ({ user }) => {
   const [showQR, setShowQR] = useState(false);
 
   const handlePay = () => {
     window.location.href = "upi://pay?pa=riteshs9122@ybl&pn=SafaltaExpress&am=5500&cu=INR&tn=HostelBooking";
-    setTimeout(() => setShowQR(true), 1000);
+    setTimeout(() => setShowQR(true), 1500);
   };
 
   return (
-    <section id="booking" className="py-24 relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full bg-[#020617]">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-600/20 rounded-full blur-[120px]"></div>
-      </div>
+    <section id="booking" className="py-24 relative overflow-hidden bg-[#050505]">
+      {/* Abstract Background */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[150px]"></div>
 
       <div className="max-w-4xl mx-auto px-4 relative z-10">
-        <div className="glass-card rounded-[3rem] p-1 border border-indigo-500/30">
-          <div className="bg-[#0f172a] rounded-[2.8rem] p-8 md:p-16 text-center overflow-hidden relative">
+        <div className="glass-morphism rounded-[2.5rem] p-1 border border-blue-500/30 shadow-[0_0_50px_rgba(37,99,235,0.2)]">
+          <div className="bg-[#0a0a0a] rounded-[2.4rem] p-8 md:p-16 text-center relative overflow-hidden">
             
-            <div className="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold px-10 py-2 rotate-45 translate-x-10 translate-y-8 shadow-lg">
-              LIMITED TIME
+            {/* Owner Badge */}
+            <div className="absolute top-6 left-6 flex items-center gap-2 text-gray-500 text-sm">
+               <ShieldCheck size={16} className="text-green-500" /> Managed by Ritesh Kumar
             </div>
 
-            <h2 className="font-heading text-3xl md:text-5xl text-white mb-2">DHAMAKA <span className="text-yellow-400">OFFER</span></h2>
-            {user && (
-              <p className="text-indigo-400 text-lg mb-2">
-                Welcome, {user.displayName}!
-              </p>
-            )}
-            <p className="text-indigo-300 mb-8 font-medium">For Exam Students / Short Stay</p>
-
-            <div className="flex justify-center items-end gap-2 mb-10">
-              <span className="text-6xl md:text-8xl font-heading text-white tracking-tighter">₹5500</span>
-              <span className="text-gray-500 text-xl mb-4">/month</span>
+            <h2 className="font-cyber text-4xl md:text-6xl text-white mb-2 mt-8">SECURE YOUR <span className="text-blue-500">SEAT</span></h2>
+            {user && <p className="text-blue-300 mb-6">Welcome, {user.displayName}!</p>}
+            
+            <div className="flex justify-center items-end gap-2 mb-8">
+               <span className="text-gray-400 text-lg mb-4 line-through">₹6500</span>
+               <span className="text-7xl font-cyber text-white tracking-tighter">₹5500</span>
+               <span className="text-gray-500 text-lg mb-4">/mo</span>
             </div>
 
-            <ul className="text-left max-w-sm mx-auto space-y-4 mb-10 text-gray-300">
-              <li className="flex items-center gap-3"><CheckCircle className="text-green-500 flex-shrink-0" /> Fully Furnished Room</li>
-              <li className="flex items-center gap-3"><CheckCircle className="text-green-500 flex-shrink-0" /> 3 Times Food Included</li>
-              <li className="flex items-center gap-3"><CheckCircle className="text-green-500 flex-shrink-0" /> RO Water & Electricity</li>
-            </ul>
+            <div className="grid grid-cols-2 gap-4 max-w-lg mx-auto mb-10 text-left">
+               <div className="flex items-center gap-2 text-gray-300"><CheckCircle size={16} className="text-green-500" /> Furnished Room</div>
+               <div className="flex items-center gap-2 text-gray-300"><CheckCircle size={16} className="text-green-500" /> 3-Time Meals</div>
+               <div className="flex items-center gap-2 text-gray-300"><CheckCircle size={16} className="text-green-500" /> 24/7 Power</div>
+               <div className="flex items-center gap-2 text-gray-300"><CheckCircle size={16} className="text-green-500" /> RO Water</div>
+            </div>
 
-            <button 
-              onClick={handlePay}
-              className="w-full md:w-auto bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xl px-12 py-5 rounded-2xl shadow-lg shadow-indigo-600/40 transform transition hover:scale-105 active:scale-95 flex items-center justify-center gap-3"
-            >
-              <Smartphone /> Book via UPI
+            <button onClick={handlePay} className="w-full md:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xl px-12 py-5 rounded-2xl shadow-lg transform transition hover:scale-105 flex items-center justify-center gap-3 mx-auto">
+              <Smartphone /> Pay via UPI
             </button>
-            <p className="mt-4 text-gray-500 text-xs">Tap to pay securely using PhonePe, GPay, or Paytm</p>
+            <p className="mt-4 text-xs text-gray-500">Official UPI: riteshs9122@ybl</p>
           </div>
         </div>
       </div>
 
       {showQR && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in">
-          <div className="bg-white rounded-3xl p-8 max-w-sm w-full text-center relative">
-            <button onClick={() => setShowQR(false)} className="absolute top-4 right-4 text-gray-400 hover:text-black"><X /></button>
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 text-green-600">
-              <ShieldCheck size={32} />
-            </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">Confirm Booking</h3>
-            <p className="text-gray-500 text-sm mb-6">If the app didn't open, send ₹5500 to <strong>riteshs9122@ybl</strong> manually.</p>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-xl p-4 animate-in fade-in">
+          <div className="bg-[#111] border border-white/10 rounded-3xl p-8 max-w-sm w-full text-center relative">
+            <button onClick={() => setShowQR(false)} className="absolute top-4 right-4 text-gray-400 hover:text-white"><X /></button>
+            
+            <CheckCircle size={48} className="text-green-500 mx-auto mb-4" />
+            <h3 className="text-2xl font-bold text-white mb-2">Final Step</h3>
+            <p className="text-gray-400 text-sm mb-6">To confirm your booking immediately, please send the payment screenshot to Ritesh Kumar.</p>
             
             <a 
-              href={`https://wa.me/918002244989?text=${encodeURIComponent(`Hi, I am ${user?.displayName || 'a student'}. I have paid Rs.5500 for Safalta Express. Here is my screenshot.`)}`}
+              href={`https://wa.me/919122802016?text=${encodeURIComponent(`Hello Ritesh Sir, I have paid ₹5500 for the hostel booking. Here is the proof.`)}`}
               target="_blank"
-              rel="noreferrer"
-              className="block w-full bg-[#25D366] text-white font-bold py-4 rounded-xl shadow-lg hover:bg-[#1ebc57] transition flex items-center justify-center gap-2"
+              className="block w-full bg-[#25D366] hover:bg-[#1ebc57] text-white font-bold py-4 rounded-xl transition flex items-center justify-center gap-2"
             >
-              <Send size={18} /> Send Screenshot
+              <Send size={18} /> WhatsApp Screenshot
             </a>
+            <div className="mt-4 text-xs text-gray-500">
+               Official Numbers:<br/>9122802016 | 8976852604
+            </div>
           </div>
         </div>
       )}
@@ -458,54 +433,55 @@ const PricingBooking = ({ user }) => {
 };
 
 const Footer = () => (
-  <footer id="location" className="bg-[#050914] border-t border-white/5 pt-16 pb-8">
+  <footer id="contact" className="bg-black border-t border-white/5 pt-20 pb-10">
     <div className="max-w-7xl mx-auto px-4">
-      <div className="grid md:grid-cols-2 gap-12 items-center mb-12">
+      <div className="grid md:grid-cols-2 gap-16 mb-16">
         <div>
-          <h3 className="font-heading text-2xl text-white mb-6">SAFALTA<span className="text-indigo-500">EXPRESS</span></h3>
-          <p className="text-gray-500 mb-6 text-sm">Boys Hostel</p>
+          <h3 className="font-cyber text-2xl text-white mb-8">SAFALTA<span className="text-blue-500">EXPRESS</span></h3>
+          
           <div className="space-y-6">
-            <div className="flex items-start gap-4">
-              <div className="p-3 bg-gray-800 rounded-lg text-indigo-400"><MapPin /></div>
+            <div className="flex items-start gap-4 group cursor-pointer" onClick={() => window.open("https://www.google.com/maps/search/?api=1&query=Behind+GD+College+Begusarai+Bihar")}>
+              <div className="p-4 bg-gray-900 rounded-xl text-blue-500 group-hover:scale-110 transition-transform"><MapPin /></div>
               <div>
-                <h4 className="text-white font-bold">Mokama House</h4>
-                <p className="text-gray-400 text-sm">Nisha Devi Asthan, East Lohanipur,<br/>Rajendra Nagar, Patna - 800003</p>
-                <a href="https://www.google.com/maps/search/?api=1&query=Mokama+House+East+Lohanipur+Patna" target="_blank" rel="noreferrer" className="text-indigo-400 text-xs mt-2 inline-block hover:underline">View on Map →</a>
+                <p className="text-gray-500 text-xs uppercase tracking-widest mb-1">Address</p>
+                <h4 className="text-xl font-bold text-white">Behind GD College</h4>
+                <p className="text-gray-400">Begusarai, Bihar</p>
               </div>
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="p-3 bg-gray-800 rounded-lg text-green-400"><Phone /></div>
+              <div className="p-4 bg-gray-900 rounded-xl text-green-500"><Phone /></div>
               <div>
-                <p className="text-gray-400 text-xs uppercase">Helpline</p>
-                <a href="tel:8002244989" className="text-white font-bold text-lg hover:text-green-400 transition">8002244989</a>, 
-                <a href="tel:9304865073" className="text-white font-bold text-lg hover:text-green-400 transition ml-2">9304865073</a>
+                <p className="text-gray-500 text-xs uppercase tracking-widest mb-1">Direct Contact</p>
+                <div className="flex flex-col">
+                  <a href="tel:9122802016" className="text-xl font-bold text-white hover:text-green-500 transition">9122802016</a>
+                  <a href="tel:8976852604" className="text-lg font-bold text-gray-400 hover:text-green-500 transition">8976852604</a>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <div className="p-4 bg-gray-900 rounded-xl text-red-500"><Send /></div>
+              <div>
+                <p className="text-gray-500 text-xs uppercase tracking-widest mb-1">Email</p>
+                <a href="mailto:riteshs9122@gmail.com" className="text-lg font-bold text-white hover:text-red-500 transition">riteshs9122@gmail.com</a>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="relative h-64 rounded-3xl overflow-hidden border border-white/10 group">
-          <img 
-            src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&q=80" 
-            className="w-full h-full object-cover opacity-50 grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-110" 
-            alt="Map Abstract" 
-          />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <a 
-               href="https://www.google.com/maps/search/?api=1&query=Mokama+House+East+Lohanipur+Patna" 
-               target="_blank"
-               rel="noreferrer"
-               className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-3 rounded-full font-bold hover:bg-white hover:text-black transition-all duration-300"
-            >
-              Locate on Google Maps
-            </a>
-          </div>
+        <div className="relative rounded-3xl overflow-hidden border border-white/10 h-80 group cursor-pointer" onClick={() => window.open("https://www.google.com/maps/search/?api=1&query=Behind+GD+College+Begusarai+Bihar")}>
+           <img src="https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?w=800&q=80" className="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 transition-all duration-700" />
+           <div className="absolute inset-0 flex items-center justify-center">
+             <div className="bg-white/10 backdrop-blur-md px-6 py-3 rounded-full border border-white/20 text-white font-bold group-hover:bg-white group-hover:text-black transition-all">
+               Open in Google Maps
+             </div>
+           </div>
         </div>
       </div>
       
-      <div className="text-center text-gray-600 text-sm pt-8 border-t border-gray-800">
-        &copy; 2025 Safalta Express Boys Hostel. All rights reserved.
+      <div className="text-center border-t border-white/5 pt-10">
+        <p className="text-gray-600 text-sm">© 2025 Safalta Express. Owner: Ritesh Kumar.</p>
       </div>
     </div>
   </footer>
@@ -515,27 +491,18 @@ export default function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => setUser(currentUser));
     return () => unsubscribe();
   }, []);
 
   const handleLogin = async () => {
-    try {
-      await signInWithPopup(auth, googleProvider);
-    } catch (error) {
-      console.error("Login failed:", error);
-      alert("Login Error: " + error.message);
-    }
+    try { await signInWithPopup(auth, googleProvider); } 
+    catch (error) { console.error("Login failed:", error); }
   };
 
   const handleLogout = async () => {
-    try {
-      await signOut(auth);
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
+    try { await signOut(auth); } 
+    catch (error) { console.error("Logout failed:", error); }
   };
 
   const scrollTo = (id) => {
@@ -544,18 +511,14 @@ export default function App() {
   };
 
   return (
-    <div className="bg-[#020617] min-h-screen text-white selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen">
       <style>{styleTag}</style>
-      <Navbar 
-        scrollTo={scrollTo} 
-        user={user} 
-        handleLogin={handleLogin} 
-        handleLogout={handleLogout} 
-      />
+      <Navbar scrollTo={scrollTo} user={user} handleLogin={handleLogin} handleLogout={handleLogout} />
       <Hero />
-      <FeaturesBento />
-      <InteractiveMenu />
-      <PricingBooking user={user} />
+      <LocationLegacy />
+      <VisualMenu />
+      <RoomShowcase />
+      <BookingSection user={user} />
       <Footer />
     </div>
   );
