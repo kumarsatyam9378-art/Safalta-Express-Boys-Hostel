@@ -1,1 +1,126 @@
-hereyyy
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Line Free - Salon Queue App</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <header id="main-header" class="hidden">
+            <div class="logo">Line Free</div>
+            <button id="logout-btn" onclick="app.logout()"><i class="fas fa-sign-out-alt"></i></button>
+        </header>
+
+        <div id="view-welcome" class="view active">
+            <div class="hero-section">
+                <h1>Line Free</h1>
+                <p>Smart Queue Management</p>
+                <div class="lang-selector">
+                    <button onclick="app.setLanguage('en')" class="btn-outline">English</button>
+                    <button onclick="app.setLanguage('hi')" class="btn-outline">हिंदी</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-role" class="view hidden">
+            <h2>Select Role / भूमिका चुनें</h2>
+            <div class="card-grid">
+                <div class="card" onclick="app.setRole('customer')">
+                    <i class="fas fa-user fa-3x"></i>
+                    <h3>Customer</h3>
+                    <p>Book tokens & track queue</p>
+                </div>
+                <div class="card" onclick="app.setRole('barber')">
+                    <i class="fas fa-cut fa-3x"></i>
+                    <h3>Barber/Owner</h3>
+                    <p>Manage salon & queue</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-auth" class="view hidden">
+            <h2 id="auth-title">Login</h2>
+            <form onsubmit="app.handleLogin(event)">
+                <input type="text" id="username" placeholder="Enter Name" required>
+                <input type="tel" id="mobile" placeholder="Mobile Number" required>
+                <button type="submit" class="btn-primary">Continue</button>
+            </form>
+        </div>
+
+        <div id="view-customer-home" class="view hidden">
+            <div class="status-card">
+                <h3>Hello, <span id="cust-name">User</span></h3>
+                <p>Find a salon to book your token.</p>
+            </div>
+
+            <div class="section-title">Available Salons</div>
+            <div id="salon-list" class="list-container">
+                </div>
+
+            <div id="active-token-card" class="card highlight-card hidden">
+                <h3>Your Token</h3>
+                <div class="token-number" id="my-token-num">#0</div>
+                <p>Status: <span id="my-token-status">Waiting</span></p>
+                <p>Estimated Time: <span id="my-token-time">0 min</span></p>
+                <button onclick="app.cancelToken()" class="btn-danger">Cancel Token</button>
+            </div>
+        </div>
+
+        <div id="view-barber-home" class="view hidden">
+            <div class="status-card barber-header">
+                <h3><span id="barber-salon-name">My Salon</span></h3>
+                <div class="toggle-switch">
+                    <label class="switch">
+                        <input type="checkbox" id="shop-status" onchange="app.toggleShopStatus()">
+                        <span class="slider round"></span>
+                    </label>
+                    <span id="shop-status-text">Open</span>
+                </div>
+            </div>
+
+            <div class="dashboard-stats">
+                <div class="stat-box">
+                    <span>Current Token</span>
+                    <h2 id="current-token-display">0</h2>
+                </div>
+                <div class="stat-box">
+                    <span>In Queue</span>
+                    <h2 id="queue-count-display">0</h2>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button onclick="app.nextCustomer()" class="btn-primary">Next Customer <i class="fas fa-arrow-right"></i></button>
+                <button onclick="app.resetQueue()" class="btn-outline">Reset Queue</button>
+            </div>
+
+            <div class="section-title">Waiting List</div>
+            <div id="barber-queue-list" class="list-container">
+                </div>
+        </div>
+
+        <div id="view-subscription" class="view hidden">
+            <h2>Premium Plans</h2>
+            <div class="card highlight-card">
+                <h3>Pro Access</h3>
+                <h1>₹99<small>/mo</small></h1>
+                <ul>
+                    <li>Priority Support</li>
+                    <li>No Ads</li>
+                    <li>Advanced Analytics</li>
+                </ul>
+                <button class="btn-white" onclick="app.goBack()">Go Back</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
