@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safalta Express 6.0 | The Community Hub</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Theme Variables */
+        :root {
+            --primary: #00f3ff;
+            --secondary: #bc13fe;
+            --bg: #030303;
+            --panel: rgba(255, 255, 255, 0.03);
+        }
+
+        .theme-purple { --primary: #bc13fe; --secondary: #00f3ff; }
+        .theme-gold { --primary: #ffd700; --secondary: #ff0000; }
+
+        body { background: var(--bg); color: white; font-family: 'Outfit', sans-serif; overflow-x: hidden; transition: 0.3s; }
+        .font-cyber { font-family: 'Orbitron', sans-serif; }
+        .font-mono { font-family: 'Share Tech Mono', monospace; }
+
+        .glass-panel {
+            background: var(--panel);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: 0.3s;
+        }
+
+        /* Voting Bar Animation */
+        .vote-bar-fill { transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        /* Rank Counter Animation */
+        .rank-glow { text-shadow: 0 0 20px var(--primary); }
+
+        /* Leaderboard Hover */
+        .leader-card:hover { transform: scale(1.02); border-color: var(--primary); }
+    </style>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "react": "https://esm.sh/react@18.2.0",
+                "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+                "lucide-react": "https://esm.sh/lucide-react@0.344.0?external=react"
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="module">
+        import React, { useState, useEffect } from 'react';
+        import ReactDOM from 'react-dom/client';
+        import { 
+            Trophy, TrendingUp, Users, Utensils, 
+            Zap, CheckCircle, Brain, Palette
+        } from 'lucide-react';
+
+        // --- COMPONENTS ---
+
+        // 1. AI Rank Predictor
+        const RankPredictor = () => {
+            const [hours, setHours] = useState(6);
+            const [rank, setRank] = useState(null);
+            const [loading, setLoading] = useState(false);
+
+            const calculateRank = () => {
+                setLoading(true);
+                setTimeout(() => {
+                    // Fun Algorithm: More hours = Better Rank
+                    const baseRank = 50000;
+                    const predicted = Math.floor(baseRank / (hours * 0.5));
+                    setRank(predicted < 100 ? 100 : predicted);
+                    setLoading(false);
+                }, 1500);
+            };
+
+            return React.createElement('div', { className: "glass-panel p-8 rounded-3xl relative overflow-hidden" },
+                React.createElement('div', { className: "absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[var(--primary)] to-transparent" }),
+                React.createElement('h3', { className: "font-cyber text-2xl mb-6 flex items-center gap-2" },
+                    React.createElement(Brain, { className: "text-[var(--primary)]" }), "AI RANK PREDICTOR"
+                ),
+                
+                !rank ? React.createElement('div', { className: "space-y-6" },
+                    React.createElement('div', null,
+                        React.createElement('label', { className: "block text-gray-400 text-sm mb-2" }, "Daily Self Study Hours: " + hours + "h"),
+                        React.createElement('input', { 
+                            type: "range", min: "2", max: "16", value: hours, 
+                            onChange: (e) => setHours(e.target.value),
+                            className: "w-full accent-[var(--primary)]"
+                        })
+                    ),
+                    React.createElement('button', { 
+                        onClick: calculateRank,
+                        disabled: loading,
+                        className: "w-full bg-[var(--primary)] text-black font-bold py-3 rounded-xl hover:opacity-90 transition"
+                    }, loading ? "ANALYZING DATA..." : "PREDICT MY RANK")
+                ) : React.createElement('div', { className: "text-center animate-in zoom-in" },
+                    React.createElement('p', { className: "text-gray-400 text-sm mb-2" }, "Based on your efforts, predicted AIR:"),
+                    React.createElement('div', { className: "text-6xl font-black font-cyber text-[var(--primary)] rank-glow mb-4" }, rank),
+                    React.createElement('button', { 
+                        onClick: () => setRank(null),
+                        className: "text-sm underline text-gray-500 hover:text-white"
+                    }, "Check Again")
+                )
+            );
+        };
+
+        // 2. Live Mess Voting
+        const MessVoting = () => {
+            const [votes, setVotes] = useState({ a: 45, b: 32 });
+            const [voted, setVoted] = useState(false);
+
+            const total = votes.a + votes.b;
+            const perA = Math.round((votes.a / total) * 100);
+            const perB = Math.round((votes.b / total) * 100);
+
+            const handleVote = (option) => {
+                if(voted) return;
+                setVotes(prev => ({ ...prev, [option]: prev[option] + 1 }));
+                setVoted(true);
+            };
+
+            return React.createElement('div', { className: "glass-panel p-8 rounded-3xl" },
+                React.createElement('h3', { className: "font-cyber text-2xl mb-6 flex items-center gap-2" },
+                    React.createElement(Utensils, { className: "text-[var(--primary)]" }), "SUNDAY FEAST POLL"
+                ),
+                React.createElement('div', { className: "space-y-4" },
+                    // Option A
+                    React.createElement('div', { 
+                        onClick: () => handleVote('a'),
+                        className: `relative h-16 bg-white/5 rounded-xl overflow-hidden cursor-pointer group ${voted ? '' : 'hover:bg-white/10'}`
+                    },
+                        React.createElement('div', { 
+                            className: "absolute top-0 left-0 h-full bg-green-500/20 vote-bar-fill",
+                            style: { width: voted ? `${perA}%` : '0%' }
+                        }),
+                        React.createElement('div', { className: "absolute inset-0 flex items-center justify-between px-6" },
+                            React.createElement('span', { className: "font-bold" }, "Chicken Biryani"),
+                            voted && React.createElement('span', { className: "font-mono text-green-400" }, `${perA}%`)
+                        )
+                    ),
+                    // Option B
+                    React.createElement('div', { 
+                        onClick: () => handleVote('b'),
+                        className: `relative h-16 bg-white/5 rounded-xl overflow-hidden cursor-pointer group ${voted ? '' : 'hover:bg-white/10'}`
+                    },
+                        React.createElement('div', { 
+                            className: "absolute top-0 left-0 h-full bg-red-500/20 vote-bar-fill",
+                            style: { width: voted ? `${perB}%` : '0%' }
+                        }),
+                        React.createElement('div', { className: "absolute inset-0 flex items-center justify-between px-6" },
+                            React.createElement('span', { className: "font-bold" }, "Mutton Curry (Extra Charge)"),
+                            voted && React.createElement('span', { className: "font-mono text-red-400" }, `${perB}%`)
+                        )
+                    )
+                ),
+                voted && React.createElement('p', { className: "text-center text-xs text-gray-500 mt-4" }, "Thanks for voting! Results announced Saturday.")
+            );
+        };
+
+        // 3. Leaderboard
+        const Leaderboard = () => {
+            const leaders = [
+                { name: "Aman Kumar", batch: "JEE Dropper", hours: "14.5", img: "🥇" },
+                { name: "Rahul Singh", batch: "12th Board", hours: "13.2", img: "🥈" },
+                { name: "Vikash Raj", batch: "NEET", hours: "12.8", img: "🥉" }
+            ];
+
+            return React.createElement('div', { className: "glass-panel p-8 rounded-3xl" },
+                React.createElement('h3', { className: "font-cyber text-2xl mb-6 flex items-center gap-2" },
+                    React.createElement(Trophy, { className: "text-yellow-500" }), "HALL OF FAME"
+                ),
+                React.createElement('div', { className: "space-y-4" },
+                    leaders.map((l, i) => 
+                        React.createElement('div', { key: i, className: "leader-card flex items-center gap-4 bg-black/40 p-4 rounded-xl border border-white/5 transition-all" },
+                            React.createElement('div', { className: "text-2xl" }, l.img),
+                            React.createElement('div', { className: "flex-1" },
+                                React.createElement('h4', { className: "font-bold text-white" }, l.name),
+                                React.createElement('p', { className: "text-xs text-gray-500" }, l.batch)
+                            ),
+                            React.createElement('div', { className: "text-right" },
+                                React.createElement('div', { className: "text-[var(--primary)] font-mono font-bold" }, `${l.hours}h`),
+                                React.createElement('p', { className: "text-[10px] text-gray-500" }, "AVG/DAY")
+                            )
+                        )
+                    )
+                )
+            );
+        };
+
+        const App = () => {
+            const [theme, setTheme] = useState('default');
+
+            return React.createElement('div', { className: `min-h-screen pb-20 ${theme}` },
+                
+                // Theme Switcher & Nav
+                React.createElement('nav', { className: "p-6 flex justify-between items-center max-w-7xl mx-auto" },
+                    React.createElement('h1', { className: "font-cyber text-xl font-bold" }, "SAFALTA HUB"),
+                    React.createElement('div', { className: "flex gap-2" },
+                        ['default', 'theme-purple', 'theme-gold'].map(t => 
+                            React.createElement('button', { 
+                                key: t,
+                                onClick: () => setTheme(t),
+                                className: `w-6 h-6 rounded-full border border-white/20 ${t === 'default' ? 'bg-[#00f3ff]' : t === 'theme-purple' ? 'bg-[#bc13fe]' : 'bg-[#ffd700]'}`
+                            })
+                        )
+                    )
+                ),
+
+                // Hero Section
+                React.createElement('div', { className: "text-center py-16 px-4" },
+                    React.createElement('h2', { className: "text-5xl md:text-7xl font-black font-cyber mb-4" }, "COMMUNITY"),
+                    React.createElement('p', { className: "text-gray-400" }, "Tools designed to keep you ahead of the competition.")
+                ),
+
+                // Main Grid
+                React.createElement('div', { className: "max-w-7xl mx-auto px-4 grid lg:grid-cols-3 gap-8" },
+                    React.createElement(RankPredictor),
+                    React.createElement(MessVoting),
+                    React.createElement(Leaderboard)
+                ),
+
+                // Footer Note
+                React.createElement('div', { className: "text-center mt-20 text-gray-600 text-sm" },
+                    "Safalta Express V6.0 • Integrated System"
+                )
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(App));
+    </script>
+</body>
+</html>
