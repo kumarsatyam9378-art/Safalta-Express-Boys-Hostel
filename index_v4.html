@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safalta Express 4.0 | The Topper's Choice</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --neon: #00f3ff; --purple: #bc13fe; --dark: #080808; }
+        body { background: var(--dark); color: white; font-family: 'Outfit', sans-serif; overflow-x: hidden; }
+        .font-cyber { font-family: 'Orbitron', sans-serif; }
+
+        .mesh-gradient {
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(0, 243, 255, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(188, 19, 254, 0.1) 0px, transparent 50%);
+        }
+
+        .active-glow {
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
+            border: 1px solid var(--neon) !important;
+        }
+
+        .timeline-line {
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, var(--neon), var(--purple), transparent);
+        }
+
+        .floating-icon { animation: float 4s ease-in-out infinite; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        .blur-dot {
+            width: 300px; height: 300px;
+            background: var(--neon);
+            filter: blur(150px);
+            opacity: 0.1;
+            position: absolute;
+            z-index: -1;
+        }
+    </style>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "react": "https://esm.sh/react@18.2.0",
+                "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+                "lucide-react": "https://esm.sh/lucide-react@0.344.0?external=react"
+            }
+        }
+    </script>
+</head>
+<body class="mesh-gradient">
+    <div id="root"></div>
+
+    <script type="module">
+        import React, { useState, useEffect } from 'react';
+        import ReactDOM from 'react-dom/client';
+        import { 
+            Clock, Map, Star, Award, 
+            ChevronRight, ExternalLink, Calendar,
+            Coffee, Utensils, Moon
+        } from 'lucide-react';
+
+        const App = () => {
+            const [currentTime, setCurrentTime] = useState(new Date().getHours());
+            
+            // Logic to determine meal type
+            const getMealType = () => {
+                if (currentTime >= 6 && currentTime < 11) return 'Breakfast';
+                if (currentTime >= 11 && currentTime < 16) return 'Lunch';
+                return 'Dinner';
+            };
+
+            const timeline = [
+                { year: "2018", title: "The Foundation", desc: "Started with 10 rooms and a vision for students." },
+                { year: "2020", title: "Tech Upgrade", desc: "Introduced High-Speed WiFi & Digital Security." },
+                { year: "2023", title: "The Hub", desc: "Became the #1 choice for GD College aspirants." },
+                { year: "2026", title: "Smart Living", desc: "Full automation and 5-star student facilities." }
+            ];
+
+            return React.createElement('div', { className: "min-h-screen relative" },
+                React.createElement('div', { className: "blur-dot top-0 left-0" }),
+                React.createElement('div', { className: "blur-dot bottom-0 right-0" }),
+
+                // --- HEADER ---
+                React.createElement('header', { className: "pt-20 pb-12 text-center px-4" },
+                    React.createElement('div', { className: "flex justify-center mb-4" },
+                        React.createElement(Award, { className: "text-yellow-500 floating-icon", size: 48 })
+                    ),
+                    React.createElement('h1', { className: "font-cyber text-4xl md:text-7xl font-bold mb-4 tracking-tight" }, 
+                        "THE ", React.createElement('span', { className: "text-cyan-400" }, "ELITE"), " HOSTEL"
+                    ),
+                    React.createElement('p', { className: "text-gray-400 max-w-2xl mx-auto" }, 
+                        "Exclusively designed for students who don't just study, but succeed. Welcome to Begusarai's most advanced living ecosystem."
+                    )
+                ),
+
+                // --- LIVE MENU HIGHLIGHT ---
+                React.createElement('section', { className: "max-w-4xl mx-auto px-4 mb-32" },
+                    React.createElement('div', { className: "bg-white/5 border border-white/10 p-8 rounded-[2rem] relative overflow-hidden active-glow" },
+                        React.createElement('div', { className: "flex items-center gap-3 mb-6" },
+                            React.createElement('div', { className: "w-3 h-3 bg-red-500 rounded-full animate-pulse" }),
+                            React.createElement('span', { className: "text-xs font-bold tracking-widest text-cyan-400 uppercase" }, "Now Serving")
+                        ),
+                        React.createElement('div', { className: "flex flex-col md:flex-row justify-between items-center gap-8" },
+                            React.createElement('div', { className: "text-center md:text-left" },
+                                React.createElement('h3', { className: "text-4xl font-cyber font-bold mb-2" }, getMealType()),
+                                React.createElement('p', { className: "text-gray-400" }, "Freshly prepared. Unlimited servings. Today's Special.")
+                            ),
+                            React.createElement('div', { className: "bg-cyan-400 text-black px-12 py-8 rounded-2xl text-2xl font-black font-cyber" },
+                                getMealType() === 'Breakfast' ? "ALOO PARATHA" : getMealType() === 'Lunch' ? "PANEER SPECIAL" : "ROTI TADKA"
+                            )
+                        )
+                    )
+                ),
+
+                // --- TIMELINE SECTION ---
+                React.createElement('section', { className: "max-w-6xl mx-auto px-4 mb-32" },
+                    React.createElement('h2', { className: "font-cyber text-2xl text-center mb-16" }, "OUR ", React.createElement('span', { className: "text-purple-500" }, "LEGACY")),
+                    React.createElement('div', { className: "relative" },
+                        React.createElement('div', { className: "absolute left-1/2 -translate-x-1/2 h-full timeline-line hidden md:block" }),
+                        React.createElement('div', { className: "space-y-12" },
+                            timeline.map((item, i) => React.createElement('div', { key: i, className: `flex flex-col md:flex-row items-center gap-8 ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}` },
+                                React.createElement('div', { className: "flex-1 text-center md:text-right px-4" },
+                                    i % 2 !== 0 && React.createElement('div', { className: "hidden md:block" }),
+                                    i % 2 === 0 && React.createElement('div', null,
+                                        React.createElement('h4', { className: "text-2xl font-bold text-white mb-2" }, item.title),
+                                        React.createElement('p', { className: "text-gray-500" }, item.desc)
+                                    )
+                                ),
+                                React.createElement('div', { className: "z-10 w-12 h-12 bg-dark border-4 border-cyan-400 rounded-full flex items-center justify-center font-bold text-cyan-400" }, 
+                                    item.year.slice(-2)
+                                ),
+                                React.createElement('div', { className: "flex-1 text-center md:text-left px-4" },
+                                    i % 2 === 0 && React.createElement('div', { className: "hidden md:block" }),
+                                    i % 2 !== 0 && React.createElement('div', null,
+                                        React.createElement('h4', { className: "text-2xl font-bold text-white mb-2" }, item.title),
+                                        React.createElement('p', { className: "text-gray-500" }, item.desc)
+                                    )
+                                )
+                            ))
+                        )
+                    )
+                ),
+
+                // --- CTA SECTION ---
+                React.createElement('section', { className: "bg-cyan-400 py-20 px-4 text-center" },
+                    React.createElement('h2', { className: "text-black text-4xl md:text-6xl font-black font-cyber mb-8" }, "READY TO SCORE?"),
+                    React.createElement('button', { className: "bg-black text-white px-12 py-5 rounded-full font-bold text-xl hover:scale-105 transition shadow-2xl" }, "JOIN THE TRIBE")
+                )
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(App));
+    </script>
+</body>
+</html>
