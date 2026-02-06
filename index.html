@@ -7,6 +7,9 @@
     <meta name="theme-color" content="#000000">
     <meta name="description" content="Premium Boys Hostel in Begusarai. Tech-enabled, study-focused.">
     
+    <!-- PRELOAD HERO IMAGE FOR INSTANT VISUAL -->
+    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?q=80&w=1200">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,7 +48,17 @@
             -webkit-tap-highlight-color: transparent; 
             perspective: 1500px; 
             cursor: none; /* Custom cursor takes over */
+            margin: 0;
         }
+
+        /* --- SKELETON LOADER (INSTANT DISPLAY) --- */
+        #static-loader {
+            position: fixed; inset: 0; background: #000; z-index: 50;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .loader-title { font-size: 3rem; font-weight: 900; color: #fff; text-shadow: 0 0 20px #00f3ff; animation: pulse-fast 1s infinite; }
+        @keyframes pulse-fast { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
         /* --- SCROLLBAR --- */
         ::-webkit-scrollbar { width: 6px; }
@@ -205,8 +218,14 @@
 </head>
 <body>
     
-    <!-- React Root -->
-    <div id="root"></div>
+    <!-- React Root with INSTANT FALLBACK CONTENT -->
+    <div id="root">
+        <!-- This displays INSTANTLY while React/Babel loads, preventing white screen -->
+        <div id="static-loader">
+            <h1 class="loader-title">SAFALTA</h1>
+            <p style="color: #00f3ff; font-family: monospace; letter-spacing: 2px; margin-top: 10px;">INITIALIZING SYSTEM...</p>
+        </div>
+    </div>
 
     <script type="text/babel" data-type="module">
         import { initializeApp } from "firebase/app";
@@ -237,8 +256,22 @@
             Phone, MapPin, Menu, X, CheckCircle, Send, Coffee, BookOpen, Library, GraduationCap,
             User, Star, Factory, Building2, LogIn, LogOut, Brain, Sparkles, MessageSquare, Settings,
             Headphones, Play, Instagram, Calendar, Users, PenTool, Lock, Flame, Zap, Trophy,
-            Activity, Power, Volume2, VolumeX, Code, Mail
+            Activity, Power, Volume2, VolumeX, Code, Mail, Loader2
         } = lucide;
+
+        // --- GEMINI API HELPER ---
+        const callGemini = async (prompt) => {
+            const apiKey = ""; // Provided by execution environment
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+                const data = await response.json();
+                return data.candidates?.[0]?.content?.parts?.[0]?.text || "System Overload. Try again.";
+            } catch (e) { console.error(e); return "Neural Link Failed."; }
+        };
 
         // --- CONSTANTS ---
         const IMG = {
@@ -298,6 +331,126 @@
                     {type === 'success' && <CheckCircle size={16} />}
                     {type === 'info' && <Activity size={16} />}
                     <span className="font-bold text-sm tracking-wide">{message}</span>
+                </div>
+            );
+        };
+
+        // --- AI APP COMPONENTS ---
+
+        const OrbitPlanner = ({ close, addXp }) => {
+            const [subjects, setSubjects] = useState('');
+            const [hours, setHours] = useState('');
+            const [schedule, setSchedule] = useState('');
+            const [loading, setLoading] = useState(false);
+
+            const handleGenerate = async () => {
+                if(!subjects || !hours) return;
+                setLoading(true);
+                const prompt = `Create a realistic and strict study schedule for a student who wants to study these subjects: ${subjects} for a total of ${hours} hours. Use emojis, Keep it short and actionable. Format as a list.`;
+                const result = await callGemini(prompt);
+                setSchedule(result);
+                setLoading(false);
+                addXp(50, "Generated Schedule");
+            };
+
+            return (
+                <div className="fixed inset-0 z-[6000] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">
+                    <div className="max-w-lg w-full glass-panel p-8 rounded-3xl border border-blue-500/30 relative">
+                        <button onClick={close} className="absolute top-4 right-4 text-gray-500 hover:text-white"><X/></button>
+                        <h2 className="font-cyber text-2xl text-blue-400 mb-2 flex items-center gap-2"><Calendar/> ORBIT PLANNER AI</h2>
+                        <p className="text-gray-400 text-sm mb-6">Generate a lethal study routine using Gemini AI.</p>
+                        
+                        {!schedule ? (
+                            <div className="space-y-4">
+                                <input 
+                                    type="text" 
+                                    placeholder="Subjects (e.g., Physics, Math)" 
+                                    className="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white placeholder:text-gray-600 focus:border-blue-500 outline-none"
+                                    value={subjects}
+                                    onChange={(e)=>setSubjects(e.target.value)}
+                                />
+                                <input 
+                                    type="number" 
+                                    placeholder="Total Hours (e.g., 6)" 
+                                    className="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white placeholder:text-gray-600 focus:border-blue-500 outline-none"
+                                    value={hours}
+                                    onChange={(e)=>setHours(e.target.value)}
+                                />
+                                <button 
+                                    onClick={handleGenerate} 
+                                    disabled={loading}
+                                    className="w-full bg-blue-600 hover:bg-blue-500 py-4 rounded-xl font-black flex items-center justify-center gap-2 transition"
+                                >
+                                    {loading ? <Loader2 className="animate-spin"/> : <Sparkles/>} GENERATE ROUTINE ✨
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="animate-float">
+                                <div className="bg-black/40 rounded-xl p-6 mb-6 max-h-[300px] overflow-y-auto border border-white/10 font-mono text-sm leading-relaxed whitespace-pre-line">
+                                    {schedule}
+                                </div>
+                                <button 
+                                    onClick={()=>setSchedule('')} 
+                                    className="w-full bg-white/10 hover:bg-white/20 py-3 rounded-xl font-bold"
+                                >
+                                    Create New
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        const MistakeVault = ({ close, addXp }) => {
+            const [concept, setConcept] = useState('');
+            const [explanation, setExplanation] = useState('');
+            const [loading, setLoading] = useState(false);
+
+            const handleExplain = async () => {
+                if(!concept) return;
+                setLoading(true);
+                const prompt = `Explain the concept of "${concept}" simply for a high school student. Use a real-world analogy. Keep it under 100 words.`;
+                const result = await callGemini(prompt);
+                setExplanation(result);
+                setLoading(false);
+                addXp(40, "Cleared Concept");
+            };
+
+            return (
+                <div className="fixed inset-0 z-[6000] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">
+                    <div className="max-w-lg w-full glass-panel p-8 rounded-3xl border border-purple-500/30 relative">
+                        <button onClick={close} className="absolute top-4 right-4 text-gray-500 hover:text-white"><X/></button>
+                        <h2 className="font-cyber text-2xl text-purple-400 mb-2 flex items-center gap-2"><Brain/> CONCEPT VAULT AI</h2>
+                        <p className="text-gray-400 text-sm mb-6">Stuck? Let AI simplify complex topics instantly.</p>
+                        
+                        <div className="space-y-4">
+                            <div className="flex gap-2">
+                                <input 
+                                    type="text" 
+                                    placeholder="Enter topic (e.g., Thermodynamics)" 
+                                    className="flex-1 bg-black/50 border border-white/10 rounded-xl p-4 text-white placeholder:text-gray-600 focus:border-purple-500 outline-none"
+                                    value={concept}
+                                    onChange={(e)=>setConcept(e.target.value)}
+                                    onKeyDown={(e) => e.key === 'Enter' && handleExplain()}
+                                />
+                                <button 
+                                    onClick={handleExplain} 
+                                    disabled={loading}
+                                    className="bg-purple-600 hover:bg-purple-500 px-6 rounded-xl font-black flex items-center justify-center transition"
+                                >
+                                    {loading ? <Loader2 className="animate-spin"/> : <Send/>}
+                                </button>
+                            </div>
+                            
+                            {explanation && (
+                                <div className="bg-black/40 rounded-xl p-6 border border-purple-500/20 animate-[fadeIn_0.5s]">
+                                    <h4 className="text-xs text-purple-400 font-bold mb-2 uppercase tracking-widest">AI Explanation</h4>
+                                    <p className="text-sm leading-relaxed text-gray-200">{explanation}</p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
                 </div>
             );
         };
@@ -485,8 +638,8 @@
                 root.style.setProperty('--gold', t.g);
                 root.style.setProperty('--danger', t.d);
 
-                // Intro Sound
-                setTimeout(() => playSound('intro'), 1000);
+                // Intro Sound (Reduced Delay for instant feel)
+                setTimeout(() => playSound('intro'), 100);
 
                 return () => window.removeEventListener('scroll', handleScroll);
             }, [config]);
@@ -531,8 +684,8 @@
                         <div className="space-y-4 overflow-y-auto flex-1">
                             <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">My Apps</div>
                             {[
-                                {n:"Mistake Vault", i:Brain, id:"mistake", c:"text-purple-400", xp: 50},
-                                {n:"Orbit Planner", i:Calendar, id:"planner", c:"text-blue-400", xp: 20},
+                                {n:"Concept Vault ✨", i:Brain, id:"mistake", c:"text-purple-400", xp: 50},
+                                {n:"Orbit Planner ✨", i:Calendar, id:"planner", c:"text-blue-400", xp: 20},
                                 {n:"Sonic Core", i:Headphones, id:"music", c:"text-pink-400", xp: 10},
                                 {n:"Group Chat", i:MessageSquare, id:"chat", c:"text-green-400", xp: 5}
                             ].map((app) => (
@@ -770,7 +923,11 @@
                     <GodModePanel config={config} setConfig={setConfig} applyConfig={()=>{addToast("System Rebooted", "success"); playSound('intro')}} />
 
                     {/* App Modals */}
-                    {activeApp && (
+                    {activeApp === 'planner' && <OrbitPlanner close={()=>setActiveApp(null)} addXp={addXp} />}
+                    {activeApp === 'mistake' && <MistakeVault close={()=>setActiveApp(null)} addXp={addXp} />}
+                    
+                    {/* Placeholder for other apps */}
+                    {(activeApp && activeApp !== 'planner' && activeApp !== 'mistake') && (
                         <div className="fixed inset-0 z-[6000] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 animate-[fadeIn_0.3s]">
                             <div className="max-w-lg w-full glass-panel p-8 rounded-3xl text-center border border-white/20 relative">
                                 <button onClick={()=>setActiveApp(null)} className="absolute top-4 right-4 text-gray-500 hover:text-white"><X/></button>
