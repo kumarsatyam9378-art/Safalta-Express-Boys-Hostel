@@ -2,44 +2,53 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAFALTA EXPRESS | SECURE NEXUS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Safalta Express | The Infinite Nexus</title>
     
-    <!-- PWA Config -->
-    <meta name="theme-color" content="#020617">
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlNhZmFsdGEgRXhwcmVzcyIsCiAgInNob3J0X25hbWUiOiAiU2FmYWx0YUV4cCIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMDIwNjE3IiwKICAidGhlbWVfY29sb3IiOiAiIzAyMDYxNyIKfQ==">
+    <!-- PWA -->
+    <meta name="theme-color" content="#000000">
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlNhZmFsdGEgRXhwcmVzcyIsCiAgInNob3J0X25hbWUiOiAiU2FmYWx0YSIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMDAwMDAwIiwKICAidGhlbWVfY29sb3IiOiAiIzAwZjNmZiIKfQ==">
 
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Grotesk:wght@300;400;700&family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
-        :root { --blue: #00d2ff; --purple: #bc13fe; --gold: #ffcc33; --dark: #020617; --danger: #ef4444; --success: #22c55e; }
-        body { background: var(--dark); color: white; font-family: 'Space Grotesk', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
-        .font-nexus { font-family: 'Orbitron', sans-serif; }
-        .font-titan { font-family: 'Syncopate', sans-serif; }
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-purple: #bc13fe;
+            --gold: #ffd700;
+            --void: #020202;
+        }
+        body { background-color: var(--void); color: white; font-family: 'Outfit', sans-serif; overflow-x: hidden; }
+        .font-cyber { font-family: 'Orbitron', sans-serif; }
+        .font-tech { font-family: 'Rajdhani', sans-serif; }
         
-        .glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 4px 30px rgba(0,0,0,0.5); }
-        .glass-panel { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+        }
         
-        .neon-text { text-shadow: 0 0 10px var(--blue); }
-        .status-badge { padding: 4px 12px; border-radius: 999px; font-weight: 800; text-transform: uppercase; font-size: 10px; letter-spacing: 1px; }
-        .status-pending { background: rgba(234, 179, 8, 0.2); color: #fbbf24; border: 1px solid #fbbf24; }
-        .status-active { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #4ade80; }
-        .status-banned { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #f87171; }
+        .neon-glow { text-shadow: 0 0 20px rgba(0, 243, 255, 0.5); }
+        .strike-red { text-decoration: line-through; text-decoration-color: #ef4444; text-decoration-thickness: 3px; }
+        
+        /* Portal Animation */
+        .portal-line {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+            box-shadow: 0 0 20px var(--neon-blue);
+            width: 100%;
+        }
 
-        .reveal { opacity: 0; transform: translateY(20px); transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-        
         .scrollbar-hide::-webkit-scrollbar { display: none; }
-        
-        /* Loading Spinner */
-        .loader { border: 3px solid rgba(255,255,255,0.1); border-left-color: var(--blue); border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        .gemini-gradient { background: linear-gradient(135deg, #4285F4, #9B72CB, #D96570); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
     </style>
 
     <script type="importmap">
@@ -62,215 +71,215 @@
         import React, { useState, useEffect, useRef } from 'react';
         import ReactDOM from 'react-dom/client';
         import { 
-            Zap, Home, LayoutDashboard, LogOut, Menu, X, Brain, Send, 
-            MessageSquare, MapPin, Phone, CheckCircle, ShieldCheck, 
-            AlertTriangle, CreditCard, Users, Search, Lock, Edit3, Trash2,
-            Sparkles, Calendar, PenTool, FileText, User // Added User here
+            Phone, MapPin, Wifi, Zap, ShieldCheck, Utensils, 
+            Home, Menu, X, CheckCircle, Smartphone, 
+            Send, Coffee, BookOpen, Library, GraduationCap,
+            User, Star, Factory, Building2, LogIn, LogOut,
+            LayoutDashboard, Brain, Sparkles, MessageSquare, Settings,
+            Edit3, Search, Trash2, Calendar, PenTool, Lock,
+            Music, Radio, Headphones, Users, ChevronDown
         } from 'lucide-react';
         import { initializeApp } from "firebase/app";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "firebase/auth";
-        import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, query, orderBy, addDoc, updateDoc, serverTimestamp, deleteDoc } from "firebase/firestore";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, signInAnonymously, signInWithCustomToken } from "firebase/auth";
+        import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, query, orderBy, addDoc, updateDoc, serverTimestamp, deleteDoc, limit } from "firebase/firestore";
 
-        // --- CONFIGURATION ---
-        const firebaseConfig = {
-            apiKey: "AIzaSyBbwul_dbciJX3SQIVFQqXktmCsCghJRHU",
-            authDomain: "safalta-express-boys-hostel.firebaseapp.com",
-            projectId: "safalta-express-boys-hostel",
-            storageBucket: "safalta-express-boys-hostel.firebasestorage.app",
-            messagingSenderId: "943963131070",
-            appId: "1:943963131070:web:48db2233c27d7ae15562ef"
-        };
-        
-        // 🚨 SECURITY NOTE: In production, move keys to backend.
-        const GROQ_API_KEY = "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"; 
-        const GEMINI_API_KEY = ""; // Environment provided
-        
+        // --- CONFIG ---
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const APP_ID = typeof __app_id !== 'undefined' ? __app_id : 'safalta-infinite-v1';
         const OWNER_EMAIL = "riteshs9122@gmail.com";
-        const APP_ID = "safalta-secure-v1";
+        const KEYS = { GROQ: "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" };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
         const googleProvider = new GoogleAuthProvider();
 
-        // --- GEMINI API HELPER ---
-        const callGemini = async (prompt) => {
-            const apiKey = ""; // API Key provided by environment at runtime
-            try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: prompt }] }]
-                    })
-                });
-                const data = await response.json();
-                return data.candidates?.[0]?.content?.parts?.[0]?.text || "Connectivity Error. Try again.";
-            } catch (error) {
-                console.error(error);
-                return "Gemini System Offline.";
-            }
+        // --- IMAGES ---
+        const IMG = {
+            hero: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2000",
+            poha: "https://images.unsplash.com/photo-1595350794711-a83236c58971?w=800",
+            roti: "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=800",
+            paneer: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=800",
+            dal: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800",
+            chicken: "https://images.unsplash.com/photo-1610057099443-fde8c4d28557?w=800",
+            paratha: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=800",
+            kheer: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=800",
+            egg: "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=800",
+            kadhi: "https://images.unsplash.com/photo-1603133872871-0c64745addc1?w=800",
+            room1: "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800",
+            room2: "https://images.unsplash.com/photo-1584622050111-993a426fbf0a?w=800",
+            room3: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800"
+        };
+
+        const MENU_DATA = {
+            Monday: { b: "Poha, Achar/Sauce", l: "Chicken/Matar Paneer", d: "Roti-Sabji", img: IMG.poha },
+            Tuesday: { b: "Roti-Sabji", l: "Chawal-Dal-Sabji", d: "Puri-Cholla, Kheer", img: IMG.kheer },
+            Wednesday: { b: "Aloo Paratha", l: "Chawal-Dal-Sabji", d: "Roti-Sabji", img: IMG.paratha },
+            Thursday: { b: "Puri-Rajma", l: "Chawal-Dal, Bhujiya", d: "Roti-Mix Veg", img: IMG.roti },
+            Friday: { b: "Roti-Sabji", l: "Egg Curry/Paneer", d: "Roti-Sabji", img: IMG.chicken },
+            Saturday: { b: "Roti-Sabji", l: "Khichri-Chokha", d: "Puri-Channa, Sewai", img: IMG.dal },
+            Sunday: { b: "Sattu Paratha", l: "Kadhi-Chawal", d: "Roti-Bhujiya", img: IMG.kadhi },
         };
 
         // --- COMPONENTS ---
 
-        const GeminiTools = () => {
-            const [tool, setTool] = useState('planner'); // planner | drafter
-            const [input, setInput] = useState('');
-            const [result, setResult] = useState('');
+        const OmniButton = ({ children, onClick, variant = 'primary', icon: Icon, loading }) => {
+            const styles = {
+                primary: "bg-blue-600/20 border-blue-500 text-blue-400 hover:bg-blue-600 hover:text-white shadow-[0_0_20px_rgba(0,243,255,0.3)]",
+                gold: "bg-yellow-600/20 border-yellow-500 text-yellow-400 hover:bg-yellow-600 hover:text-black shadow-[0_0_20px_rgba(255,215,0,0.3)]",
+                ghost: "border-white/10 text-gray-400 hover:border-white/50 hover:text-white"
+            };
+            return React.createElement('button', { 
+                onClick: onClick, disabled: loading,
+                className: `relative overflow-hidden px-8 py-4 rounded-xl font-cyber text-sm font-bold tracking-widest transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center justify-center gap-3 group border ${styles[variant]}`
+            }, loading ? React.createElement(Activity, { className: "animate-spin" }) : (Icon && React.createElement(Icon, { size: 18 })), children);
+        };
+
+        // --- SECTIONS (PHYSICAL WORLD) ---
+
+        const Navbar = ({ user, handleLogin }) => React.createElement('nav', { className: "fixed top-0 w-full z-50 glass px-6 py-4 flex justify-between items-center" },
+            React.createElement('div', { className: "flex items-center gap-2 cursor-pointer", onClick: () => window.scrollTo(0,0) },
+                React.createElement(GraduationCap, { className: "text-blue-500", size: 30 }),
+                React.createElement('div', null, React.createElement('h1', { className: "font-cyber text-xl font-bold leading-none" }, "SAFALTA"), React.createElement('p', { className: "text-[10px] tracking-[0.4em] text-gray-400" }, "EXPRESS"))
+            ),
+            React.createElement('div', { className: "hidden md:flex gap-6" },
+                ['Legacy', 'Menu', 'Rooms', 'Digital'].map(i => React.createElement('button', { onClick: () => document.getElementById(i.toLowerCase()).scrollIntoView({behavior:'smooth'}), className: "text-xs font-bold text-gray-400 hover:text-white" }, i)),
+                !user && React.createElement('button', { onClick: handleLogin, className: "bg-white text-black px-6 py-2 rounded-full text-xs font-bold" }, "LOGIN")
+            )
+        );
+
+        const Hero = () => React.createElement('section', { className: "h-screen flex flex-col justify-center items-center text-center relative overflow-hidden" },
+            React.createElement('img', { src: IMG.hero, className: "absolute inset-0 w-full h-full object-cover opacity-30 scale-105 animate-pulse" }),
+            React.createElement('div', { className: "absolute inset-0 bg-gradient-to-t from-[#020202] via-transparent" }),
+            React.createElement('div', { className: "relative z-10 p-4" },
+                React.createElement('div', { className: "inline-block mb-6 px-6 py-2 rounded-full bg-blue-900/30 border border-blue-500/30 text-blue-400 text-[10px] font-bold tracking-[0.4em] uppercase" }, "Ritesh Kumar Presents"),
+                React.createElement('h1', { className: "font-cyber text-6xl md:text-9xl mb-6 text-white" }, "STUDY", React.createElement('br'), React.createElement('span', { className: "text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500" }, "ELITE")),
+                React.createElement('p', { className: "text-xl text-gray-400 mb-10 max-w-2xl mx-auto" }, "Behind GD College, Begusarai. The ultimate ecosystem for toppers."),
+                React.createElement('button', { onClick: () => document.getElementById('booking').scrollIntoView({behavior:'smooth'}), className: "bg-blue-600 px-10 py-4 rounded-2xl font-bold text-white shadow-[0_0_40px_rgba(37,99,235,0.5)]" }, "BOOK SEAT NOW")
+            )
+        );
+
+        const LegacySection = () => React.createElement('section', { id: "legacy", className: "py-24 px-4 bg-[#020202]" },
+            React.createElement('div', { className: "max-w-7xl mx-auto text-center" },
+                React.createElement('h2', { className: "font-cyber text-4xl mb-16" }, "LOCATION RADAR"),
+                React.createElement('div', { className: "grid md:grid-cols-5 gap-4" },
+                    [
+                        {n: "GD College", t: "50m", i: GraduationCap}, {n: "Kaushal Comm.", t: "Nearby", i: BookOpen}, {n: "Trinity Classes", t: "Walkable", i: Library}, {n: "Barauni Hub", t: "Ind. Area", i: Factory}, {n: "Readers Lib", t: "24/7", i: Building2}
+                    ].map((s,i) => React.createElement('div', { key: i, className: "glass p-8 rounded-3xl hover:border-blue-500/50 transition" },
+                        React.createElement(s.i, { className: "mx-auto text-blue-500 mb-4", size: 30 }),
+                        React.createElement('h3', { className: "font-bold" }, s.n),
+                        React.createElement('p', { className: "text-xs text-gray-500 mt-1" }, s.t)
+                    ))
+                )
+            )
+        );
+
+        const MenuSection = () => {
+            const [day, setDay] = useState('Monday');
+            return React.createElement('section', { id: "menu", className: "py-24 px-4 bg-[#050505]" },
+                React.createElement('div', { className: "max-w-7xl mx-auto" },
+                    React.createElement('h2', { className: "font-cyber text-4xl text-center mb-12" }, "BRAIN FUEL"),
+                    React.createElement('div', { className: "flex gap-2 overflow-x-auto pb-8 justify-center" }, 
+                        Object.keys(MENU_DATA).map(d => React.createElement('button', { key: d, onClick: () => setDay(d), className: `px-6 py-2 rounded-full font-bold text-xs ${day === d ? 'bg-yellow-500 text-black' : 'glass text-gray-400'}` }, d))
+                    ),
+                    React.createElement('div', { className: "glass p-8 rounded-[3rem] grid md:grid-cols-2 gap-10 items-center" },
+                        React.createElement('img', { src: MENU_DATA[day].img, className: "w-full h-80 object-cover rounded-[2rem] shadow-2xl" }),
+                        React.createElement('div', { className: "space-y-6" },
+                            ['Breakfast', 'Lunch', 'Dinner'].map(t => React.createElement('div', { key: t, className: "border-b border-white/10 pb-4" },
+                                React.createElement('span', { className: "text-gray-500 text-xs uppercase font-bold" }, t),
+                                React.createElement('p', { className: "text-xl font-bold" }, MENU_DATA[day][t[0].toLowerCase()])
+                            ))
+                        )
+                    )
+                )
+            );
+        };
+
+        const RoomSection = () => React.createElement('section', { id: "rooms", className: "py-24 px-4 bg-black" },
+            React.createElement('div', { className: "max-w-7xl mx-auto" },
+                React.createElement('h2', { className: "font-cyber text-4xl text-center mb-16" }, "STUDENT SUITES"),
+                React.createElement('div', { className: "grid md:grid-cols-3 gap-8" },
+                    [IMG.room1, IMG.room2, IMG.room3].map((src, i) => React.createElement('div', { key: i, className: "h-96 glass rounded-[3rem] overflow-hidden group" },
+                        React.createElement('img', { src, className: "w-full h-full object-cover transition duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100" })
+                    ))
+                )
+            )
+        );
+
+        const BookingSection = () => React.createElement('section', { id: "booking", className: "py-32 px-4 bg-[#080808] relative overflow-hidden" },
+            React.createElement('div', { className: "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[150px]" }),
+            React.createElement('div', { className: "max-w-3xl mx-auto glass p-12 rounded-[4rem] text-center relative z-10 border border-blue-500/30" },
+                React.createElement('div', { className: "absolute top-8 right-8 bg-red-600 text-white text-[10px] font-black px-4 py-1 rounded rotate-12" }, "LIMITED TIME"),
+                React.createElement('h2', { className: "font-cyber text-5xl mb-8" }, "ELITE PLAN"),
+                
+                // PRICE CORRECTION
+                React.createElement('div', { className: "flex flex-col items-center mb-12" },
+                    React.createElement('span', { className: "text-gray-500 text-2xl strike-red font-bold font-mono" }, "₹5500"),
+                    React.createElement('span', { className: "text-8xl font-cyber text-white neon-glow tracking-tighter" }, "₹4000"),
+                    React.createElement('span', { className: "text-blue-400 text-sm tracking-[0.5em] font-bold uppercase mt-2" }, "Per Month / All Inclusive")
+                ),
+
+                React.createElement('div', { className: "grid grid-cols-2 gap-4 max-w-md mx-auto mb-10 text-left" },
+                    ["3-Time Meals", "24/7 Power", "RO Water", "Furnished Room"].map(f => React.createElement('div', { key: f, className: "flex items-center gap-2 text-gray-400 text-sm font-bold" }, React.createElement(CheckCircle, { size: 16, className: "text-green-500" }), f))
+                ),
+                React.createElement('button', { onClick: () => window.location.href="upi://pay?pa=riteshs9122@ybl&pn=SafaltaExpress&am=4000&cu=INR", className: "w-full bg-blue-600 py-6 rounded-3xl font-black text-xl hover:scale-105 transition" }, "PAY ₹4000 NOW"),
+                React.createElement('p', { className: "text-gray-600 text-xs mt-6 font-bold uppercase" }, "Official UPI: riteshs9122@ybl")
+            )
+        );
+
+        const Footer = () => React.createElement('footer', { id: "contact", className: "py-24 px-4 bg-black border-t border-white/5" },
+            React.createElement('div', { className: "max-w-7xl mx-auto grid md:grid-cols-2 gap-12" },
+                React.createElement('div', null,
+                    React.createElement('h3', { className: "font-cyber text-3xl mb-8" }, "CONTACT"),
+                    React.createElement('div', { className: "space-y-6" },
+                        React.createElement('div', { className: "flex gap-4 items-center" }, React.createElement('div', { className: "p-4 bg-gray-900 rounded-2xl text-blue-500" }, React.createElement(MapPin)), React.createElement('div', null, React.createElement('p', { className: "font-bold text-lg" }, "Behind GD College"), React.createElement('p', { className: "text-gray-500" }, "Begusarai, Bihar"))),
+                        React.createElement('div', { className: "flex gap-4 items-center" }, React.createElement('div', { className: "p-4 bg-gray-900 rounded-2xl text-green-500" }, React.createElement(Phone)), React.createElement('div', null, React.createElement('p', { className: "font-bold text-2xl" }, "9122802016"), React.createElement('p', { className: "text-gray-500" }, "8976852604"))),
+                    )
+                ),
+                React.createElement('div', { className: "h-80 glass rounded-[3rem] overflow-hidden relative cursor-pointer", onClick: () => window.open("https://maps.google.com/?q=Behind+GD+College+Begusarai") },
+                    React.createElement('img', { src: "https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?w=800", className: "w-full h-full object-cover opacity-50" }),
+                    React.createElement('div', { className: "absolute inset-0 flex items-center justify-center font-bold tracking-widest" }, "OPEN MAPS")
+                )
+            ),
+            React.createElement('div', { className: "text-center mt-20 text-gray-800 font-bold uppercase tracking-[1em] text-[10px]" }, "Safalta Express | Ritesh Kumar")
+        );
+
+        // --- THE DIGITAL EXPANSION (UNLIMITED FEATURES) ---
+
+        const DigitalPortal = () => React.createElement('div', { id: "digital", className: "py-32 text-center" },
+            React.createElement('div', { className: "portal-line mb-12" }),
+            React.createElement('h2', { className: "font-cyber text-5xl md:text-8xl text-transparent bg-clip-text bg-gradient-to-b from-white to-black opacity-50" }, "DIGITAL", React.createElement('br'), "CAMPUS"),
+            React.createElement('p', { className: "text-blue-500 tracking-[0.5em] font-bold uppercase mt-4 animate-pulse" }, "Scroll to Access Infinite Features")
+        );
+
+        const AILab = ({ user }) => {
+            const [prompt, setPrompt] = useState('');
+            const [resp, setResp] = useState('');
             const [loading, setLoading] = useState(false);
 
-            const handleGenerate = async () => {
-                if (!input) return;
+            const ask = async () => {
+                if(!prompt) return;
                 setLoading(true);
-                let prompt = "";
-                
-                if (tool === 'planner') {
-                    prompt = `Create a strict, high-performance daily study schedule for a student living in a hostel. The student is preparing for: ${input}. Include breaks for meals (Mess times: 8:30am, 1:00pm, 8:00pm). Format nicely with emojis.`;
-                } else {
-                    prompt = `Write a formal and polite application/email for a hostel student. Context/Reason: ${input}. Address it to the Hostel Warden, Safalta Express. Keep it professional.`;
-                }
-
-                const res = await callGemini(prompt);
-                setResult(res);
+                try {
+                    const r = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                        method: "POST", headers: { "Authorization": `Bearer ${KEYS.GROQ}`, "Content-Type": "application/json" },
+                        body: JSON.stringify({ model: "llama3-8b-8192", messages: [{role:"system", content:"You are Safalta Hostel AI Tutor."}, {role:"user", content: prompt}] })
+                    });
+                    const d = await r.json();
+                    setResp(d.choices[0].message.content);
+                } catch(e) { setResp("System overloaded. Try again."); }
                 setLoading(false);
             };
 
-            return React.createElement('div', { className: "max-w-4xl mx-auto space-y-8 animate-in fade-in" },
-                React.createElement('div', { className: "text-center" },
-                    React.createElement('h2', { className: "text-3xl font-titan mb-2 flex justify-center items-center gap-3" }, 
-                        React.createElement(Sparkles, { className: "text-purple-400" }), 
-                        React.createElement('span', { className: "gemini-gradient" }, "GEMINI POWER TOOLS")
-                    ),
-                    React.createElement('p', { className: "text-gray-400" }, "Next-Gen AI tools to automate your student life.")
-                ),
-
-                React.createElement('div', { className: "grid grid-cols-2 gap-4" },
-                    React.createElement('button', { 
-                        onClick: () => { setTool('planner'); setResult(''); },
-                        className: `p-4 rounded-2xl flex flex-col items-center gap-2 transition border ${tool === 'planner' ? 'bg-purple-600/20 border-purple-500' : 'glass border-transparent hover:bg-white/5'}`
-                    }, React.createElement(Calendar, { className: "text-purple-400" }), "Study Architect"),
-                    
-                    React.createElement('button', { 
-                        onClick: () => { setTool('drafter'); setResult(''); },
-                        className: `p-4 rounded-2xl flex flex-col items-center gap-2 transition border ${tool === 'drafter' ? 'bg-blue-600/20 border-blue-500' : 'glass border-transparent hover:bg-white/5'}`
-                    }, React.createElement(PenTool, { className: "text-blue-400" }), "Smart Drafter")
-                ),
-
-                React.createElement('div', { className: "glass p-8 rounded-3xl" },
-                    React.createElement('h3', { className: "text-xl font-bold mb-4" }, tool === 'planner' ? "Design Your Success Roadmap" : "Draft Professional Applications"),
-                    
-                    React.createElement('textarea', {
-                        value: input,
-                        onChange: (e) => setInput(e.target.value),
-                        placeholder: tool === 'planner' ? "e.g., JEE Mains, Weak in Physics, need 10 hours study..." : "e.g., Going home for sister's wedding for 5 days...",
-                        className: "w-full bg-black/30 border border-white/10 rounded-xl p-4 min-h-[100px] outline-none focus:border-purple-500 transition mb-4"
-                    }),
-
-                    React.createElement('button', {
-                        onClick: handleGenerate,
-                        disabled: loading,
-                        className: "w-full bg-gradient-to-r from-blue-600 to-purple-600 py-3 rounded-xl font-bold flex justify-center items-center gap-2 hover:scale-[1.01] transition"
-                    }, loading ? React.createElement('div', { className: "loader" }) : React.createElement(Sparkles, { size: 18 }), "GENERATE WITH GEMINI"),
-
-                    result && React.createElement('div', { className: "mt-8 bg-black/40 p-6 rounded-2xl border border-white/10 animate-in slide-in-from-bottom-4" },
-                        React.createElement('div', { className: "flex justify-between items-center mb-4" },
-                            React.createElement('h4', { className: "text-sm font-bold text-gray-400 uppercase tracking-widest" }, "AI Output"),
-                            React.createElement('button', { 
-                                onClick: () => { navigator.clipboard.writeText(result); alert('Copied!'); },
-                                className: "text-xs text-blue-400 hover:text-white"
-                            }, "COPY TEXT")
-                        ),
-                        React.createElement('div', { className: "whitespace-pre-wrap leading-relaxed text-sm" }, result)
-                    )
-                )
-            );
-        };
-
-        const AdminPanel = ({ users, config, onUpdateConfig, onVerifyUser, onBanUser }) => {
-            const [searchTerm, setSearchTerm] = useState("");
-            const [editPrice, setEditPrice] = useState(config?.price || 4000);
-
-            const filteredUsers = users.filter(u => u.name?.toLowerCase().includes(searchTerm.toLowerCase()) || u.email?.toLowerCase().includes(searchTerm.toLowerCase()));
-
-            return React.createElement('div', { className: "space-y-8 animate-in fade-in" },
-                // Stats Row
-                React.createElement('div', { className: "grid grid-cols-2 md:grid-cols-4 gap-4" },
-                    [{ l: "Total Users", v: users.length, c: "text-blue-400" },
-                     { l: "Active Residents", v: users.filter(u => u.status === 'Active').length, c: "text-green-400" },
-                     { l: "Pending Verification", v: users.filter(u => u.status === 'Pending').length, c: "text-yellow-400" },
-                     { l: "Monthly Revenue", v: `₹${users.filter(u => u.status === 'Active').length * config.price}`, c: "text-purple-400" }
-                    ].map((s, i) => React.createElement('div', { key: i, className: "glass p-6 rounded-2xl" },
-                        React.createElement('p', { className: "text-xs text-gray-500 font-bold uppercase" }, s.l),
-                        React.createElement('p', { className: `text-2xl font-black ${s.c}` }, s.v)
-                    ))
-                ),
-
-                // Config Control
-                React.createElement('div', { className: "glass p-6 rounded-3xl border-l-4 border-purple-500" },
-                    React.createElement('h3', { className: "font-bold text-lg mb-4 flex items-center gap-2" }, React.createElement(Edit3, { size: 18 }), "Global Settings"),
-                    React.createElement('div', { className: "flex gap-4 items-end" },
-                        React.createElement('div', { className: "flex-1" },
-                            React.createElement('label', { className: "text-xs text-gray-400 uppercase font-bold" }, "Monthly Rent (₹)"),
-                            React.createElement('input', { 
-                                type: "number", 
-                                value: editPrice, 
-                                onChange: (e) => setEditPrice(e.target.value),
-                                className: "w-full bg-black/40 border border-white/10 rounded-xl p-3 mt-1 outline-none focus:border-purple-500"
-                            })
-                        ),
-                        React.createElement('button', { 
-                            onClick: () => onUpdateConfig({ price: Number(editPrice) }),
-                            className: "bg-purple-600 px-6 py-3 rounded-xl font-bold hover:bg-purple-500 transition"
-                        }, "Update Rent")
-                    )
-                ),
-
-                // User Management
-                React.createElement('div', { className: "glass p-6 rounded-3xl" },
-                    React.createElement('div', { className: "flex justify-between items-center mb-6" },
-                        React.createElement('h3', { className: "font-bold text-lg" }, "Resident Database"),
-                        React.createElement('div', { className: "flex items-center gap-2 bg-black/40 px-3 py-2 rounded-lg border border-white/10" },
-                            React.createElement(Search, { size: 16, className: "text-gray-500" }),
-                            React.createElement('input', { 
-                                placeholder: "Search Name/Email...", 
-                                value: searchTerm,
-                                onChange: (e) => setSearchTerm(e.target.value),
-                                className: "bg-transparent outline-none text-sm w-40 md:w-64"
-                            })
-                        )
-                    ),
-                    React.createElement('div', { className: "overflow-x-auto" },
-                        React.createElement('table', { className: "w-full text-left border-collapse" },
-                            React.createElement('thead', null,
-                                React.createElement('tr', { className: "text-xs text-gray-500 uppercase border-b border-white/5" },
-                                    ['User', 'Status', 'Payment Info', 'Joined', 'Actions'].map(h => React.createElement('th', { key: h, className: "p-3 font-bold" }, h))
-                                )
-                            ),
-                            React.createElement('tbody', { className: "text-sm" },
-                                filteredUsers.map(u => React.createElement('tr', { key: u.id, className: "border-b border-white/5 hover:bg-white/5 transition" },
-                                    React.createElement('td', { className: "p-3" },
-                                        React.createElement('div', { className: "flex items-center gap-3" },
-                                            React.createElement('img', { src: u.photo || `https://ui-avatars.com/api/?name=${u.name}`, className: "w-8 h-8 rounded-full" }),
-                                            React.createElement('div', null,
-                                                React.createElement('p', { className: "font-bold" }, u.name),
-                                                React.createElement('p', { className: "text-xs text-gray-500" }, u.email)
-                                            )
-                                        )
-                                    ),
-                                    React.createElement('td', { className: "p-3" },
-                                        React.createElement('span', { className: `status-badge ${u.status === 'Active' ? 'status-active' : u.status === 'Pending' ? 'status-pending' : 'status-banned'}` }, u.status)
-                                    ),
-                                    React.createElement('td', { className: "p-3" },
-                                        React.createElement('p', { className: "font-mono text-xs text-blue-300" }, u.txnId || 'N/A'),
-                                        React.createElement('p', { className: "text-[10px] text-gray-500" }, u.paymentStatus || 'Unpaid')
-                                    ),
-                                    React.createElement('td', { className: "p-3 text-gray-400" }, new Date(u.joinedOn).toLocaleDateString()),
-                                    React.createElement('td', { className: "p-3 flex gap-2" },
-                                        u.status !== 'Active' && React.createElement('button', { onClick: () => onVerifyUser(u.id), className: "bg-green-600 p-2 rounded-lg hover:bg-green-500", title: "Verify & Activate" }, React.createElement(CheckCircle, { size: 16 })),
-                                        React.createElement('button', { onClick: () => onBanUser(u.id), className: "bg-red-600/20 text-red-500 p-2 rounded-lg hover:bg-red-600 hover:text-white", title: "Revoke Access" }, React.createElement(Trash2, { size: 16 }))
-                                    )
-                                ))
+            return React.createElement('section', { className: "py-24 px-4 bg-[#030303]" },
+                React.createElement('div', { className: "max-w-4xl mx-auto" },
+                    React.createElement('div', { className: "glass p-10 rounded-[3rem] border border-purple-500/20" },
+                        React.createElement('div', { className: "flex items-center gap-4 mb-8" }, React.createElement(Brain, { size: 40, className: "text-purple-500" }), React.createElement('h3', { className: "font-cyber text-3xl" }, "AI STUDY LAB")),
+                        !user ? React.createElement('div', { className: "text-center py-20 text-gray-500" }, "Login to access AI Tutor.") : React.createElement('div', { className: "space-y-6" },
+                            React.createElement('div', { className: "h-64 overflow-y-auto bg-black/40 rounded-2xl p-6 text-sm text-gray-300 whitespace-pre-wrap" }, loading ? "Thinking..." : resp || "Ask me to create a study plan or explain a topic..."),
+                            React.createElement('div', { className: "flex gap-4" },
+                                React.createElement('input', { value: prompt, onChange: e => setPrompt(e.target.value), placeholder: "Type your query...", className: "flex-1 bg-white/5 rounded-xl px-6 outline-none border border-white/10 focus:border-purple-500" }),
+                                React.createElement('button', { onClick: ask, className: "bg-purple-600 p-4 rounded-xl" }, React.createElement(Send, { size: 24 }))
                             )
                         )
                     )
@@ -278,331 +287,98 @@
             );
         };
 
-        const App = () => {
-            // State
-            const [user, setUser] = useState(null);
-            const [profile, setProfile] = useState(null);
-            const [activeTab, setActiveTab] = useState('hero');
-            const [usersList, setUsersList] = useState([]);
-            const [config, setConfig] = useState({ price: 4000 });
-            
-            // Payment Flow State
-            const [txnId, setTxnId] = useState("");
-            const [isVerifying, setIsVerifying] = useState(false);
+        const CommunityHub = ({ user }) => {
+            const [msg, setMsg] = useState('');
+            const [chat, setChat] = useState([]);
 
-            // AI State
-            const [aiPrompt, setAiPrompt] = useState("");
-            const [aiResponse, setAiResponse] = useState("");
-            const [aiLoading, setAiLoading] = useState(false);
-            const [aiCooldown, setAiCooldown] = useState(false);
-
-            // Chat State
-            const [chatMsg, setChatMsg] = useState("");
-            const [messages, setMessages] = useState([]);
-
-            // --- INITIALIZATION ---
             useEffect(() => {
-                const unsubAuth = onAuthStateChanged(auth, async (u) => {
-                    if (u) {
-                        setUser(u);
-                        const userRef = doc(db, 'artifacts', APP_ID, 'users', u.uid);
-                        // Realtime Profile Listener
-                        onSnapshot(userRef, (docSnap) => {
-                            if (docSnap.exists()) {
-                                setProfile(docSnap.data());
-                            } else {
-                                // First time login setup
-                                const newProfile = { 
-                                    name: u.displayName, 
-                                    email: u.email, 
-                                    photo: u.photoURL, 
-                                    status: 'Pending', 
-                                    paymentStatus: 'Unpaid',
-                                    joinedOn: new Date().toISOString() 
-                                };
-                                setDoc(userRef, newProfile);
-                                setProfile(newProfile);
-                            }
-                        });
-
-                        // If Admin, fetch all users
-                        if (u.email === OWNER_EMAIL) {
-                            onSnapshot(collection(db, 'artifacts', APP_ID, 'users'), (snap) => {
-                                setUsersList(snap.docs.map(d => ({ id: d.id, ...d.data() })));
-                            });
-                        }
-                    } else {
-                        setUser(null);
-                        setProfile(null);
-                    }
-                });
-
-                // Global Config
-                onSnapshot(doc(db, 'artifacts', APP_ID, 'public', 'config'), (snap) => {
-                    if (snap.exists()) setConfig(snap.data());
-                    else setDoc(doc(db, 'artifacts', APP_ID, 'public', 'config'), { price: 4000 });
-                });
-
-                // Chat
-                const qChat = query(collection(db, 'artifacts', APP_ID, 'public', 'data', 'chat'), orderBy('timestamp', 'desc'), limit(50));
-                onSnapshot(qChat, (snap) => {
-                    setMessages(snap.docs.map(d => ({ id: d.id, ...d.data() })));
-                });
-
-                // Scroll Reveal
-                const obs = new IntersectionObserver(e => e.forEach(x => x.isIntersecting && x.target.classList.add('active')), {threshold: 0.1});
-                document.querySelectorAll('.reveal').forEach(x => obs.observe(x));
-
-                return () => unsubAuth();
+                const q = query(collection(db, 'artifacts', APP_ID, 'public', 'chat'), orderBy('ts', 'desc'), limit(20));
+                return onSnapshot(q, s => setChat(s.docs.map(d => d.data())));
             }, []);
 
-            // --- FUNCTIONS ---
-
-            const handleLogin = async () => {
-                try { await signInWithPopup(auth, googleProvider); } catch(e) { console.error(e); }
-            };
-
-            const submitPayment = async () => {
-                if (!txnId.trim()) return alert("Enter Transaction ID");
-                setIsVerifying(true);
-                // Update User Profile with Pending Payment
-                await updateDoc(doc(db, 'artifacts', APP_ID, 'users', user.uid), {
-                    txnId: txnId,
-                    paymentStatus: 'Verifying',
-                    paymentDate: new Date().toISOString()
+            const send = async () => {
+                if(!msg) return;
+                await addDoc(collection(db, 'artifacts', APP_ID, 'public', 'chat'), {
+                    u: user.displayName, txt: msg, ts: serverTimestamp(), img: user.photoURL
                 });
-                alert("Payment Proof Submitted! Admin will verify shortly.");
-                setIsVerifying(false);
+                setMsg('');
             };
 
-            const adminVerifyUser = async (uid) => {
-                if (confirm("Confirm payment received and activate user?")) {
-                    await updateDoc(doc(db, 'artifacts', APP_ID, 'users', uid), {
-                        status: 'Active',
-                        paymentStatus: 'Paid',
-                        room: 'Assigned'
-                    });
-                }
-            };
-
-            const adminBanUser = async (uid) => {
-                if (confirm("Revoke access for this user?")) {
-                    await updateDoc(doc(db, 'artifacts', APP_ID, 'users', uid), { status: 'Banned' });
-                }
-            };
-
-            const updateGlobalConfig = async (newConfig) => {
-                await updateDoc(doc(db, 'artifacts', APP_ID, 'public', 'config'), newConfig);
-                alert("Settings Updated");
-            };
-
-            const askAi = async () => {
-                if (!aiPrompt.trim()) return;
-                if (aiCooldown) return alert("Please wait 10 seconds between questions.");
-                
-                setAiLoading(true);
-                setAiCooldown(true);
-                setTimeout(() => setAiCooldown(false), 10000); // 10s Rate Limit
-
-                try {
-                    const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-                        method: "POST",
-                        headers: { "Authorization": `Bearer ${GROQ_API_KEY}`, "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            model: "llama3-8b-8192",
-                            messages: [
-                                { role: "system", content: "You are an AI Tutor for students. Be concise, helpful, and academic." },
-                                { role: "user", content: aiPrompt }
-                            ]
-                        })
-                    });
-                    const data = await res.json();
-                    setAiResponse(data.choices[0].message.content);
-                } catch (e) { setAiResponse("Service overloaded. Try again later."); }
-                setAiLoading(false);
-            };
-
-            const sendChat = async () => {
-                if (!chatMsg.trim()) return;
-                await addDoc(collection(db, 'artifacts', APP_ID, 'public', 'data', 'chat'), {
-                    uid: user.uid, name: user.displayName, photo: user.photoURL, text: chatMsg, timestamp: serverTimestamp()
-                });
-                setChatMsg("");
-            };
-
-            // --- VIEW ---
-            return React.createElement('div', { className: "min-h-screen text-white" },
-                /* Navbar */
-                React.createElement('nav', { className: "fixed top-0 w-full z-50 glass-panel px-6 py-3 flex justify-between items-center" },
-                    React.createElement('div', { className: "flex items-center gap-2 cursor-pointer", onClick: () => setActiveTab('hero') },
-                        React.createElement(ShieldCheck, { className: "text-blue-500" }),
-                        React.createElement('div', null,
-                            React.createElement('h1', { className: "font-titan text-lg" }, "SAFALTA", React.createElement('span', { className: "text-blue-500" }, "FORTRESS")),
-                            React.createElement('p', { className: "text-[8px] tracking-widest text-gray-500 uppercase" }, "Secure Student Nexus")
+            return React.createElement('section', { className: "py-24 px-4 bg-black" },
+                React.createElement('div', { className: "max-w-6xl mx-auto grid md:grid-cols-2 gap-10" },
+                    React.createElement('div', { className: "glass p-10 rounded-[3rem]" },
+                        React.createElement('div', { className: "flex items-center gap-4 mb-8" }, React.createElement(MessageSquare, { size: 30, className: "text-blue-500" }), React.createElement('h3', { className: "font-cyber text-2xl" }, "GROUP STUDY")),
+                        !user ? React.createElement('p', { className: "text-gray-500" }, "Login to chat.") : React.createElement('div', { className: "space-y-4" },
+                            React.createElement('div', { className: "h-80 overflow-y-auto flex flex-col-reverse gap-4 pr-2 scrollbar-hide" },
+                                chat.map((c, i) => React.createElement('div', { key: i, className: "bg-white/5 p-3 rounded-2xl flex gap-3 items-start" },
+                                    React.createElement('img', { src: c.img, className: "w-8 h-8 rounded-full" }),
+                                    React.createElement('div', null, React.createElement('p', { className: "text-[10px] text-gray-500 font-bold uppercase" }, c.u), React.createElement('p', { className: "text-sm" }, c.txt))
+                                ))
+                            ),
+                            React.createElement('div', { className: "flex gap-2" },
+                                React.createElement('input', { value: msg, onChange: e => setMsg(e.target.value), className: "flex-1 bg-white/5 rounded-xl px-4 outline-none", placeholder: "Discuss..." }),
+                                React.createElement('button', { onClick: send, className: "bg-blue-600 p-3 rounded-xl" }, React.createElement(Send, { size: 20 }))
+                            )
                         )
                     ),
-                    React.createElement('div', { className: "flex items-center gap-6" },
-                        user ? React.createElement('div', { className: "flex items-center gap-3" },
-                            React.createElement('button', { onClick: () => setActiveTab('gemini'), className: `hidden md:flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition ${activeTab === 'gemini' ? 'bg-purple-600' : 'bg-white/5 hover:bg-white/10'}` },
-                                React.createElement(Sparkles, { size: 14 }), "GEMINI TOOLS"
-                            ),
-                            React.createElement('button', { onClick: () => setActiveTab('dashboard'), className: `flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition ${activeTab === 'dashboard' ? 'bg-blue-600' : 'bg-white/5 hover:bg-white/10'}` },
-                                React.createElement(LayoutDashboard, { size: 14 }), "DASHBOARD"
-                            ),
-                            React.createElement('img', { src: user.photoURL, className: "w-8 h-8 rounded-full border border-gray-600" })
-                        ) : React.createElement('button', { onClick: handleLogin, className: "bg-white text-black px-6 py-2 rounded-full text-xs font-black hover:scale-105 transition" }, "LOGIN")
-                    )
-                ),
-
-                /* Main Content Area */
-                React.createElement('main', { className: "pt-24 px-4 pb-20 max-w-7xl mx-auto" },
-                    activeTab === 'hero' ? (
-                        /* HERO & PUBLIC FEATURES */
-                        React.createElement('div', { className: "space-y-20" },
-                            // Hero Banner
-                            React.createElement('section', { className: "text-center py-20 relative" },
-                                React.createElement('div', { className: "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[120px] -z-10" }),
-                                React.createElement('h1', { className: "font-titan text-5xl md:text-8xl mb-6" }, "ELITE", React.createElement('br'), "LIVING"),
-                                React.createElement('p', { className: "text-xl text-gray-400 max-w-2xl mx-auto mb-10" }, "Secure. Smart. Success-Driven. The only AI-Integrated Hostel in Begusarai."),
-                                React.createElement('div', { className: "flex justify-center gap-4" },
-                                    React.createElement('button', { onClick: () => setActiveTab('gemini'), className: "bg-purple-600 px-8 py-4 rounded-xl font-bold shadow-lg shadow-purple-500/30 hover:scale-105 transition flex items-center gap-2" }, React.createElement(Sparkles, {size:18}), "USE GEMINI TOOLS"),
-                                    React.createElement('button', { onClick: () => setActiveTab('dashboard'), className: "glass px-8 py-4 rounded-xl font-bold hover:bg-white/5 transition" }, "BOOK MY SEAT")
-                                )
-                            ),
-
-                            // Features Grid
-                            React.createElement('div', { className: "grid md:grid-cols-3 gap-6" },
-                                [
-                                    { t: "Verified Residents", d: "Strict ID check & Admin approval.", i: User },
-                                    { t: "Secure Payments", d: "Manual Verification for 100% safety.", i: Lock },
-                                    { t: "AI Integration", d: "Personal Tutor & Planner.", i: Brain }
-                                ].map((f, i) => React.createElement('div', { key: i, className: "glass p-8 rounded-3xl hover:border-blue-500/30 transition" },
-                                    React.createElement(f.i, { className: "text-blue-500 mb-4", size: 32 }),
-                                    React.createElement('h3', { className: "font-bold text-xl mb-2" }, f.t),
-                                    React.createElement('p', { className: "text-gray-400 text-sm" }, f.d)
-                                ))
-                            )
-                        )
-                    ) : activeTab === 'gemini' ? (
-                        /* GEMINI TOOLS SECTION */
-                        React.createElement(GeminiTools)
-                    ) : activeTab === 'ai' ? (
-                        /* AI SECTION */
-                        React.createElement('div', { className: "max-w-3xl mx-auto" },
-                            React.createElement('h2', { className: "font-titan text-3xl mb-8 text-center" }, "AI TUTOR"),
-                            React.createElement('div', { className: "glass p-6 rounded-3xl min-h-[400px] flex flex-col" },
-                                React.createElement('div', { className: "flex-1 overflow-y-auto mb-6 space-y-4" },
-                                    aiResponse ? React.createElement('div', { className: "bg-blue-600/20 p-6 rounded-2xl border border-blue-500/20" },
-                                        React.createElement('p', { className: "text-blue-300 text-xs font-bold uppercase mb-2" }, "AI Response"),
-                                        React.createElement('p', { className: "leading-relaxed whitespace-pre-wrap" }, aiResponse)
-                                    ) : React.createElement('div', { className: "text-center text-gray-500 mt-20" },
-                                        React.createElement(Brain, { className: "mx-auto mb-4 opacity-20", size: 64 }),
-                                        React.createElement('p', null, "Ask me anything about Physics, Math, or Begusarai.")
-                                    )
-                                ),
-                                React.createElement('div', { className: "flex gap-3" },
-                                    React.createElement('input', { 
-                                        value: aiPrompt,
-                                        onChange: (e) => setAiPrompt(e.target.value),
-                                        placeholder: aiCooldown ? "Cooling down..." : "Ask your doubt...",
-                                        disabled: aiCooldown || aiLoading,
-                                        className: "flex-1 bg-black/40 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-blue-500 disabled:opacity-50"
-                                    }),
-                                    React.createElement('button', { 
-                                        onClick: askAi,
-                                        disabled: aiCooldown || aiLoading,
-                                        className: "bg-blue-600 p-3 rounded-xl disabled:opacity-50"
-                                    }, aiLoading ? React.createElement('div', { className: "loader" }) : React.createElement(Send, { size: 20 }))
-                                )
-                            )
-                        )
-                    ) : (
-                        /* DASHBOARD (User/Admin) */
-                        !user ? React.createElement('div', { className: "text-center py-20" },
-                            React.createElement('h2', { className: "text-2xl font-bold mb-4" }, "Authentication Required"),
-                            React.createElement('button', { onClick: handleLogin, className: "bg-white text-black px-8 py-3 rounded-full font-black" }, "LOGIN WITH GOOGLE")
-                        ) :
-                        user.email === OWNER_EMAIL ? (
-                            /* ADMIN VIEW */
-                            React.createElement(AdminPanel, { 
-                                users: usersList, 
-                                config: config, 
-                                onUpdateConfig: updateGlobalConfig,
-                                onVerifyUser: adminVerifyUser,
-                                onBanUser: adminBanUser
-                            })
-                        ) : (
-                            /* STUDENT VIEW */
-                            React.createElement('div', { className: "grid md:grid-cols-2 gap-8" },
-                                // Profile Card
-                                React.createElement('div', { className: "glass p-8 rounded-3xl" },
-                                    React.createElement('div', { className: "flex items-center gap-4 mb-8" },
-                                        React.createElement('img', { src: user.photoURL, className: "w-16 h-16 rounded-full border-2 border-blue-500" }),
-                                        React.createElement('div', null,
-                                            React.createElement('h2', { className: "font-bold text-xl" }, profile?.name),
-                                            React.createElement('span', { className: `status-badge ${profile?.status === 'Active' ? 'status-active' : 'status-pending'}` }, profile?.status)
-                                        )
-                                    ),
-                                    React.createElement('div', { className: "space-y-4 text-sm" },
-                                        React.createElement('div', { className: "flex justify-between p-3 bg-white/5 rounded-xl" },
-                                            React.createElement('span', { className: "text-gray-400" }, "Room No"),
-                                            React.createElement('span', { className: "font-mono font-bold" }, profile?.room || "Waiting Allocation")
-                                        ),
-                                        React.createElement('div', { className: "flex justify-between p-3 bg-white/5 rounded-xl" },
-                                            React.createElement('span', { className: "text-gray-400" }, "Payment Due"),
-                                            React.createElement('span', { className: "font-mono font-bold text-yellow-400" }, profile?.paymentStatus === 'Paid' ? '₹0' : `₹${config.price}`)
-                                        )
-                                    )
-                                ),
-                                // Payment & Actions
-                                React.createElement('div', { className: "space-y-6" },
-                                    profile?.status !== 'Active' && React.createElement('div', { className: "glass p-8 rounded-3xl border border-yellow-500/30" },
-                                        React.createElement('h3', { className: "font-bold text-lg mb-4 flex items-center gap-2" }, React.createElement(AlertTriangle, { className: "text-yellow-500" }), "Action Required"),
-                                        React.createElement('p', { className: "text-sm text-gray-400 mb-6" }, "Your seat is reserved but not active. Please complete payment of ₹{config.price} and submit the Transaction ID below."),
-                                        
-                                        React.createElement('div', { className: "space-y-3" },
-                                            React.createElement('button', { 
-                                                onClick: () => window.location.href = `upi://pay?pa=riteshs9122@ybl&pn=SafaltaExpress&am=${config.price}&cu=INR`,
-                                                className: "w-full bg-blue-600 py-3 rounded-xl font-bold flex items-center justify-center gap-2"
-                                            }, React.createElement(Smartphone, { size: 16 }), "Pay via UPI App"),
-                                            
-                                            React.createElement('div', { className: "flex gap-2" },
-                                                React.createElement('input', { 
-                                                    value: txnId, 
-                                                    onChange: (e) => setTxnId(e.target.value),
-                                                    placeholder: "Enter UTR / Transaction ID", 
-                                                    className: "flex-1 bg-black/40 border border-white/10 rounded-xl px-4 outline-none"
-                                                }),
-                                                React.createElement('button', { 
-                                                    onClick: submitPayment,
-                                                    disabled: isVerifying,
-                                                    className: "bg-green-600 px-6 rounded-xl font-bold disabled:opacity-50"
-                                                }, "Verify")
-                                            )
-                                        )
-                                    ),
-                                    React.createElement('div', { className: "glass p-8 rounded-3xl" },
-                                        React.createElement('h3', { className: "font-bold mb-4" }, "Community Chat"),
-                                        React.createElement('div', { className: "h-40 overflow-y-auto mb-4 space-y-2 pr-2 scrollbar-hide" },
-                                            messages.map(m => React.createElement('div', { key: m.id, className: "bg-white/5 p-2 rounded-lg text-xs" },
-                                                React.createElement('span', { className: "font-bold text-blue-400" }, m.name, ": "),
-                                                m.text
-                                            ))
-                                        ),
-                                        React.createElement('div', { className: "flex gap-2" },
-                                            React.createElement('input', { 
-                                                value: chatMsg, onChange: (e) => setChatMsg(e.target.value), 
-                                                className: "flex-1 bg-white/5 rounded-lg px-3 py-2 text-xs outline-none", 
-                                                placeholder: "Say hi..." 
-                                            }),
-                                            React.createElement('button', { onClick: sendChat, className: "bg-purple-600 p-2 rounded-lg" }, React.createElement(Send, { size: 14 }))
-                                        )
-                                    )
-                                )
+                    React.createElement('div', { className: "glass p-10 rounded-[3rem] border border-yellow-500/20" },
+                        React.createElement('div', { className: "flex items-center gap-4 mb-8" }, React.createElement(Settings, { size: 30, className: "text-yellow-500" }), React.createElement('h3', { className: "font-cyber text-2xl" }, "DASHBOARD")),
+                        !user ? React.createElement('p', { className: "text-gray-500" }, "Access your profile.") : React.createElement('div', { className: "text-center" },
+                            React.createElement('img', { src: user.photoURL, className: "w-24 h-24 rounded-full mx-auto border-4 border-yellow-500/30 mb-4" }),
+                            React.createElement('h4', { className: "text-xl font-bold" }, user.displayName),
+                            React.createElement('p', { className: "text-sm text-gray-500 mb-8" }, user.email),
+                            React.createElement('div', { className: "grid grid-cols-2 gap-4" },
+                                React.createElement('div', { className: "bg-white/5 p-4 rounded-2xl" }, React.createElement('p', { className: "text-[10px] text-gray-500" }, "STATUS"), React.createElement('p', { className: "text-green-500 font-bold" }, "ACTIVE")),
+                                React.createElement('div', { className: "bg-white/5 p-4 rounded-2xl" }, React.createElement('p', { className: "text-[10px] text-gray-500" }, "FEE DUE"), React.createElement('p', { className: "text-red-500 font-bold" }, "₹4000"))
                             )
                         )
                     )
                 )
+            );
+        };
+
+        const FocusZone = () => React.createElement('section', { className: "py-24 px-4 bg-[#020202] text-center" },
+            React.createElement('div', { className: "max-w-4xl mx-auto glass p-12 rounded-[4rem]" },
+                React.createElement('h2', { className: "font-cyber text-3xl mb-8 flex justify-center items-center gap-4" }, React.createElement(Headphones, { className: "text-pink-500" }), "FOCUS ZONE"),
+                React.createElement('div', { className: "grid grid-cols-3 gap-6" },
+                    [{n:"Rain", i: "🌧️"}, {n:"Lofi", i: "🎵"}, {n:"White Noise", i: "🌊"}].map((x, i) => React.createElement('button', { key: i, className: "bg-white/5 p-6 rounded-3xl hover:bg-pink-500/20 transition hover:scale-105" }, 
+                        React.createElement('div', { className: "text-4xl mb-2" }, x.i),
+                        React.createElement('p', { className: "font-bold text-xs uppercase" }, x.n)
+                    ))
+                )
+            )
+        );
+
+        // --- MAIN APP ---
+
+        const App = () => {
+            const [user, setUser] = useState(null);
+            
+            useEffect(() => {
+                const init = async () => {
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) await signInWithCustomToken(auth, __initial_auth_token);
+                    else await signInAnonymously(auth);
+                };
+                init();
+                return onAuthStateChanged(auth, setUser);
+            }, []);
+
+            const login = async () => { try { await signInWithPopup(auth, googleProvider); } catch(e){} };
+            const logout = async () => { await signOut(auth); };
+
+            return React.createElement('div', { className: "min-h-screen" },
+                React.createElement(Navbar, { user, handleLogin: login }),
+                React.createElement(Hero),
+                React.createElement(LegacySection),
+                React.createElement(FoodMenu),
+                React.createElement(RoomSection),
+                React.createElement(Booking),
+                React.createElement(Footer),
+                // THE INFINITE EXPANSION BEGINS HERE
+                React.createElement(DigitalPortal),
+                React.createElement(AILab, { user }),
+                React.createElement(CommunityHub, { user }),
+                React.createElement(FocusZone)
             );
         };
 
