@@ -3,212 +3,343 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Safalta Express | The Ultimate Student Ecosystem</title>
+    <title>Safalta Express Boys Hostel | The Living Legacy</title>
     <meta name="theme-color" content="#000000">
-    <meta name="description" content="Premium Boys Hostel in Begusarai. Tech-enabled, study-focused.">
     
-    <!-- PRELOAD HERO IMAGE FOR INSTANT VISUAL -->
-    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?q=80&w=1200">
-
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=Cinzel:wght@400;700&family=Share+Tech+Mono&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
     
     <!-- Tailwind & Tools -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
-    <!-- React & Babel -->
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-
     <style>
-        /* --- CORE VARIABLES --- */
         :root { 
             --neon-blue: #00f3ff; 
             --neon-purple: #bc13fe; 
             --gold: #ffd700; 
-            --void: #050505; 
+            --void: #030303; 
             --danger: #ff003c; 
-            --success: #00ff66; 
-            --glass-opacity: 0.7; 
-            --border-rad: 1.5rem; 
+            --success: #00ff66;
+            --glass-opacity: 0.85;
+            --glass-radius: 1rem;
+            --app-font: 'Outfit', sans-serif;
+            --reveal-transform: translateY(100px) scale(0.8) rotateX(45deg); 
         }
         
         body { 
             background-color: var(--void); 
-            font-family: 'Outfit', sans-serif; 
+            font-family: var(--app-font); 
             color: white; 
             overflow-x: hidden; 
             -webkit-tap-highlight-color: transparent; 
             perspective: 1500px; 
-            cursor: none; /* Custom cursor takes over */
-            margin: 0;
+            transition: background-color 0.5s ease, font-family 0.3s ease;
+            cursor: none; /* Hiding default cursor for Living Reality Mode */
+        }
+        
+        /* --- HYPER PRO MAX UPGRADES (NEW) --- */
+        
+        /* Living Noise Overlay */
+        .living-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIiBvcGFjaXR5PSIwLjA1Ii8+PC9zdmc+');
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.4;
+            mix-blend-mode: overlay;
         }
 
-        /* --- SKELETON LOADER (INSTANT DISPLAY) --- */
-        #static-loader {
-            position: fixed; inset: 0; background: #000; z-index: 50;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            font-family: 'Orbitron', sans-serif;
+        /* Cyber Fog Animation */
+        .cyber-fog {
+            position: fixed;
+            top: 0; left: 0; width: 300%; height: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(0, 243, 255, 0.05) 50%, transparent 100%);
+            z-index: -2;
+            animation: fogMove 60s linear infinite;
+            pointer-events: none;
         }
-        .loader-title { font-size: 3rem; font-weight: 900; color: #fff; text-shadow: 0 0 20px #00f3ff; animation: pulse-fast 1s infinite; }
-        @keyframes pulse-fast { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        @keyframes fogMove { 0% { transform: translateX(-50%); } 100% { transform: translateX(0%); } }
 
-        /* --- SCROLLBAR --- */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #000; }
-        ::-webkit-scrollbar-thumb { background: var(--neon-blue); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--neon-purple); }
-
-        /* --- FONTS --- */
-        .font-cyber { font-family: 'Orbitron', sans-serif; letter-spacing: 0.1em; }
-        .font-tech { font-family: 'Rajdhani', sans-serif; }
-        .font-mono-tech { font-family: 'Share Tech Mono', monospace; }
-
-        /* --- GLASSMORPHISM & CARDS --- */
-        .glass-panel {
-            background: rgba(20, 20, 30, var(--glass-opacity));
-            backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-top: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        /* Glitch Text Effect */
+        .glitch-text {
             position: relative;
-            overflow: hidden;
+        }
+        .glitch-text::before, .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--void);
+        }
+        .glitch-text::before {
+            left: 2px; text-shadow: -1px 0 #ff00c1;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+        .glitch-text::after {
+            left: -2px; text-shadow: -1px 0 #00fff9;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim2 5s infinite linear alternate-reverse;
+        }
+        @keyframes glitch-anim {
+            0% { clip: rect(31px, 9999px, 94px, 0); }
+            4.166% { clip: rect(70px, 9999px, 19px, 0); }
+            8.333% { clip: rect(2px, 9999px, 14px, 0); }
+            100% { clip: rect(56px, 9999px, 86px, 0); }
+        }
+        @keyframes glitch-anim2 {
+            0% { clip: rect(69px, 9999px, 79px, 0); }
+            100% { clip: rect(24px, 9999px, 90px, 0); }
         }
 
-        .glass-panel::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
-            transform: skewX(-25deg);
-            transition: 0.5s;
+        /* Custom Kinetic Cursor */
+        .cursor-dot, .cursor-outline {
+            position: fixed; top: 0; left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
             pointer-events: none;
         }
-
-        .glass-panel:hover::before { left: 150%; transition: 0.7s ease-in-out; }
-        .glass-panel:hover {
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
-            transform: translateY(-5px) scale(1.01);
-            z-index: 10;
-        }
-
-        /* --- GAMIFICATION ELEMENTS --- */
-        .xp-bar-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 4px; 
-            background: rgba(255,255,255,0.1); z-index: 9999;
-        }
-        .xp-bar-fill {
-            height: 100%; background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
-            width: 0%; transition: width 0.3s ease-out;
-            box-shadow: 0 0 10px var(--neon-blue);
-        }
-
-        /* --- GLITCH TEXT --- */
-        .glitch-wrapper { position: relative; display: inline-block; }
-        .glitch-text { position: relative; color: white; mix-blend-mode: lighten; }
-        .glitch-text:before, .glitch-text:after {
-            content: attr(data-text); position: absolute; top: 0; width: 100%; height: 100%; clip: rect(0,0,0,0);
-        }
-        .glitch-text:before { left: -2px; text-shadow: 2px 0 var(--danger); animation: glitch-anim-1 2s infinite linear alternate-reverse; }
-        .glitch-text:after { left: 2px; text-shadow: -2px 0 var(--neon-blue); animation: glitch-anim-2 3s infinite linear alternate-reverse; }
+        .cursor-dot { width: 8px; height: 8px; background-color: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue); }
+        .cursor-outline { width: 40px; height: 40px; border: 1px solid var(--neon-blue); transition: width 0.2s, height 0.2s, background-color 0.2s; }
         
-        @keyframes glitch-anim-1 { 
-            0% { clip: rect(20px, 9999px, 15px, 0); } 
-            20% { clip: rect(50px, 9999px, 60px, 0); } 
-            100% { clip: rect(0px, 9999px, 0px, 0); } 
+        body:hover .cursor-outline { opacity: 1; }
+        
+        /* Breathing Border Effect */
+        @keyframes breathe-border {
+            0% { border-color: rgba(255,255,255,0.1); box-shadow: 0 0 0 rgba(0,243,255,0); }
+            50% { border-color: rgba(0,243,255,0.5); box-shadow: 0 0 20px rgba(0,243,255,0.2); }
+            100% { border-color: rgba(255,255,255,0.1); box-shadow: 0 0 0 rgba(0,243,255,0); }
         }
-        @keyframes glitch-anim-2 { 
-            0% { clip: rect(10px, 9999px, 80px, 0); } 
-            20% { clip: rect(80px, 9999px, 10px, 0); } 
-            100% { clip: rect(0px, 9999px, 0px, 0); } 
+        .glass-panel { animation: breathe-border 8s infinite ease-in-out; }
+
+        /* --- END NEW STYLES --- */
+
+        .font-cyber { font-family: 'Orbitron', sans-serif; }
+        .font-tech { font-family: 'Rajdhani', sans-serif; }
+
+        /* Ultra Glass - Dynamic */
+        .glass-panel {
+            background: rgba(12, 12, 18, var(--glass-opacity));
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+            transform-style: preserve-3d;
+            border-radius: var(--glass-radius);
+            transition: border-radius 0.3s ease, background 0.3s ease;
         }
 
-        /* --- ANIMATIONS --- */
+        /* 3D Tilt & Glow */
+        .tilt-card { transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); transform-style: preserve-3d; }
+        .tilt-card:hover { transform: translateY(-10px) scale(1.02) rotateX(2deg) rotateY(2deg); box-shadow: 0 0 30px rgba(var(--neon-blue), 0.3); border-color: var(--neon-blue); z-index: 50; }
+        
+        /* Neon Effects */
+        .text-glow { text-shadow: 0 0 20px var(--neon-blue), 0 0 40px var(--neon-blue); }
+        
+        /* Price Strike */
+        .strike-diagonal { position: relative; display: inline-block; color: #6b7280; }
+        .strike-diagonal::after { content: ''; position: absolute; top: 50%; left: -10%; width: 120%; height: 3px; background: var(--danger); transform: rotate(-15deg); box-shadow: 0 0 10px var(--danger); }
+
+        /* Animations */
         .animate-float { animation: float 6s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(2deg); } }
         
-        .pulse-glow { animation: pulseGlow 2s infinite; }
-        @keyframes pulseGlow { 
-            0% { box-shadow: 0 0 0 0 rgba(0, 243, 255, 0.4); } 
-            70% { box-shadow: 0 0 0 15px rgba(0, 243, 255, 0); } 
-            100% { box-shadow: 0 0 0 0 rgba(0, 243, 255, 0); } 
+        /* Dynamic Scroll Reveal */
+        .scroll-reveal { 
+            opacity: 0; 
+            transform: var(--reveal-transform); 
+            transition: all 1s cubic-bezier(0.17, 0.55, 0.55, 1); 
+        }
+        .scroll-reveal.visible { 
+            opacity: 1; 
+            transform: translateY(0) scale(1) rotateX(0deg); 
+        }
+        
+        /* Sidebar */
+        .sidebar { position: fixed; top: 0; left: 0; width: 320px; height: 100%; background: rgba(5,5,5,0.98); border-right: 1px solid rgba(0, 243, 255, 0.2); transform: translateX(-100%); transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); z-index: 3000; box-shadow: 20px 0 100px rgba(0, 243, 255, 0.2); }
+        .sidebar.open { transform: translateX(0); }
+        
+        /* Popups */
+        .app-modal { position: fixed; inset: 0; z-index: 2500; background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(20px); overflow-y: auto; animation: zoomIn 0.3s ease-out; }
+        /* Special positioning for AI tools */
+        .app-modal.top-align { align-items: flex-start; padding-top: 80px; }
+        
+        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        /* HERO EXPLOSION ANIMATION */
+        .fly-out { animation: flyOut 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; opacity: 0; }
+        @keyframes flyOut {
+            0% { transform: scale(0.5) translateZ(-500px); opacity: 0; filter: blur(10px); }
+            100% { transform: scale(1.1) translateZ(100px); opacity: 1; filter: blur(0px); text-shadow: 0 0 50px var(--neon-blue); }
         }
 
-        .bg-scanline {
-            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
-            background-size: 100% 4px;
+        /* PAYMENT POP OUT */
+        .pop-3d { animation: pop3d 3s infinite ease-in-out; }
+        @keyframes pop3d { 0%, 100% { transform: translateZ(0px) scale(1); } 50% { transform: translateZ(50px) scale(1.15); text-shadow: 0 0 30px var(--gold); } }
+
+        /* DEV NEXUS - EXTREME SPIN */
+        .dangerous-spin { animation: tornado 2s cubic-bezier(0.6, -0.28, 0.74, 0.05); }
+        @keyframes tornado {
+            0% { transform: scale(0) rotate(0deg); opacity: 0; }
+            20% { transform: scale(0.5) rotate(720deg); opacity: 1; }
+            50% { transform: scale(1.5) rotate(1440deg); z-index: 100; box-shadow: 0 0 100px var(--neon-blue); }
+            100% { transform: scale(1) rotate(1800deg); z-index: 1; }
+        }
+
+        /* MAGNETIC BUTTON */
+        .magnetic-btn { transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .magnetic-btn:hover { transform: scale(1.1); box-shadow: 0 0 25px var(--neon-blue); }
+        
+        /* Particles & Hacker Canvas */
+        #particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        #hacker-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; display: none; opacity: 0.3; }
+        
+        /* Infinite Marquee Multi-Row */
+        .marquee-wrapper { overflow: hidden; white-space: nowrap; position: relative; width: 100%; display: flex; align-items: center; }
+        .marquee-row { display: flex; width: max-content; will-change: transform; }
+        .marquee-row:hover { animation-play-state: paused; z-index: 100; filter: brightness(1.2); }
+        
+        .marquee-left { animation: marqueeL 60s linear infinite; }
+        .marquee-right { animation: marqueeR 60s linear infinite; }
+        
+        /* Universe Animation Speeds */
+        .speed-1 { animation-duration: 45s; }
+        .speed-2 { animation-duration: 55s; }
+        .speed-3 { animation-duration: 35s; }
+        .speed-4 { animation-duration: 65s; }
+        .speed-5 { animation-duration: 40s; }
+        .speed-6 { animation-duration: 70s; }
+        .speed-7 { animation-duration: 50s; }
+        .speed-8 { animation-duration: 60s; }
+        .speed-9 { animation-duration: 38s; }
+        .speed-10 { animation-duration: 75s; }
+        .speed-11 { animation-duration: 48s; }
+        .speed-12 { animation-duration: 58s; }
+
+        @keyframes marqueeL { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @keyframes marqueeR { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+        
+        /* Dual Image Swap */
+        .img-swap { position: relative; width: 100%; height: 100%; }
+        .img-swap img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 0.5s ease; }
+        .img-swap img:last-child { opacity: 0; }
+        .img-swap:hover img:last-child { opacity: 1; }
+        
+        /* Scrollbar Hide */
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* --- PORTAL MODE: LEAVING REALITY CSS --- */
+        .portal-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem; 
+            padding-top: 6rem;
+            padding-bottom: 6rem;
+            perspective: 1000px; /* Crucial for 3D effect */
+            background: #000;
+            overflow: hidden;
+            position: relative;
+            transition: all 1s ease-in-out;
+        }
+
+        /* The Grid Floor/Ceiling Effect */
+        .portal-grid {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            left: -50%;
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: rotateX(60deg);
+            animation: gridMove 20s linear infinite;
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
+        .portal-active .portal-grid { opacity: 0.3; }
+
+        @keyframes gridMove {
+            0% { transform: rotateX(60deg) translateY(0); }
+            100% { transform: rotateX(60deg) translateY(50px); }
+        }
+
+        /* Lane Styling */
+        .promo-lane {
+            width: 100%;
+            height: 180px; 
+            position: relative;
+            z-index: 10;
+            background: rgba(0,0,0,0.2);
+            border-top: 1px solid rgba(0, 243, 255, 0.05);
+            border-bottom: 1px solid rgba(0, 243, 255, 0.05);
+            backdrop-filter: blur(2px);
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
+        
+        /* Active State - Warping */
+        .portal-active .promo-lane {
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.05);
+        }
+
+        .promo-img {
+            width: 300px;
+            height: 160px;
+            margin: 0 1.5rem;
+            border-radius: 1rem;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            transition: all 0.3s;
+            transform: skewX(-5deg); /* Slight cyber skew */
+        }
+        
+        .promo-img:hover {
+            transform: scale(1.15) skewX(0deg);
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 30px var(--neon-purple);
+            z-index: 50;
+        }
+
+        /* Overlay causing "Inside Laptop" feel */
+        .screen-overlay {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, transparent 50%, rgba(0,0,0,0.8) 100%);
+            z-index: 20;
             pointer-events: none;
         }
-
-        /* --- CURSOR --- */
-        .cursor-dot {
-            width: 8px; height: 8px; background: var(--neon-blue); border-radius: 50%;
-            position: fixed; pointer-events: none; z-index: 10000;
-            transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s;
-            box-shadow: 0 0 15px var(--neon-blue);
-        }
-        .cursor-outline {
-            width: 40px; height: 40px; border: 1px solid rgba(0, 243, 255, 0.5);
-            border-radius: 50%; position: fixed; pointer-events: none; z-index: 10000;
-            transform: translate(-50%, -50%); transition: all 0.1s ease-out;
-        }
-        body:hover .cursor-outline { transform: translate(-50%, -50%) scale(1); }
-        body:active .cursor-outline { transform: translate(-50%, -50%) scale(0.8); background: rgba(0,243,255,0.1); }
-
-        /* --- SIDEBAR --- */
-        .sidebar {
-            position: fixed; top: 0; left: 0; width: 320px; height: 100%;
-            background: rgba(5, 5, 5, 0.95);
-            backdrop-filter: blur(20px);
-            border-right: 1px solid rgba(0, 243, 255, 0.2);
-            transform: translateX(-100%);
-            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            z-index: 5000;
-            box-shadow: 50px 0 100px rgba(0, 0, 0, 0.8);
-        }
-        .sidebar.open { transform: translateX(0); }
-
-        /* --- FLOATING WA --- */
-        .floating-wa {
-            position: fixed; bottom: 30px; right: 20px; z-index: 9000;
-            background: #25D366; color: white; border-radius: 50%; width: 60px; height: 60px;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.5);
-            transition: all 0.3s; animation: pulseGlow 2s infinite;
-        }
-        .floating-wa:hover { transform: scale(1.1) rotate(10deg); }
         
-        .god-btn {
-             position: fixed; bottom: 30px; left: 20px; z-index: 9000;
-             width: 50px; height: 50px; border-radius: 50%;
-             background: rgba(0,0,0,0.8); border: 2px solid var(--neon-blue);
-             color: var(--neon-blue); display: flex; align-items: center; justify-content: center;
-             cursor: pointer; transition: all 0.3s;
+        /* Scanline */
+        .scanline {
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 5px;
+            background: rgba(0, 243, 255, 0.3);
+            opacity: 0.5;
+            animation: scan 3s linear infinite;
+            z-index: 21;
+            pointer-events: none;
+            display: none;
         }
-        .god-btn:hover { transform: rotate(180deg); background: var(--neon-blue); color: black; }
+        .portal-active .scanline { display: block; }
 
-        /* --- TOAST --- */
-        .toast-container { position: fixed; top: 100px; right: 20px; z-index: 9999; display: flex; flex-col; gap: 10px; pointer-events: none; }
-        .toast {
-            background: rgba(0,0,0,0.9); border: 1px solid var(--neon-blue);
-            color: white; padding: 12px 24px; border-radius: 8px;
-            display: flex; align-items: center; gap: 10px;
-            animation: slideIn 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
-        }
-        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
+
     </style>
-    
+
     <script type="importmap">
         {
             "imports": {
+                "react": "https://esm.sh/react@18.2.0",
+                "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+                "lucide-react": "https://esm.sh/lucide-react@0.344.0?external=react",
                 "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
                 "firebase/auth": "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js",
                 "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"
@@ -217,22 +348,44 @@
     </script>
 </head>
 <body>
+    <!-- Living Reality Layers -->
+    <div class="living-overlay"></div>
+    <div class="cyber-fog"></div>
     
-    <!-- React Root with INSTANT FALLBACK CONTENT -->
-    <div id="root">
-        <!-- This displays INSTANTLY while React/Babel loads, preventing white screen -->
-        <div id="static-loader">
-            <h1 class="loader-title">SAFALTA</h1>
-            <p style="color: #00f3ff; font-family: monospace; letter-spacing: 2px; margin-top: 10px;">INITIALIZING SYSTEM...</p>
-        </div>
-    </div>
+    <canvas id="particles"></canvas>
+    <canvas id="hacker-canvas"></canvas>
+    <div id="root"></div>
 
-    <script type="text/babel" data-type="module">
+    <!-- Cyberpunk Audio Track -->
+    <audio id="cyber-audio" loop>
+        <source src="https://cdn.pixabay.com/audio/2021/09/06/audio_9c05c0659a.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- UI Sound Effects (New) -->
+    <audio id="hover-sound" preload="auto">
+         <source src="https://cdn.pixabay.com/audio/2022/03/10/audio_517726715c.mp3" type="audio/mpeg">
+    </audio>
+
+    <script type="module">
+        import React, { useState, useEffect, useRef } from 'react';
+        import ReactDOM from 'react-dom/client';
+        import { 
+            Phone, MapPin, Wifi, Zap, ShieldCheck, Utensils, 
+            Home, Menu, X, CheckCircle, Smartphone, 
+            Send, Coffee, BookOpen, Library, GraduationCap,
+            User, Star, Factory, Building2, LogIn, LogOut,
+            LayoutDashboard, Brain, Sparkles, MessageSquare, Settings,
+            Headphones, Music, Pause, Play, Instagram, Flame, Timer, Calendar,
+            ExternalLink, UserPlus, Users, PenTool, Save, Trash2, FileText, Download,
+            Lightbulb, Leaf, Clock, List, ShieldAlert, ListTodo, FileUp, Trophy, Activity,
+            Mic, PieChart, Ban, Layers, Mail, Plus, Check, Lock, BookMarked, Code, Heart,
+            ToggleLeft, ToggleRight, Sliders, Monitor, Move, XCircle, Camera
+        } from 'lucide-react';
         import { initializeApp } from "firebase/app";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "firebase/auth";
         import { getFirestore, collection, addDoc, query, orderBy, limit, onSnapshot, serverTimestamp, doc, updateDoc, deleteDoc, getDocs, where } from "firebase/firestore";
 
-        // --- FIREBASE CONFIG ---
+        // --- CONFIG ---
         const firebaseConfig = {
             apiKey: "AIzaSyBbwul_dbciJX3SQIVFQqXktmCsCghJRHU",
             authDomain: "safalta-express-boys-hostel.firebaseapp.com",
@@ -241,767 +394,1056 @@
             messagingSenderId: "943963131070",
             appId: "1:943963131070:web:48db2233c27d7ae15562ef"
         };
+        const INSTAGRAM_URL = "https://www.instagram.com/safalta_express_boys_hostel?igsh=MXZyZGdvOXFldnUxNA==";
+        const OWNER_EMAIL = "riteshs9122@gmail.com";
+        const DEV_EMAIL = "kumarsatyam9378@gmail.com";
+        const APP_ID = 'safalta-apocalypse-v1';
 
-        // Initialize Firebase
         let app, auth, db;
         try {
             app = initializeApp(firebaseConfig);
             auth = getAuth(app);
             db = getFirestore(app);
-        } catch (e) { console.error("Firebase Init Error", e); }
+        } catch (e) { console.error("Init Error", e); }
         const googleProvider = new GoogleAuthProvider();
-
-        const { useState, useEffect, useRef } = React;
-        const { 
-            Phone, MapPin, Menu, X, CheckCircle, Send, Coffee, BookOpen, Library, GraduationCap,
-            User, Star, Factory, Building2, LogIn, LogOut, Brain, Sparkles, MessageSquare, Settings,
-            Headphones, Play, Instagram, Calendar, Users, PenTool, Lock, Flame, Zap, Trophy,
-            Activity, Power, Volume2, VolumeX, Code, Mail, Loader2
-        } = lucide;
 
         // --- GEMINI API HELPER ---
         const callGemini = async (prompt) => {
-            const apiKey = ""; // Provided by execution environment
+            const apiKey = ""; 
             try {
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    method: "POST", headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
                 });
                 const data = await response.json();
-                return data.candidates?.[0]?.content?.parts?.[0]?.text || "System Overload. Try again.";
-            } catch (e) { console.error(e); return "Neural Link Failed."; }
+                return data.candidates?.[0]?.content?.parts?.[0]?.text || "AI Busy. Try again.";
+            } catch (error) { return "AI Connection Failed."; }
         };
 
-        // --- CONSTANTS ---
-        const IMG = {
-            hero: "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?q=80&w=1200",
-            poha: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800",
-            paratha: "https://images.unsplash.com/photo-1626074353765-517a681e40be?q=80&w=800",
-            puri: "https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=800",
-            chicken: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?q=80&w=800",
-            paneer: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?q=80&w=800",
-            dal: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?q=80&w=800",
-            kadhi: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR07k3e0bX3T5h5e6Z7e8a9b0c1d2e3f4g5h6i7&s",
-            khichri: "https://images.unsplash.com/photo-1599487488170-9a1241960161?q=80&w=800",
-            roti: "https://images.unsplash.com/photo-1626074353765-517a681e40be?q=80&w=800",
-            kheer: "https://images.unsplash.com/photo-1616429377488-82dbb3e5102f?q=80&w=800",
-            room1: "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?q=80&w=800",
-            room2: "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?q=80&w=800",
-            room3: "https://images.unsplash.com/photo-1628151016140-62281a7428f7?q=80&w=800",
-            thali: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?q=80&w=800"
+        // --- PARTICLE SYSTEM ---
+        const initParticles = () => {
+            const canvas = document.getElementById('particles');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let w, h, particles;
+            const resize = () => {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+                particles = Array(70).fill().map(() => ({
+                    x: Math.random() * w, y: Math.random() * h,
+                    vx: (Math.random() - 0.5) * 1.5, vy: (Math.random() - 0.5) * 1.5,
+                    size: Math.random() * 3, color: Math.random() > 0.5 ? '#00f3ff' : '#bc13fe'
+                }));
+            };
+            const animate = () => {
+                ctx.clearRect(0, 0, w, h);
+                particles.forEach(p => {
+                    p.x += p.vx; p.y += p.vy;
+                    if(p.x < 0 || p.x > w) p.vx *= -1;
+                    if(p.y < 0 || p.y > h) p.vy *= -1;
+                    ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); 
+                    ctx.fillStyle = p.color; ctx.globalAlpha = 0.6; ctx.fill();
+                    particles.forEach(p2 => {
+                        const dx = p.x - p2.x; const dy = p.y - p2.y; const dist = Math.sqrt(dx*dx + dy*dy);
+                        if (dist < 100) { ctx.beginPath(); ctx.strokeStyle = p.color; ctx.globalAlpha = 1 - dist/100; ctx.lineWidth = 0.5; ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke(); }
+                    });
+                });
+                requestAnimationFrame(animate);
+            };
+            window.addEventListener('resize', resize);
+            resize(); animate();
         };
+
+        // --- HACKER RAIN EFFECT ---
+        const initHackerRain = () => {
+            const canvas = document.getElementById('hacker-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let w = canvas.width = window.innerWidth;
+            let h = canvas.height = window.innerHeight;
+            const cols = Math.floor(w / 20);
+            const ypos = Array(cols).fill(0);
+
+            const matrix = () => {
+                ctx.fillStyle = '#0001';
+                ctx.fillRect(0, 0, w, h);
+                ctx.fillStyle = '#0f0';
+                ctx.font = '15pt monospace';
+                ypos.forEach((y, i) => {
+                    const text = String.fromCharCode(Math.random() * 128);
+                    const x = i * 20;
+                    ctx.fillText(text, x, y);
+                    if (y > 100 + Math.random() * 10000) ypos[i] = 0;
+                    else ypos[i] = y + 20;
+                });
+            };
+            setInterval(matrix, 50);
+            window.addEventListener('resize', () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; });
+        };
+
+        // --- IMAGES DATABASE ---
+        const gDrive = (id) => `https://lh3.googleusercontent.com/d/${id}`;
+        
+        const DB = {
+            // -- Food Pairs --
+            poha: [gDrive("1NANcokpH15Q_F5IdCQuppSrwnAAXHrVq"), gDrive("17vrlr9ixYA5v5uRVY__QHpCRw7CYaLb2")],
+            thali_std: [gDrive("1O4VVF3IJqHBMskV_MeGM3dANFdnTzh0y"), gDrive("1Dsv8My1_kjE-BJgHsYfo4E9iODJcRlFR")],
+            roti_sabzi_a: [gDrive("1SmtEwz4sN5KGJGYAaasJcfKWFnWELGMA"), gDrive("1-25r2CU7nqmF4uXN9v9GERh10TPR1iON")],
+            roti_dal: [gDrive("1zntnXeNBLX-JW1jili_ga3qD1C9w_nbU"), gDrive("1vsRYps5nmgkWLgeyWFq0Jh8AWk8JwTTl")],
+            thali_yellow: [gDrive("1AMNn9AOC374CBwGG6IwUkP0Y3_ztR4X-"), gDrive("1abIGvIJnTNzEc6H_09qRHIL7dXvfitSm")],
+            puri: [gDrive("1YoGdJ8pqyoP-VF0A2Er-_0CHmXTcNLFy"), gDrive("1UOlaU5ILUOPfudhbprlBb2Y89Qr-9sqJ")],
+            paratha_aloo: [gDrive("1E-8nlTNa4GzzvrjviMzm-5ZT4jtmVQ0d"), gDrive("1fLVRfcSm4PXRlLLRQAA_XU98wRDzPMhN")],
+            thali_rice: [gDrive("1uPrSqbnSKEx5TLmG0QAhFJUpCRcKcp7J"), gDrive("1fBuwDuv-7MBAa4YWXUr5fE65eu0_7sOW")],
+            roti_sabzi_b: [gDrive("1eRsSHVT9zSDCv29KY7Wxir9Vk7KtSGU1"), gDrive("1A_02Vq2-pUfY6tfYNgGPUVznsEKI5Hry")],
+            puri_blue: [gDrive("10SxCcXjkZ8b1dZueoc4L3ifcwzxYSU5k"), gDrive("1Ae2763GmFq18sPUR3VbriSiC7Y0-wgde")],
+            thali_white: [gDrive("1P0icWYQUhHwLuaWPputFvlCoGpR8sZli"), gDrive("1-TTAFnuN4CF0zFau2TdMtHhjLlwazF2O")],
+            roti_paratha: [gDrive("1BacVO5ezcIK_UmePKFknDWKSHxDuToqR"), gDrive("1XIJx20_T4is-OAAUmFLUor4TZ4fcVhbm")],
+            egg_kofta: [gDrive("1Zpu_s8zdr42kJmSIGc05UXBcWIwm-u7J"), gDrive("1Z8Ws9JojNyQksPzzpTO6g3NcHnWsyG0e")],
+            thali_day: [gDrive("1kVt_2TGhTC-LNzRflXunb8zn8Tex3Jmz"), gDrive("1rZqX8HBzGbxt7uvosBYWEMwZNFbbgnC-")],
+            puri_twilight: [gDrive("1ITEBLyswdtnIEYRdGJ3phcoYHEDSB1vO"), gDrive("1k_-pKcID-jJs5_lri6iHo8-o9FwGpEtX")],
+            paratha_aloo_2: [gDrive("1mY-l5JFHyM3TddqBVhgmzpj2vJLh_6oA"), gDrive("1E-8nlTNa4GzzvrjviMzm-5ZT4jtmVQ0d")],
+            kadhi: [gDrive("16q0ufSJT3ZARoIGA9-jcoTjFNP3iRxLv"), gDrive("1JFPv3hpwGeymECG9eLht1D9W_SXRIG7C")],
+            thali_red: [gDrive("1XUw438hmni24ckiWOqOBVRqSYYzIuuTU"), gDrive("1ZAN0kJXpysLBuSq9NCn6rYET7XdhK15V")],
+
+            // -- Hostels & Rooms --
+            hostel_ext: gDrive("1tMbXMcXtZu0AAV9sXTKi_9pXdqNfFsGc"), 
+            hostel_blue: gDrive("1IWR9N2zZVBahwHY2p4ngXOIEF323t_5R"), 
+            study_hall: gDrive("1kq7qx9-ETlPbNjqKhGy7q3QzK945Yz5m"), 
+            
+            // -- MARQUEE PROMOS (STRICTLY NON-FOOD FROM NEW LIST) --
+            promos: [
+                gDrive("19KWuiJDcCftEov8X5ZHvViD-ZSNPBMYM"), // Common Room
+                gDrive("1uKKDFfuzzzLdQxyoP3_DNQj_CsIk8KOr"), // Graphic Study
+                gDrive("1PEYZb8nQIR0kkS3aLoDh21DNCNhfvIaG"), // Neon Ext
+                gDrive("1YLN4lpGLeKbvMtIj5EO70aEC0K6cBXSZ"), // Main Ent Red
+                gDrive("1dIK637oxdWgQnPZnHoPaghlpCxrDB7oL"), // Blue Board
+                gDrive("1KVj3BS9DwsNhtvw0R-L5-vq9Uupus0SO"), // Night Ent
+                gDrive("1HDm5zzGI1dYkzZn2pqAd54ULC2tnUfvV"), // Night Windows
+                gDrive("1LTM1jCdIADPlwZcaZpY662sIHKvIlBzF"), // Blue Night
+                gDrive("1L2eexBBBFdpHrysNNvFWz1lHW8gbo7lT"), // Collab
+                gDrive("1CZeeCDdf4kc-XV6vOl_8BcsLNYCHJ-y8"), // Study Room
+                gDrive("1rcWJOyLZHcBaj8BaJs93DrMoXs_wOmy2"), // Cyberpunk
+                gDrive("10qKXwMKIw7lepg8t05kyL8XWjgEkKZ-u"), // Cyber Class
+                gDrive("1dCb3q7TH2D9wibG1pqi0GtSPkM5LNmNG"), // Group
+                gDrive("1r_GzKTeVqLbkaz0dftsCrfMqvCqFnEPX"), // Modern Build
+                gDrive("1LXZZPLSS8NyET0TgCZPFL9nI4tUzAiRi"), // Fantasy Books
+                gDrive("16gvgB2jpISQ4oMBthGO6-Rksj61Amsgl"), // Fantasy Sun
+                gDrive("1k_-pKcID-jJs5_lri6iHo8-o9FwGpEtX"), // Cubicles
+                gDrive("1wfJjeUmkwTH_OjavG0s07DLkube02PgU"), // Blue Cubicles
+                gDrive("1ZtvOh7IJQB4sh_8IBmqzW5Txzjh71bpT"), // White Build
+                gDrive("1twv_4T7E1tFj7meZAEum294aw-tOJlb5"), // Modern Campus
+                gDrive("1kq7qx9-ETlPbNjqKhGy7q3QzK945Yz5m"), // Study Hall
+                gDrive("1UceHe5N1C5lDAuG3rj2qTuMURn4ocEFv"), // Idea Graphic
+                gDrive("1LLAbIY8T7SPzwRl045attRkDueew91pm"), // Tech Build
+                gDrive("172a4ckf-kBUlJrlm4IOp4NopGVPWOvnZ"), // Digital Tower
+                gDrive("1FRTtEOyl7BKILasGyKxLcOdBf7GkLjzd"), // Sunrise
+                gDrive("1ApLrtWpE2k3Qkd1RJLgT4UJgYN3AdIeF"), // Day Ent
+                gDrive("1V0WZnl1CjquBCTXA5kGvBHDox6ns8e7R"), // Twilight
+                gDrive("11nwXW0TpVJMm352pkjf20PAwhe_nlMte"), // Evening
+                gDrive("1TH95ab7bCDyCE70OwI0TULT6ePe12FWs"), // Signage
+                gDrive("18fHNbGfaMhy11INDOdf6J749226MO_3O"), // Illustration
+                gDrive("1AdNhNpGlNJjnbaV28uFAoSZ6CkA-xLFL"), // Desk Lamp
+                gDrive("1Sxk-LoUyJRLWLDvtX-weWi2hMoMt1pEu"), // Single Room
+                gDrive("1tMbXMcXtZu0AAV9sXTKi_9pXdqNfFsGc"), // Main Build
+                gDrive("1HC-ALs0vx_vTTCbHQgC9v-ub6fG1vNxF"), // Red Build
+                gDrive("1Y9rv5POnq1t2_ArMhswLH_fUjFr8oDZN"), // Space Neon
+                gDrive("1L12RcXca6HNiMTZrbpNdFI7Psj_9YbGJ"), // Dark Neon
+                gDrive("1PphLhCYilA7cshFVSXwtFg762MYZLa-T"), // Train
+                gDrive("1AqtG_wf3S5-o1mTvX0gyOSVXlyjG-Cp5"), // Thinking
+                gDrive("1qoUE05clWRPjnZao7Z49c6duox1tR4jc"), // Modern Night
+                gDrive("1bjfJeJN9HaKhmlfeyckJsVjikcTN5slF"), // Glass Facade
+                gDrive("1WgWRK-ANqayAauYSwUqxmbfXxx9NG7jL")  // Desk Close
+            ]
+        };
+
+        const IMG = { hero: "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?q=80&w=1200", thali: "https://via.placeholder.com/150" };
 
         const MENU = {
-            Monday: { b: "Poha, Achar", b_img: IMG.poha, l: "Chicken/Paneer", l_img: IMG.chicken, d: "Roti-Sabji", d_img: IMG.roti },
-            Tuesday: { b: "Roti-Sabji", b_img: IMG.roti, l: "Dal-Sabji", l_img: IMG.dal, d: "Puri-Kheer", d_img: IMG.kheer },
-            Wednesday: { b: "Aloo Paratha", b_img: IMG.paratha, l: "Dal-Sabji", l_img: IMG.dal, d: "Roti-Sabji", d_img: IMG.roti },
-            Thursday: { b: "Puri-Rajma", b_img: IMG.puri, l: "Dal-Bhujiya", l_img: IMG.dal, d: "Roti-Mix Veg", d_img: IMG.paneer },
-            Friday: { b: "Roti-Sabji", b_img: IMG.roti, l: "Egg/Paneer", l_img: IMG.chicken, d: "Roti-Sabji", d_img: IMG.roti },
-            Saturday: { b: "Roti-Sabji", b_img: IMG.roti, l: "Khichri-Chokha", l_img: IMG.khichri, d: "Puri-Sewai", d_img: IMG.puri },
-            Sunday: { b: "Sattu Paratha", b_img: IMG.paratha, l: "Kadhi-Chawal", l_img: IMG.kadhi, d: "Roti-Bhujiya", d_img: IMG.roti },
+            Monday: { b: "Poha, Achar", i1: DB.poha[0], i2: DB.poha[1], l: "Chicken/Paneer", l1: DB.egg_kofta[0], l2: DB.egg_kofta[1], d: "Roti-Sabji", d1: DB.roti_sabzi_a[0], d2: DB.roti_sabzi_a[1] },
+            Tuesday: { b: "Roti-Sabji", i1: DB.roti_dal[0], i2: DB.roti_dal[1], l: "Dal-Sabji", l1: DB.thali_std[0], l2: DB.thali_std[1], d: "Puri-Kheer", d1: DB.puri[0], d2: DB.puri[1] },
+            Wednesday: { b: "Aloo Paratha", i1: DB.paratha_aloo[0], i2: DB.paratha_aloo[1], l: "Dal-Sabji", l1: DB.thali_yellow[0], l2: DB.thali_yellow[1], d: "Roti-Sabji", d1: DB.roti_sabzi_b[0], d2: DB.roti_sabzi_b[1] },
+            Thursday: { b: "Puri-Rajma", i1: DB.puri_blue[0], i2: DB.puri_blue[1], l: "Dal-Bhujiya", l1: DB.thali_rice[0], l2: DB.thali_rice[1], d: "Roti-Mix Veg", d1: DB.roti_paratha[0], d2: DB.roti_paratha[1] },
+            Friday: { b: "Roti-Sabji", i1: DB.roti_sabzi_a[0], i2: DB.roti_sabzi_a[1], l: "Egg/Paneer", l1: DB.egg_kofta[1], l2: DB.egg_kofta[0], d: "Roti-Sabji", d1: DB.thali_day[0], d2: DB.thali_day[1] },
+            Saturday: { b: "Roti-Sabji", i1: DB.roti_dal[0], i2: DB.roti_dal[1], l: "Khichri-Chokha", l1: DB.thali_white[0], l2: DB.thali_white[1], d: "Puri-Sewai", d1: DB.puri_twilight[0], d2: DB.puri_twilight[1] },
+            Sunday: { b: "Sattu Paratha", i1: DB.paratha_aloo_2[0], i2: DB.paratha_aloo_2[1], l: "Kadhi-Chawal", l1: DB.kadhi[0], l2: DB.kadhi[1], d: "Roti-Bhujiya", d1: DB.thali_red[0], d2: DB.thali_red[1] },
         };
 
-        const SOUNDS = {
-            click: new Audio("https://assets.mixkit.co/sfx/preview/mixkit-modern-technology-select-3124.mp3"),
-            hover: new Audio("https://assets.mixkit.co/sfx/preview/mixkit-sci-fi-interface-robot-click-901.mp3"),
-            success: new Audio("https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3"),
-            intro: new Audio("https://assets.mixkit.co/sfx/preview/mixkit-futuristic-robotic-glitch-3047.mp3")
-        };
-        // Lower volumes
-        Object.values(SOUNDS).forEach(s => s.volume = 0.2);
+        const LEGACY_SPOTS = [
+            {n:"GD College Campus", d:"50m Campus", i:GraduationCap},
+            {n:"Kaushal Commerce", d:"Coaching", i:BookOpen},
+            {n:"Trinity Classes", d:"Study Hub", i:Library},
+            {n:"Barauni Ind.", d:"Industrial", i:Factory},
+            {n:"Readers Lib", d:"24/7 Books", i:Building2}
+        ];
 
         // --- COMPONENTS ---
-
-        const Toast = ({ message, type, remove }) => {
+        
+        // **NEW** Kinetic Cursor Component
+        const CyberCursor = () => {
+            const dotRef = useRef(null);
+            const outlineRef = useRef(null);
             useEffect(() => {
-                const timer = setTimeout(() => remove(), 3000);
-                return () => clearTimeout(timer);
+                const moveCursor = (e) => {
+                    if(dotRef.current) { dotRef.current.style.top = e.clientY + 'px'; dotRef.current.style.left = e.clientX + 'px'; }
+                    if(outlineRef.current) { 
+                        outlineRef.current.animate({ top: e.clientY + 'px', left: e.clientX + 'px' }, { duration: 500, fill: "forwards" });
+                    }
+                };
+                window.addEventListener('mousemove', moveCursor);
+                return () => window.removeEventListener('mousemove', moveCursor);
             }, []);
-            
-            const colors = {
-                success: 'border-green-500 text-green-400',
-                info: 'border-blue-500 text-blue-400',
-                xp: 'border-purple-500 text-purple-400'
-            };
-
-            return (
-                <div className={`toast ${colors[type]}`}>
-                    {type === 'xp' && <Sparkles size={16} className="animate-spin" />}
-                    {type === 'success' && <CheckCircle size={16} />}
-                    {type === 'info' && <Activity size={16} />}
-                    <span className="font-bold text-sm tracking-wide">{message}</span>
-                </div>
+            return React.createElement(React.Fragment, null, 
+                React.createElement('div', { ref: dotRef, className: "cursor-dot" }),
+                React.createElement('div', { ref: outlineRef, className: "cursor-outline" })
             );
         };
 
-        // --- AI APP COMPONENTS ---
-
-        const OrbitPlanner = ({ close, addXp }) => {
-            const [subjects, setSubjects] = useState('');
-            const [hours, setHours] = useState('');
-            const [schedule, setSchedule] = useState('');
-            const [loading, setLoading] = useState(false);
-
-            const handleGenerate = async () => {
-                if(!subjects || !hours) return;
-                setLoading(true);
-                const prompt = `Create a realistic and strict study schedule for a student who wants to study these subjects: ${subjects} for a total of ${hours} hours. Use emojis, Keep it short and actionable. Format as a list.`;
-                const result = await callGemini(prompt);
-                setSchedule(result);
-                setLoading(false);
-                addXp(50, "Generated Schedule");
-            };
-
-            return (
-                <div className="fixed inset-0 z-[6000] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">
-                    <div className="max-w-lg w-full glass-panel p-8 rounded-3xl border border-blue-500/30 relative">
-                        <button onClick={close} className="absolute top-4 right-4 text-gray-500 hover:text-white"><X/></button>
-                        <h2 className="font-cyber text-2xl text-blue-400 mb-2 flex items-center gap-2"><Calendar/> ORBIT PLANNER AI</h2>
-                        <p className="text-gray-400 text-sm mb-6">Generate a lethal study routine using Gemini AI.</p>
-                        
-                        {!schedule ? (
-                            <div className="space-y-4">
-                                <input 
-                                    type="text" 
-                                    placeholder="Subjects (e.g., Physics, Math)" 
-                                    className="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white placeholder:text-gray-600 focus:border-blue-500 outline-none"
-                                    value={subjects}
-                                    onChange={(e)=>setSubjects(e.target.value)}
-                                />
-                                <input 
-                                    type="number" 
-                                    placeholder="Total Hours (e.g., 6)" 
-                                    className="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white placeholder:text-gray-600 focus:border-blue-500 outline-none"
-                                    value={hours}
-                                    onChange={(e)=>setHours(e.target.value)}
-                                />
-                                <button 
-                                    onClick={handleGenerate} 
-                                    disabled={loading}
-                                    className="w-full bg-blue-600 hover:bg-blue-500 py-4 rounded-xl font-black flex items-center justify-center gap-2 transition"
-                                >
-                                    {loading ? <Loader2 className="animate-spin"/> : <Sparkles/>} GENERATE ROUTINE ✨
-                                </button>
-                            </div>
-                        ) : (
-                            <div className="animate-float">
-                                <div className="bg-black/40 rounded-xl p-6 mb-6 max-h-[300px] overflow-y-auto border border-white/10 font-mono text-sm leading-relaxed whitespace-pre-line">
-                                    {schedule}
-                                </div>
-                                <button 
-                                    onClick={()=>setSchedule('')} 
-                                    className="w-full bg-white/10 hover:bg-white/20 py-3 rounded-xl font-bold"
-                                >
-                                    Create New
-                                </button>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            );
+        // **NEW** UI Sound Effects Helper
+        const playHoverSound = () => {
+            const audio = document.getElementById('hover-sound');
+            if(audio) { audio.currentTime = 0; audio.volume = 0.2; audio.play().catch(e=>{}); }
         };
 
-        const MistakeVault = ({ close, addXp }) => {
-            const [concept, setConcept] = useState('');
-            const [explanation, setExplanation] = useState('');
-            const [loading, setLoading] = useState(false);
+        const Navbar = ({ user, login, toggleSidebar }) => React.createElement('nav', { className: "fixed top-0 w-full z-50 glass-panel px-4 py-3 flex justify-between items-center border-b border-white/10" },
+            React.createElement('div', { className: "flex items-center gap-4" },
+                React.createElement('button', { onClick: toggleSidebar, onMouseEnter: playHoverSound, className: "text-white p-2 hover:bg-white/10 rounded-full transition" }, React.createElement(Menu, { size: 28 })),
+                React.createElement('div', { className: "flex items-center gap-3 cursor-pointer group", onClick: () => window.scrollTo(0,0) },
+                    React.createElement('div', { className: "bg-gradient-to-r from-blue-600 to-purple-600 p-2 rounded-xl shadow-lg" },
+                        React.createElement(GraduationCap, { className: "text-white", size: 24 })
+                    ),
+                    React.createElement('div', { className: "hidden md:block" },
+                        React.createElement('h1', { className: "font-cyber text-lg font-black leading-none text-white tracking-wide glitch-text", "data-text": "SAFALTA" }, "SAFALTA"),
+                        React.createElement('p', { className: "text-[9px] tracking-[0.3em] text-blue-400 font-bold" }, "BOYS HOSTEL")
+                    )
+                )
+            ),
+            React.createElement('div', { className: "flex gap-3 items-center" },
+                React.createElement('a', { href: INSTAGRAM_URL, onMouseEnter: playHoverSound, target: "_blank", className: "bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 p-2 rounded-full text-white shadow-lg animate-pulse hover:scale-110 transition" }, React.createElement(Instagram, { size: 18 })),
+                !user ? React.createElement('button', { onClick: login, onMouseEnter: playHoverSound, className: "bg-white text-black px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider hover:bg-gray-200 transition" }, "LOGIN") 
+                      : React.createElement('img', { src: user.photoURL, className: "w-8 h-8 rounded-full border border-blue-500" })
+            )
+        );
 
-            const handleExplain = async () => {
-                if(!concept) return;
-                setLoading(true);
-                const prompt = `Explain the concept of "${concept}" simply for a high school student. Use a real-world analogy. Keep it under 100 words.`;
-                const result = await callGemini(prompt);
-                setExplanation(result);
-                setLoading(false);
-                addXp(40, "Cleared Concept");
-            };
+        const Sidebar = ({ isOpen, close, user, logout, openApp }) => React.createElement('div', { className: `sidebar ${isOpen ? 'open' : ''} flex flex-col p-6` },
+            React.createElement('div', { className: "flex justify-between items-center mb-10" },
+                React.createElement('h2', { className: "font-cyber text-xl text-blue-400 tracking-widest" }, "DIGITAL CAMPUS"),
+                React.createElement('button', { onClick: close, className: "text-gray-400 hover:text-white" }, React.createElement(X, {size: 28}))
+            ),
+            React.createElement('div', { className: "space-y-2 flex-1 overflow-y-auto pr-2" },
+                [
+                    {cat: "ACADEMICS", items: [
+                        {n:"Mistake Vault", i:BookMarked, id:"mistake", c:"text-purple-400"},
+                        {n:"Orbit Planner (AI)", i:Calendar, id:"planner", c:"text-blue-400"},
+                        {n:"Flash Forge (AI)", i:Zap, id:"flash", c:"text-yellow-400"},
+                        {n:"Nexus Logs", i:ListTodo, id:"ledger", c:"text-green-400"}
+                    ]},
+                    {cat: "FOCUS & HABITS", items: [
+                        {n:"Zenith Growth", i:Leaf, id:"forest", c:"text-green-500"},
+                        {n:"Sonic Core", i:Headphones, id:"music", c:"text-pink-400"},
+                        {n:"Mind Firewall", i:ShieldAlert, id:"detox", c:"text-orange-400"}
+                    ]},
+                    {cat: "TOOLS", items: [
+                        {n:"Neural Notes (AI)", i:FileText, id:"notes", c:"text-white"},
+                        {n:"Whiteboard", i:PenTool, id:"whiteboard", c:"text-white"},
+                        {n:"Omni Tutor AI", i:Brain, id:"omni", c:"text-indigo-400"},
+                        {n:"Group Chat", i:MessageSquare, id:"chat", c:"text-indigo-400"}
+                    ]}
+                ].map((section, idx) => 
+                    React.createElement('div', { key: idx, className: "mb-6" },
+                        React.createElement('h3', { className: "text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3 ml-2" }, section.cat),
+                        section.items.map(item =>
+                            React.createElement('button', { key: item.id, onClick: () => { close(); openApp(item.id); }, onMouseEnter: playHoverSound, className: "flex items-center gap-4 text-gray-300 hover:text-white hover:bg-white/10 p-3 rounded-xl w-full transition border border-transparent hover:border-white/10 group" },
+                                React.createElement(item.i, { size: 18, className: item.c + " group-hover:scale-110 transition" }), 
+                                React.createElement('span', { className: "font-bold text-sm tracking-wide" }, item.n)
+                            )
+                        )
+                    )
+                )
+            ),
+            user ? React.createElement('button', { onClick: logout, className: "mt-4 flex items-center gap-2 text-red-500 p-4 hover:bg-red-500/10 rounded-xl justify-center font-bold border border-red-500/20" }, React.createElement(LogOut, { size: 18 }), "LOGOUT SYSTEM") 
+                 : React.createElement('div', { className: "mt-4 text-xs text-center text-gray-500 p-4 border border-white/5 rounded-xl" }, "Login required to access Apps")
+        );
 
-            return (
-                <div className="fixed inset-0 z-[6000] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">
-                    <div className="max-w-lg w-full glass-panel p-8 rounded-3xl border border-purple-500/30 relative">
-                        <button onClick={close} className="absolute top-4 right-4 text-gray-500 hover:text-white"><X/></button>
-                        <h2 className="font-cyber text-2xl text-purple-400 mb-2 flex items-center gap-2"><Brain/> CONCEPT VAULT AI</h2>
-                        <p className="text-gray-400 text-sm mb-6">Stuck? Let AI simplify complex topics instantly.</p>
-                        
-                        <div className="space-y-4">
-                            <div className="flex gap-2">
-                                <input 
-                                    type="text" 
-                                    placeholder="Enter topic (e.g., Thermodynamics)" 
-                                    className="flex-1 bg-black/50 border border-white/10 rounded-xl p-4 text-white placeholder:text-gray-600 focus:border-purple-500 outline-none"
-                                    value={concept}
-                                    onChange={(e)=>setConcept(e.target.value)}
-                                    onKeyDown={(e) => e.key === 'Enter' && handleExplain()}
-                                />
-                                <button 
-                                    onClick={handleExplain} 
-                                    disabled={loading}
-                                    className="bg-purple-600 hover:bg-purple-500 px-6 rounded-xl font-black flex items-center justify-center transition"
-                                >
-                                    {loading ? <Loader2 className="animate-spin"/> : <Send/>}
-                                </button>
-                            </div>
-                            
-                            {explanation && (
-                                <div className="bg-black/40 rounded-xl p-6 border border-purple-500/20 animate-[fadeIn_0.5s]">
-                                    <h4 className="text-xs text-purple-400 font-bold mb-2 uppercase tracking-widest">AI Explanation</h4>
-                                    <p className="text-sm leading-relaxed text-gray-200">{explanation}</p>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
-        const ParticleCanvas = () => {
-            const canvasRef = useRef(null);
-            
-            useEffect(() => {
-                const cvs = canvasRef.current;
-                const ctx = cvs.getContext('2d');
-                let w = window.innerWidth;
-                let h = window.innerHeight;
-                cvs.width = w; cvs.height = h;
-
-                let particles = [];
-                const pCount = 50; // Optimized count
-
-                class Particle {
-                    constructor() {
-                        this.x = Math.random() * w;
-                        this.y = Math.random() * h;
-                        this.vx = (Math.random() - 0.5) * 0.5;
-                        this.vy = (Math.random() - 0.5) * 0.5;
-                        this.size = Math.random() * 2;
-                        this.color = Math.random() > 0.5 ? '#00f3ff' : '#bc13fe';
-                    }
-                    update() {
-                        this.x += this.vx; this.y += this.vy;
-                        if(this.x < 0 || this.x > w) this.vx *= -1;
-                        if(this.y < 0 || this.y > h) this.vy *= -1;
-                    }
-                    draw() {
-                        ctx.fillStyle = this.color;
-                        ctx.beginPath();
-                        ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
-                        ctx.fill();
-                    }
-                }
-
-                for(let i=0; i<pCount; i++) particles.push(new Particle());
-
-                const animate = () => {
-                    ctx.clearRect(0,0,w,h);
-                    particles.forEach(p => { p.update(); p.draw(); });
-                    // Draw connections
-                    ctx.strokeStyle = 'rgba(255,255,255,0.03)';
-                    ctx.lineWidth = 1;
-                    for(let i=0; i<pCount; i++){
-                        for(let j=i; j<pCount; j++){
-                            const dx = particles[i].x - particles[j].x;
-                            const dy = particles[i].y - particles[j].y;
-                            const dist = Math.sqrt(dx*dx + dy*dy);
-                            if(dist < 100) {
-                                ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y);
-                                ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
-                            }
-                        }
-                    }
-                    requestAnimationFrame(animate);
-                }
-                animate();
-
-                const handleResize = () => { w=window.innerWidth; h=window.innerHeight; cvs.width=w; cvs.height=h; };
-                window.addEventListener('resize', handleResize);
-                return () => window.removeEventListener('resize', handleResize);
-            }, []);
-
-            return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none opacity-60" />;
-        };
-
-        const GodModePanel = ({ config, setConfig, applyConfig }) => {
+        // --- GOD MODE COMPONENT ---
+        const GodMode = () => {
             const [open, setOpen] = useState(false);
-            const themes = [
-                { id: 'cyber', n: 'Cyberpunk', c: '#00f3ff' },
-                { id: 'royal', n: 'Royal Gold', c: '#ffd700' },
-                { id: 'matrix', n: 'The Matrix', c: '#00ff00' },
-                { id: 'sith', n: 'Crimson Sith', c: '#ff0000' },
+            const [config, setConfig] = useState({
+                theme: 'cyber',
+                font: "'Outfit', sans-serif",
+                glass: 0.85,
+                radius: 16,
+                hacker: false,
+                anim: 'fly'
+            });
+
+            const themes = {
+                cyber: { blue: '#00f3ff', purple: '#bc13fe', bg: '#030303' },
+                gold: { blue: '#ffd700', purple: '#ffaa00', bg: '#050510' },
+                matrix: { blue: '#00ff00', purple: '#003300', bg: '#000000' },
+                crimson: { blue: '#ff0000', purple: '#550000', bg: '#100000' }
+            };
+
+            const apply = () => {
+                const t = themes[config.theme];
+                const root = document.documentElement;
+                root.style.setProperty('--neon-blue', t.blue);
+                root.style.setProperty('--neon-purple', t.purple);
+                root.style.setProperty('--void', t.bg);
+                document.body.style.backgroundColor = t.bg;
+                root.style.setProperty('--app-font', config.font);
+                root.style.setProperty('--glass-opacity', config.glass);
+                root.style.setProperty('--glass-radius', config.radius + 'px');
+                
+                let transformVal = 'translateY(100px) scale(0.8) rotateX(45deg)'; 
+                if(config.anim === 'slide') transformVal = 'translateY(100px)';
+                if(config.anim === 'zoom') transformVal = 'scale(0.6)';
+                root.style.setProperty('--reveal-transform', transformVal);
+
+                const canvas = document.getElementById('hacker-canvas');
+                if(canvas) canvas.style.display = config.hacker ? 'block' : 'none';
+                
+                setOpen(false);
+            };
+
+            return React.createElement(React.Fragment, null,
+                open && React.createElement('div', { className: "fixed inset-0 z-[1999]", onClick: () => setOpen(false) }),
+                React.createElement('div', { className: `fixed bottom-24 left-6 z-[2000] transition-all duration-500 transform origin-bottom-left ${open ? 'scale-100 opacity-100' : 'scale-0 opacity-0 pointer-events-none'}` },
+                    React.createElement('div', { className: "bg-[#050505]/95 backdrop-blur-xl border border-white/20 p-5 rounded-3xl w-80 shadow-[0_0_60px_rgba(0,243,255,0.4)] overflow-hidden relative" },
+                        React.createElement('div', { className: "absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" }),
+                        React.createElement('div', { className: "flex justify-between items-center mb-6 pb-2 border-b border-white/10" },
+                            React.createElement('h2', { className: "font-cyber text-lg text-white flex items-center gap-2" },
+                                React.createElement(Settings, { size: 18, className: "text-blue-400 animate-spin-slow" }), "SYSTEM OVERRIDE"
+                            ),
+                            React.createElement('button', { onClick:()=>setOpen(false) }, React.createElement(X, { size: 18, className: "text-gray-500 hover:text-white" }))
+                        ),
+                        React.createElement('div', { className: "space-y-6" },
+                            React.createElement('div', null,
+                                React.createElement('label', { className: "text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-2 block" }, "VISUAL CORE"),
+                                React.createElement('div', { className: "grid grid-cols-4 gap-2" },
+                                    Object.keys(themes).map(t => 
+                                        React.createElement('button', { key: t, onClick:()=>setConfig({...config, theme:t}), className: `h-10 rounded-xl border flex items-center justify-center transition-all ${config.theme===t ? 'border-white shadow-[0_0_15px_rgba(255,255,255,0.5)] scale-110' : 'border-white/10 opacity-50 hover:opacity-100'}` }, 
+                                            React.createElement('div', { className: "w-4 h-4 rounded-full", style:{backgroundColor: themes[t].blue} })
+                                        )
+                                    )
+                                )
+                            ),
+                            React.createElement('div', { className: "space-y-3" },
+                                React.createElement('div', { className: "flex justify-between text-[10px] font-bold text-gray-400 uppercase" }, React.createElement('span', null, "GLASS OPACITY"), React.createElement('span', null, Math.round(config.glass*100)+"%")),
+                                React.createElement('input', { type: "range", min: "0.1", max: "1", step: "0.05", value: config.glass, onChange:e=>setConfig({...config, glass:e.target.value}), className: "w-full accent-blue-500 h-1 bg-white/10 rounded-lg appearance-none cursor-pointer" }),
+                                React.createElement('div', { className: "flex justify-between text-[10px] font-bold text-gray-400 uppercase mt-2" }, React.createElement('span', null, "BORDER RADIUS"), React.createElement('span', null, config.radius+"px")),
+                                React.createElement('input', { type: "range", min: "0", max: "40", value: config.radius, onChange:e=>setConfig({...config, radius:e.target.value}), className: "w-full accent-purple-500 h-1 bg-white/10 rounded-lg appearance-none cursor-pointer" })
+                            ),
+                            React.createElement('div', { className: "grid grid-cols-2 gap-3" },
+                                React.createElement('div', null,
+                                    React.createElement('label', { className: "text-[10px] font-bold text-gray-500 uppercase tracking-widest block mb-1" }, "FONT"),
+                                    React.createElement('select', { value: config.font, onChange:e=>setConfig({...config, font:e.target.value}), className: "w-full bg-white/5 border border-white/10 rounded-lg p-2 text-[10px] outline-none font-bold text-white" },
+                                        React.createElement('option', { value: "'Outfit', sans-serif" }, "MODERN"),
+                                        React.createElement('option', { value: "'Orbitron', sans-serif" }, "CYBER"),
+                                        React.createElement('option', { value: "monospace" }, "CODE")
+                                    )
+                                ),
+                                React.createElement('div', null,
+                                    React.createElement('label', { className: "text-[10px] font-bold text-gray-500 uppercase tracking-widest block mb-1" }, "ANIMATION"),
+                                    React.createElement('select', { value: config.anim, onChange:e=>setConfig({...config, anim:e.target.value}), className: "w-full bg-white/5 border border-white/10 rounded-lg p-2 text-[10px] outline-none font-bold text-white" },
+                                        React.createElement('option', { value: "fly" }, "FLY IN"),
+                                        React.createElement('option', { value: "slide" }, "SLIDE"),
+                                        React.createElement('option', { value: "zoom" }, "ZOOM")
+                                    )
+                                )
+                            ),
+                            React.createElement('button', { onClick:()=>setConfig({...config, hacker:!config.hacker}), className: `w-full py-3 rounded-xl border flex items-center justify-between px-4 transition-all ${config.hacker ? 'bg-green-500/20 border-green-500' : 'bg-white/5 border-white/10'}` },
+                                React.createElement('span', { className: "text-[10px] font-bold uppercase tracking-widest" }, "HACKER MODE"),
+                                React.createElement('div', { className: `w-8 h-4 rounded-full relative transition-colors ${config.hacker ? 'bg-green-500' : 'bg-gray-600'}` },
+                                    React.createElement('div', { className: `absolute top-0.5 left-0.5 w-3 h-3 bg-white rounded-full transition-transform ${config.hacker ? 'translate-x-4' : 'translate-x-0'}` })
+                                )
+                            ),
+                            React.createElement('button', { onClick: apply, onMouseEnter: playHoverSound, className: "w-full bg-gradient-to-r from-blue-600 to-purple-600 py-3 rounded-xl font-black text-xs tracking-[0.2em] text-white shadow-lg hover:shadow-[0_0_20px_rgba(59,130,246,0.6)] active:scale-95 transition-all flex items-center justify-center gap-2" },
+                                React.createElement(Zap, {size:14, className:"animate-pulse"}), "INITIALIZE"
+                            )
+                        )
+                    )
+                ),
+                React.createElement('button', { 
+                    onClick:()=>setOpen(!open), 
+                    onMouseEnter: playHoverSound,
+                    className: `fixed bottom-6 left-6 z-[2001] p-3 rounded-full border border-white/20 shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all duration-500 group ${open ? 'bg-red-600 rotate-90 border-red-500' : 'bg-black/80 backdrop-blur-md hover:scale-110'}` 
+                },
+                    open ? React.createElement(X, { size: 24, className: "text-white" }) 
+                         : React.createElement(Settings, { size: 24, className: "text-blue-400 group-hover:text-white group-hover:rotate-180 transition duration-700" })
+                )
+            );
+        }
+
+        // --- DEVELOPER PROMO ---
+        const DeveloperPromo = () => {
+            const promoRef = useRef(null);
+            useEffect(() => {
+                const observer = new IntersectionObserver(([entry]) => {
+                    if(entry.isIntersecting) promoRef.current.classList.add('dangerous-spin');
+                }, { threshold: 0.5 });
+                if(promoRef.current) observer.observe(promoRef.current);
+            }, []);
+
+            return React.createElement('div', { ref: promoRef, className: "glass-panel p-8 rounded-[2rem] border border-blue-500/20 promo-glow relative overflow-hidden text-center max-w-md mx-auto mb-20 shadow-[0_0_80px_rgba(0,0,255,0.4)] transition-all duration-1000 transform hover:scale-105" },
+                React.createElement('div', { className: "absolute inset-0 bg-gradient-to-br from-blue-600/10 to-purple-600/10" }),
+                React.createElement('div', { className: "relative z-10" },
+                    React.createElement('h3', { className: "font-cyber text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400 mb-4 flex items-center justify-center gap-2" }, React.createElement(Code, {size:24, className:"text-blue-500 animate-pulse"}), "DEV NEXUS"),
+                    React.createElement('h2', { className: "text-lg text-white font-bold mb-2" }, "Need a Powerful Custom Website?"),
+                    React.createElement('p', { className: "text-xs text-gray-400 mb-6 font-mono" }, "Get your business online with modern design & high performance."),
+                    
+                    React.createElement('div', { className: "grid grid-cols-2 gap-3 text-left mb-8 text-[11px] text-gray-300" },
+                        [{t:"Custom Websites", c:"text-green-400"}, {t:"JEE/NEET Prep", c:"text-blue-400"}, {t:"AI & Tech Courses", c:"text-purple-400"}, {t:"Competition Exams", c:"text-yellow-400"}].map((l,i) => 
+                            React.createElement('div', { key: i, className: "flex items-center gap-2 bg-white/5 p-2 rounded-lg border border-white/5" }, React.createElement(Check, { size: 12, className: l.c }), l.t)
+                        )
+                    ),
+                    React.createElement('div', { className: "flex gap-3 justify-center" },
+                        React.createElement('a', { href: "mailto:kumarsatyam9378@gmail.com", onMouseEnter: playHoverSound, className: "flex items-center justify-center gap-2 flex-1 bg-blue-600 hover:bg-blue-500 border border-blue-400/50 text-white py-3 rounded-xl text-xs font-bold transition-all shadow-lg magnetic-btn" }, React.createElement(Mail, {size:16}), "Email Now"),
+                        React.createElement('a', { href: "https://wa.me/917632053713", onMouseEnter: playHoverSound, target: "_blank", className: "flex items-center justify-center gap-2 flex-1 bg-green-600 hover:bg-green-500 border border-green-400/50 text-white py-3 rounded-xl text-xs font-bold transition-all shadow-lg magnetic-btn" }, React.createElement(MessageSquare, {size:16}), "WhatsApp Now")
+                    )
+                )
+            );
+        };
+
+        // --- NEW CLEAN PROMOTION GALLERY (VERTICAL STACK) ---
+        const PromotionGallery = () => {
+            const allImages = DB.promos;
+            
+            // Distribute images into 12 distinct parallel tracks
+            const trackCount = 12;
+            const chunkSize = Math.ceil(allImages.length / trackCount);
+            // Ensuring we fill all tracks even if we reuse images
+            const tracks = Array.from({ length: trackCount }, (_, i) => {
+                const start = (i * chunkSize) % allImages.length;
+                const end = start + chunkSize;
+                let slice = allImages.slice(start, end);
+                if (slice.length < chunkSize) slice = [...slice, ...allImages.slice(0, chunkSize - slice.length)];
+                return slice;
+            });
+
+            // Config for 12 parallel tracks (Speed, Direction)
+            const trackConfig = [
+                { speed: "speed-1", dir: "marquee-left" },
+                { speed: "speed-2", dir: "marquee-right" },
+                { speed: "speed-3", dir: "marquee-left" },
+                { speed: "speed-4", dir: "marquee-right" },
+                { speed: "speed-5", dir: "marquee-left" },
+                { speed: "speed-6", dir: "marquee-right" },
+                { speed: "speed-7", dir: "marquee-left" },
+                { speed: "speed-8", dir: "marquee-right" },
+                { speed: "speed-9", dir: "marquee-left" },
+                { speed: "speed-10", dir: "marquee-right" },
+                { speed: "speed-11", dir: "marquee-left" },
+                { speed: "speed-12", dir: "marquee-right" },
             ];
 
-            return (
-                <>
-                    <button onClick={() => setOpen(!open)} className="god-btn">
-                        <Settings size={24} className={open ? "animate-spin" : ""} />
-                    </button>
-                    {open && (
-                        <div className="fixed bottom-24 left-5 w-80 glass-panel p-6 rounded-2xl z-50 animate-float">
-                            <div className="flex justify-between items-center mb-4 border-b border-white/10 pb-2">
-                                <h3 className="font-cyber text-lg text-blue-400 flex items-center gap-2">
-                                    <Code size={18}/> SYSTEM CONFIG
-                                </h3>
-                                <button onClick={() => setOpen(false)}><X size={18}/></button>
-                            </div>
-                            
-                            <div className="space-y-4">
-                                <div>
-                                    <p className="text-[10px] uppercase text-gray-500 mb-2 font-bold tracking-widest">Visual Theme</p>
-                                    <div className="flex gap-2 justify-between">
-                                        {themes.map(t => (
-                                            <button 
-                                                key={t.id} 
-                                                onClick={() => setConfig({...config, theme: t.id})}
-                                                className={`w-8 h-8 rounded-full border-2 transition-transform hover:scale-125 ${config.theme === t.id ? 'border-white scale-110 shadow-[0_0_10px_white]' : 'border-transparent'}`}
-                                                style={{background: t.c}}
-                                            />
-                                        ))}
-                                    </div>
-                                </div>
-                                
-                                <div>
-                                    <p className="text-[10px] uppercase text-gray-500 mb-2 font-bold tracking-widest">Audio</p>
-                                    <button 
-                                        onClick={() => setConfig({...config, sound: !config.sound})}
-                                        className={`w-full py-2 rounded-lg border text-xs font-bold flex items-center justify-center gap-2 ${config.sound ? 'bg-blue-500/20 border-blue-500 text-blue-400' : 'bg-white/5 border-white/10 text-gray-500'}`}
-                                    >
-                                        {config.sound ? <Volume2 size={14}/> : <VolumeX size={14}/>} {config.sound ? 'SOUND FX ON' : 'SOUND FX OFF'}
-                                    </button>
-                                </div>
+            // AUTO AUDIO & PORTAL EFFECT
+            useEffect(() => {
+                const audio = document.getElementById('cyber-audio');
+                if(!audio) return;
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        const section = entry.target;
+                        if (entry.isIntersecting) {
+                            // ENTERING THE MATRIX
+                            section.classList.add('portal-active');
+                            audio.volume = 0.5;
+                            audio.play().catch(e => console.log("Audio autoplay prevented by browser"));
+                        } else {
+                            // LEAVING
+                            section.classList.remove('portal-active');
+                            audio.pause();
+                        }
+                    });
+                }, { threshold: 0.15 }); // Trigger when 15% visible
 
-                                <button onClick={() => {applyConfig(); setOpen(false)}} className="w-full bg-gradient-to-r from-blue-600 to-purple-600 py-3 rounded-xl font-black text-white flex items-center justify-center gap-2 hover:scale-105 transition shadow-lg mt-2">
-                                    <Power size={16} /> REBOOT SYSTEM
-                                </button>
-                            </div>
-                        </div>
-                    )}
-                </>
+                const section = document.getElementById('cyber-deck');
+                if (section) observer.observe(section);
+                
+                return () => observer.disconnect();
+            }, []);
+
+            return React.createElement('section', { id: "cyber-deck", className: "portal-stack" },
+                // 3D Grid Floor Effect
+                React.createElement('div', { className: "portal-grid" }),
+                
+                // Screen Overlay (Scanlines & Vignette)
+                React.createElement('div', { className: "screen-overlay" }),
+                React.createElement('div', { className: "scanline" }),
+
+                React.createElement('h2', { className: "font-cyber text-5xl text-center mb-12 text-white relative z-30 text-glow tracking-[0.2em] mix-blend-overlay glitch-text", "data-text": "CYBER CAMPUS" }, "CYBER CAMPUS"),
+                
+                // Vertical Stack Container - No Overlap, Pure Parallel Flow
+                React.createElement('div', { className: "flex flex-col w-full relative z-20" },
+                    tracks.map((images, i) => 
+                        React.createElement('div', { key: i, className: "promo-lane marquee-wrapper" },
+                            React.createElement('div', { className: `marquee-row ${trackConfig[i].dir} ${trackConfig[i].speed}` },
+                                [...images, ...images, ...images, ...images].map((src, idx) =>
+                                    React.createElement('div', { key: idx, className: "promo-img" },
+                                        React.createElement('img', { src: src, className: "w-full h-full object-cover" }),
+                                        React.createElement('div', { className: "absolute inset-0 bg-gradient-to-t from-blue-900/50 to-transparent opacity-0 hover:opacity-100 transition-opacity" })
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
             );
         };
 
-        const MainApp = () => {
-            const [user, setUser] = useState(null);
-            const [sidebarOpen, setSidebarOpen] = useState(false);
-            const [activeApp, setActiveApp] = useState(null);
-            const [xp, setXp] = useState(0);
-            const [level, setLevel] = useState(1);
-            const [toasts, setToasts] = useState([]);
-            const [config, setConfig] = useState({ theme: 'cyber', sound: true });
+        const Hero = () => {
+            const [fly, setFly] = useState(false);
+            useEffect(() => { setTimeout(() => setFly(true), 500); }, []);
             
-            // Gamification Logic
-            const addToast = (msg, type='info') => {
-                const id = Date.now();
-                setToasts(prev => [...prev, {id, msg, type}]);
-                if(config.sound) {
-                    if(type === 'xp') SOUNDS.success.play().catch(()=>{});
-                    else SOUNDS.hover.play().catch(()=>{});
+            return React.createElement('section', { className: "h-screen flex flex-col justify-center items-center text-center relative overflow-hidden" },
+                React.createElement('div', { className: "absolute inset-0 bg-black" },
+                    React.createElement('img', { src: IMG.hero, className: "absolute inset-0 w-full h-full object-cover opacity-30 animate-pulse" }),
+                    React.createElement('div', { className: "absolute inset-0 bg-gradient-to-t from-[#030303] via-black/50 to-transparent" })
+                ),
+                React.createElement('div', { className: "relative z-10 px-6 max-w-4xl perspective-container" },
+                    React.createElement('div', { className: `inline-block mb-6 px-4 py-1.5 rounded-full glass-panel border border-blue-500/30 text-blue-400 text-[10px] font-black tracking-[0.2em] uppercase transition-all duration-1000 ${fly ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}` }, "🏆 Ritesh Kumar Presents"),
+                    
+                    React.createElement('div', { className: `transition-all duration-[1500ms] ${fly ? 'fly-out' : 'opacity-0 scale-50 blur-lg'}` },
+                        React.createElement('h1', { className: "font-cyber text-5xl md:text-8xl mb-2 text-white leading-tight text-glow glitch-text", "data-text": "SAFALTA" }, "SAFALTA", React.createElement('span', {className:"text-6xl block mt-2"}, "EXPRESS 🚂")),
+                        React.createElement('h2', { className: "font-tech text-3xl md:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 mb-6 font-bold" }, "BOYS HOSTEL 🏨")
+                    ),
+
+                    React.createElement('p', { className: "text-lg text-gray-300 mb-12 font-light max-w-xl mx-auto" }, "Behind GD College, Begusarai. The ultimate ecosystem for serious aspirants."),
+                    
+                    React.createElement('div', { className: "flex flex-col sm:flex-row gap-6 justify-center" },
+                        React.createElement('button', { onClick: () => document.getElementById('booking').scrollIntoView({behavior:'smooth'}), onMouseEnter: playHoverSound, className: "bg-blue-600 px-10 py-4 rounded-2xl font-black text-white shadow-[0_0_40px_rgba(37,99,235,0.6)] hover:scale-110 transition magnetic-btn border border-blue-400" }, "BOOK SEAT NOW"),
+                        React.createElement('a', { href: "tel:9122802016", onMouseEnter: playHoverSound, className: "glass-panel border border-white/20 px-10 py-4 rounded-2xl font-black text-white hover:bg-white/10 transition flex items-center justify-center gap-2 magnetic-btn" }, React.createElement(Phone, {size:20}), "CALL NOW")
+                    )
+                )
+            );
+        };
+
+        const LegacySection = () => React.createElement('section', { id: "legacy", className: "py-20 px-4 bg-[#050505] scroll-reveal" },
+            React.createElement('div', { className: "max-w-7xl mx-auto" },
+                React.createElement('h2', { className: "font-cyber text-3xl text-center mb-12 text-white glitch-text", "data-text": "LOCATION RADAR" }, "LOCATION RADAR"),
+                React.createElement('div', { className: "grid grid-cols-2 md:grid-cols-5 gap-4" },
+                    LEGACY_SPOTS.map((s,i) => React.createElement('div', { key: i, className: "glass-panel p-6 rounded-2xl text-center hover:border-blue-500/50 transition tilt-card" },
+                        React.createElement('div', { className: "bg-white/5 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 text-blue-400" }, React.createElement(s.i, {size:24})),
+                        React.createElement('h4', { className: "font-bold text-sm" }, s.n),
+                        React.createElement('p', { className: "text-xs text-gray-500" }, s.d)
+                    ))
+                )
+            )
+        );
+
+        const FoodMenu = () => {
+            const [day, setDay] = useState('Monday');
+            return React.createElement('section', { id: "menu", className: "py-20 px-4 bg-[#080808] scroll-reveal" },
+                React.createElement('div', { className: "max-w-6xl mx-auto" },
+                    React.createElement('h2', { className: "font-cyber text-3xl text-center mb-10 text-white glitch-text", "data-text": "BRAIN FUEL" }, "BRAIN FUEL"),
+                    React.createElement('div', { className: "flex gap-3 overflow-x-auto pb-6 scrollbar-hide mb-8 px-2" }, 
+                        Object.keys(MENU).map(d => React.createElement('button', { key: d, onClick: () => setDay(d), onMouseEnter: playHoverSound, className: `px-6 py-2 rounded-lg font-black text-xs uppercase whitespace-nowrap transition-all ${day === d ? 'bg-yellow-500 text-black shadow-lg scale-105' : 'glass-panel text-gray-400 border-white/10'}` }, d))
+                    ),
+                    React.createElement('div', { className: "grid md:grid-cols-3 gap-6" },
+                        [{t:"BREAKFAST", i:MENU[day].i1, i2:MENU[day].i2, n:MENU[day].b, time:"8:30 AM"}, 
+                         {t:"LUNCH", i:MENU[day].l1, i2:MENU[day].l2, n:MENU[day].l, time:"1:00 PM"}, 
+                         {t:"DINNER", i:MENU[day].d1, i2:MENU[day].d2, n:MENU[day].d, time:"8:30 PM"}].map((m, idx) => 
+                            React.createElement('div', { key: idx, className: "glass-panel p-4 rounded-3xl border-t-4 border-yellow-500 tilt-card group flex flex-col h-full" },
+                                // Image 1 (Top)
+                                React.createElement('div', { className: "h-40 rounded-xl overflow-hidden mb-3 border border-white/10 relative" },
+                                    React.createElement('img', { src: m.i, className: "w-full h-full object-cover transform group-hover:scale-110 transition duration-700", onError: (e)=>{e.target.src=IMG.thali} }),
+                                    React.createElement('div', { className: "absolute top-2 left-2 bg-black/70 px-3 py-1 rounded-lg text-[10px] font-bold text-yellow-400 backdrop-blur-md" }, m.t)
+                                ),
+                                // Text Content (Middle)
+                                React.createElement('div', { className: "text-center mb-3 flex-1 flex flex-col justify-center" },
+                                    React.createElement('h4', { className: "text-xl font-bold text-white leading-tight" }, m.n),
+                                    React.createElement('p', { className: "text-xs text-gray-500 mt-1 font-mono" }, m.time)
+                                ),
+                                // Image 2 (Bottom)
+                                React.createElement('div', { className: "h-40 rounded-xl overflow-hidden mt-auto border border-white/10" },
+                                    React.createElement('img', { src: m.i2, className: "w-full h-full object-cover transform group-hover:scale-110 transition duration-700", onError: (e)=>{e.target.src=IMG.thali} })
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        };
+
+        const RoomSection = () => React.createElement('section', { className: "py-24 px-4 bg-black scroll-reveal" },
+            React.createElement('div', { className: "max-w-7xl mx-auto" },
+                React.createElement('h2', { className: "font-cyber text-3xl text-center mb-16 text-white glitch-text", "data-text": "STUDENT SUITES" }, "STUDENT SUITES"),
+                React.createElement('div', { className: "grid md:grid-cols-3 gap-8" },
+                    [DB.hostel_ext, DB.hostel_blue, DB.study_hall].map((src, i) => 
+                        React.createElement('div', { key: i, className: "h-64 glass-panel rounded-3xl overflow-hidden group border border-white/10 tilt-card" },
+                            React.createElement('img', { src, className: "w-full h-full object-cover transition duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100" }),
+                            React.createElement('div', { className: "absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-100 transition-opacity" },
+                                React.createElement('span', { className: "text-white font-bold" }, i===0?"EXTERIOR":i===1?"INTERIOR":"STUDY HALL")
+                            )
+                        )
+                    )
+                )
+            )
+        );
+
+        const Booking = () => {
+            const [showModal, setShowModal] = useState(false);
+            const handlePay = () => {
+                window.location.href = "upi://pay?pa=riteshs9122@ybl&pn=SafaltaExpress&am=4000&cu=INR&tn=HostelSeatBooking";
+                setTimeout(() => setShowModal(true), 2000);
+            };
+            return React.createElement('section', { id: "booking", className: "py-24 px-4 bg-[#080808] relative scroll-reveal" },
+                React.createElement('div', { className: "max-w-xl mx-auto glass-panel p-8 md:p-12 rounded-[3rem] text-center border border-blue-500/30 shadow-[0_0_50px_rgba(37,99,235,0.1)] relative overflow-hidden" },
+                    React.createElement('div', { className: "absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-purple-500" }),
+                    React.createElement('div', { className: "bg-red-600 text-white text-[10px] font-black px-4 py-1 rounded inline-block mb-6 animate-pulse" }, "LIMITED SEATS LEFT"),
+                    React.createElement('h2', { className: "font-cyber text-4xl mb-6 glitch-text", "data-text": "ELITE PLAN" }, "ELITE PLAN"),
+                    
+                    React.createElement('div', { className: "flex flex-col items-center mb-10 pop-3d" },
+                        React.createElement('span', { className: "text-gray-500 text-2xl strike-diagonal font-bold font-mono" }, "₹5500"),
+                        React.createElement('span', { className: "text-8xl font-cyber text-white text-glow tracking-tighter mt-2" }, "₹4000"),
+                        React.createElement('span', { className: "text-blue-400 text-xs tracking-[0.2em] font-bold uppercase mt-2" }, "/ MONTH (ALL INCLUSIVE)")
+                    ),
+                    React.createElement('div', { className: "grid grid-cols-2 gap-4 text-left mb-10" },
+                        ["3-Time Meals", "24/7 Power", "RO Water", "Furnished"].map(f => React.createElement('div', { key: f, className: "flex items-center gap-2 text-gray-300 text-sm font-bold" }, React.createElement(CheckCircle, { size: 16, className: "text-green-500" }), f))
+                    ),
+                    React.createElement('button', { onClick: handlePay, onMouseEnter: playHoverSound, className: "w-full bg-gradient-to-r from-blue-600 to-purple-600 py-5 rounded-2xl font-black text-xl hover:scale-105 transition shadow-xl magnetic-btn" }, "PAY ₹4000 NOW"),
+                    React.createElement('p', { className: "text-gray-600 text-[10px] mt-4 font-bold uppercase" }, "Official UPI: riteshs9122@ybl")
+                ),
+                showModal && React.createElement('div', { className: "fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md p-4 animate-float" },
+                    React.createElement('div', { className: "bg-[#111] border border-white/20 rounded-[2rem] p-8 max-w-sm w-full text-center shadow-2xl" },
+                        React.createElement(CheckCircle, { size: 60, className: "text-green-500 mx-auto mb-6" }),
+                        React.createElement('h3', { className: "text-2xl font-black text-white mb-2" }, "PAYMENT INITIATED"),
+                        React.createElement('p', { className: "text-gray-400 text-sm mb-8 leading-relaxed" }, "To confirm your seat instantly, please send the payment screenshot to Ritesh Sir on WhatsApp."),
+                        React.createElement('a', { href: `https://wa.me/919122802016?text=${encodeURIComponent(`Hi Ritesh Sir, I've paid ₹4000 for Safalta Express seat. Here is the screenshot.`)}`, className: "block w-full bg-[#25D366] py-4 rounded-xl font-bold flex items-center justify-center gap-2 text-white hover:bg-[#1ebc59]" }, React.createElement(Send, { size: 18 }), "SEND SCREENSHOT"),
+                        React.createElement('button', { onClick: () => setShowModal(false), className: "mt-6 text-xs text-red-500 font-bold tracking-widest" }, "CLOSE")
+                    )
+                )
+            );
+        };
+
+        const Footer = () => React.createElement('footer', { className: "py-20 px-4 bg-black border-t border-white/10" },
+            React.createElement('div', { className: "max-w-4xl mx-auto text-center" },
+                React.createElement('h3', { className: "font-cyber text-2xl mb-8 text-blue-500" }, "CONTACT OFFICE"),
+                React.createElement('div', { className: "flex flex-col gap-6 items-center" },
+                    React.createElement('div', { className: "glass-panel px-8 py-4 rounded-2xl flex items-center gap-4 w-full max-w-sm tilt-card" },
+                        React.createElement(Phone, { className: "text-green-500" }),
+                        React.createElement('div', { className: "text-left" },
+                            React.createElement('a', { href: "tel:9122802016", className: "text-xl font-black block" }, "9122802016"),
+                            React.createElement('span', { className: "text-xs text-gray-500" }, "Primary")
+                        )
+                    ),
+                    React.createElement('div', { className: "glass-panel px-8 py-4 rounded-2xl flex items-center gap-4 w-full max-w-sm tilt-card" },
+                        React.createElement(Phone, { className: "text-green-500" }),
+                        React.createElement('div', { className: "text-left" },
+                            React.createElement('a', { href: "tel:8976852604", className: "text-xl font-black block" }, "8976852604"),
+                            React.createElement('span', { className: "text-xs text-gray-500" }, "Secondary")
+                        )
+                    ),
+                    React.createElement('div', { className: "flex items-center gap-2 text-gray-400 text-sm" }, React.createElement(Send, {size:16}), React.createElement('a', { href: `mailto:${OWNER_EMAIL}` }, OWNER_EMAIL)),
+                    
+                    /* BIG MAP BUTTON */
+                    React.createElement('div', { className: "h-48 w-full max-w-md glass-panel rounded-2xl overflow-hidden relative cursor-pointer group mt-4", onClick: () => window.open("https://maps.google.com/?q=Behind+GD+College+Begusarai") },
+                        React.createElement('img', { src: "https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800", className: "w-full h-full object-cover opacity-50 group-hover:opacity-70 transition duration-500" }),
+                        React.createElement('div', { className: "absolute inset-0 flex items-center justify-center" },
+                            React.createElement('div', { className: "bg-black/80 px-6 py-3 rounded-xl border border-white/20 font-bold text-sm tracking-widest flex items-center gap-2" }, 
+                                React.createElement(MapPin, {className:"text-red-500"}), "SEE LOCATION IN GOOGLE MAPS"
+                            )
+                        )
+                    )
+                ),
+                
+                /* DEVELOPER PROMO - FINAL POSITION */
+                React.createElement('div', { className: "mt-24 w-full" }, React.createElement(DeveloperPromo)),
+
+                React.createElement('div', { className: "mt-16 text-[10px] font-bold text-gray-700 tracking-[0.5em] uppercase" }, "Safalta Express | 2026")
+            )
+        );
+        
+        // --- FLOATING WHATSAPP FIXED ---
+        const FloatingWhatsApp = () => React.createElement('a', { 
+            href: "https://wa.me/919122802016", 
+            target: "_blank", 
+            onMouseEnter: playHoverSound,
+            className: "fixed bottom-6 right-6 z-[2000] bg-[#25D366] p-4 rounded-full shadow-[0_0_20px_rgba(37,211,102,0.5)] hover:scale-110 transition animate-bounce flex items-center justify-center group" 
+        }, React.createElement(MessageSquare, { size: 32, color: "white", fill: "white", className: "group-hover:rotate-12 transition" }));
+
+        // --- APP IMPLEMENTATIONS ---
+        const OrbitPlanner = ({ close, user }) => {
+            const [tasks, setTasks] = useState([]);
+            const [input, setInput] = useState("");
+            const [aiLoading, setAiLoading] = useState(false);
+            
+            useEffect(() => {
+                if(user && db) {
+                      const q = query(collection(db, 'artifacts', APP_ID, 'users', user.uid, 'tasks'), orderBy('ts', 'desc'));
+                      const unsub = onSnapshot(q, s => setTasks(s.docs.map(d=>({id:d.id, ...d.data()}))), e=>console.log('Task offline'));
+                      return unsub;
+                } else {
+                    const local = JSON.parse(localStorage.getItem('safalta_tasks')) || [];
+                    setTasks(local);
+                }
+            }, [user]);
+
+            const generateSchedule = async () => {
+                if(!input) return;
+                setAiLoading(true);
+                const aiRes = await callGemini("Create a short bullet point task list for studying: " + input);
+                const newTasks = aiRes.split('\n').filter(t => t.trim().length > 0).map(t => ({ t: t.replace(/^[*-]\s*/, ''), c: false, ts: Date.now() + Math.random() }));
+                
+                if (user && db) {
+                    newTasks.forEach(task => addDoc(collection(db, 'artifacts', APP_ID, 'users', user.uid, 'tasks'), { ...task, ts: serverTimestamp() }));
+                } else {
+                    const updated = [...tasks, ...newTasks];
+                    setTasks(updated);
+                    localStorage.setItem('safalta_tasks', JSON.stringify(updated));
+                }
+                setInput("");
+                setAiLoading(false);
+            };
+
+            const addTask = async () => {
+                if(!input) return;
+                const newTask = { t:input, c:false, ts:Date.now() };
+                if(user && db) {
+                    await addDoc(collection(db, 'artifacts', APP_ID, 'users', user.uid, 'tasks'), { ...newTask, ts: serverTimestamp() });
+                } else {
+                    const updated = [...tasks, newTask];
+                    setTasks(updated);
+                    localStorage.setItem('safalta_tasks', JSON.stringify(updated));
+                }
+                setInput("");
+            };
+
+            const toggleTask = async (id, status) => {
+                 if(user && db) {
+                      await updateDoc(doc(db, 'artifacts', APP_ID, 'users', user.uid, 'tasks', id), { c: !status });
+                 } else {
+                      const updated = tasks.map(t => t.ts === id ? {...t, c:!t.c} : t);
+                      setTasks(updated);
+                      localStorage.setItem('safalta_tasks', JSON.stringify(updated));
+                 }
+            };
+
+            const deleteTask = async (id) => {
+                if(user && db) {
+                    await deleteDoc(doc(db, 'artifacts', APP_ID, 'users', user.uid, 'tasks', id));
+                } else {
+                    const updated = tasks.filter(t => t.ts !== id);
+                    setTasks(updated);
+                    localStorage.setItem('safalta_tasks', JSON.stringify(updated));
                 }
             };
-            const removeToast = (id) => setToasts(prev => prev.filter(t => t.id !== id));
 
-            const addXp = (amount, reason) => {
-                setXp(prev => {
-                    const newXp = prev + amount;
-                    if(newXp >= level * 1000) {
-                        setLevel(l => l + 1);
-                        addToast(`LEVEL UP! You are now Level ${level + 1}`, 'success');
-                        return newXp - (level * 1000);
-                    }
-                    return newXp;
-                });
-                if(reason) addToast(`+${amount} XP: ${reason}`, 'xp');
-            };
-
-            const playSound = (type) => { if(config.sound) SOUNDS[type].play().catch(()=>{}); };
-
-            useEffect(() => {
-                onAuthStateChanged(auth, setUser);
-                
-                // Scroll Handler for XP
-                const handleScroll = () => {
-                    const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
-                    if(Math.random() > 0.99) addXp(5); // Random scrolling XP
-                };
-                window.addEventListener('scroll', handleScroll);
-                
-                // Initialize Theme
-                const root = document.documentElement;
-                const themes = { 
-                    cyber: { b: '#00f3ff', p: '#bc13fe', g: '#ffd700', d: '#ff003c' }, 
-                    royal: { b: '#ffd700', p: '#d4af37', g: '#ffffff', d: '#800000' }, 
-                    matrix: { b: '#00ff00', p: '#008f11', g: '#aaff00', d: '#003300' }, 
-                    sith: { b: '#ff0000', p: '#990000', g: '#550000', d: '#ff4444' } 
-                };
-                const t = themes[config.theme];
-                root.style.setProperty('--neon-blue', t.b);
-                root.style.setProperty('--neon-purple', t.p);
-                root.style.setProperty('--gold', t.g);
-                root.style.setProperty('--danger', t.d);
-
-                // Intro Sound (Reduced Delay for instant feel)
-                setTimeout(() => playSound('intro'), 100);
-
-                return () => window.removeEventListener('scroll', handleScroll);
-            }, [config]);
-
-            const login = async () => {
-                try {
-                    await signInWithPopup(auth, googleProvider);
-                    addXp(500, "First Login");
-                    playSound('success');
-                } catch (e) { console.error(e); }
-            };
-
-            // Calculate progress bar width
-            const progressWidth = Math.min((xp / (level * 1000)) * 100, 100);
-
-            return (
-                <div className="min-h-screen text-white selection:bg-neon-blue selection:text-black">
-                    {/* XP Bar */}
-                    <div className="xp-bar-container">
-                        <div className="xp-bar-fill" style={{width: `${progressWidth}%`}}></div>
-                    </div>
-
-                    {/* Cursor */}
-                    <div id="cursor-dot" className="cursor-dot"></div>
-                    <div id="cursor-outline" className="cursor-outline"></div>
-
-                    {/* Backgrounds */}
-                    <ParticleCanvas />
-                    <div className="fixed inset-0 bg-scanline z-[1] pointer-events-none"></div>
-
-                    {/* Toast Container */}
-                    <div className="toast-container">
-                        {toasts.map(t => <Toast key={t.id} message={t.msg} type={t.type} remove={() => removeToast(t.id)} />)}
-                    </div>
-
-                    {/* Sidebar */}
-                    <div className={`sidebar ${sidebarOpen ? 'open' : ''} flex flex-col p-6`}>
-                        <div className="flex justify-between items-center mb-10">
-                            <h2 className="font-cyber text-xl text-blue-400 tracking-widest glitch-text" data-text="HOSTEL OS">HOSTEL OS</h2>
-                            <button onClick={() => {setSidebarOpen(false); playSound('click')}} className="hover:text-red-500 transition"><X size={24}/></button>
-                        </div>
-                        <div className="space-y-4 overflow-y-auto flex-1">
-                            <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">My Apps</div>
-                            {[
-                                {n:"Concept Vault ✨", i:Brain, id:"mistake", c:"text-purple-400", xp: 50},
-                                {n:"Orbit Planner ✨", i:Calendar, id:"planner", c:"text-blue-400", xp: 20},
-                                {n:"Sonic Core", i:Headphones, id:"music", c:"text-pink-400", xp: 10},
-                                {n:"Group Chat", i:MessageSquare, id:"chat", c:"text-green-400", xp: 5}
-                            ].map((app) => (
-                                <button 
-                                    key={app.id} 
-                                    onClick={() => {
-                                        if(!user) return addToast("Login Required", "info");
-                                        setSidebarOpen(false); 
-                                        setActiveApp(app.id); 
-                                        addXp(app.xp, "Opened App");
-                                        playSound('click');
-                                    }} 
-                                    className="flex items-center gap-4 text-gray-300 hover:text-white hover:bg-white/10 p-3 rounded-xl w-full transition border border-transparent hover:border-white/10 group relative overflow-hidden"
-                                >
-                                    <div className={`absolute inset-0 bg-gradient-to-r from-${app.c.split('-')[1]}/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-500`}></div>
-                                    <app.i size={18} className={app.c + " group-hover:scale-110 transition relative z-10"} />
-                                    <span className="font-bold text-sm tracking-wide relative z-10">{app.n}</span>
-                                    {!user && <Lock size={12} className="ml-auto text-gray-600" />}
-                                </button>
-                            ))}
-                        </div>
-                        {user ? (
-                            <button onClick={() => signOut(auth)} className="mt-4 flex items-center gap-2 text-red-500 p-4 hover:bg-red-500/10 rounded-xl justify-center font-bold border border-red-500/20">
-                                <LogOut size={18} /> LOGOUT
-                            </button>
-                        ) : (
-                            <button onClick={login} className="mt-4 bg-white text-black p-4 rounded-xl font-black uppercase hover:scale-105 transition">
-                                Login to Sync
-                            </button>
-                        )}
-                    </div>
-
-                    {/* Navbar */}
-                    <nav className="fixed top-0 w-full z-40 glass-panel px-4 py-3 flex justify-between items-center">
-                        <div className="flex items-center gap-4">
-                            <button onClick={() => {setSidebarOpen(true); playSound('click')}} className="p-2 hover:bg-white/10 rounded-full transition"><Menu size={24} /></button>
-                            <div className="flex items-center gap-3" onClick={() => {window.scrollTo(0,0); addXp(10, "Home Refresh")}}>
-                                <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-2 rounded-lg shadow-[0_0_15px_rgba(37,99,235,0.5)]">
-                                    <GraduationCap className="text-white" size={20} />
-                                </div>
-                                <div>
-                                    <h1 className="font-cyber text-sm md:text-lg font-black leading-none tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">SAFALTA</h1>
-                                    <div className="flex items-center gap-2">
-                                        <p className="text-[8px] tracking-[0.2em] text-blue-400 font-bold">BOYS HOSTEL</p>
-                                        <div className="px-1.5 py-0.5 rounded bg-blue-500/20 border border-blue-500/50 text-[8px] text-blue-300 font-bold">LVL {level}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="flex gap-3 items-center">
-                            <a href="https://www.instagram.com/safalta_express_boys_hostel?igsh=MXZyZGdvOXFldnUxNA==" target="_blank" className="bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 p-2 rounded-full text-white shadow-lg animate-pulse hover:scale-110 transition">
-                                <Instagram size={16} />
-                            </a>
-                            {!user ? (
-                                <button onClick={login} className="hidden md:block bg-white text-black px-4 py-1.5 rounded-lg text-xs font-black uppercase hover:bg-gray-200 transition shadow-[0_0_15px_rgba(255,255,255,0.4)]">
-                                    LOGIN
-                                </button>
-                            ) : (
-                                <img src={user.photoURL} className="w-8 h-8 rounded-full border-2 border-green-500" title={`Level ${level} Student`} />
-                            )}
-                        </div>
-                    </nav>
-
-                    {/* HERO SECTION */}
-                    <section className="h-screen flex flex-col justify-center items-center text-center relative overflow-hidden">
-                        <div className="absolute inset-0 bg-black">
-                            <img src={IMG.hero} className="absolute inset-0 w-full h-full object-cover opacity-30 animate-pulse scale-105 transition-transform duration-[20s]" style={{animation: 'zoomIn 20s infinite alternate'}} />
-                            <div className="absolute inset-0 bg-gradient-to-t from-[var(--void)] via-black/60 to-transparent"></div>
-                        </div>
-                        
-                        <div className="relative z-10 px-6 max-w-5xl">
-                            <div className="inline-block mb-8 px-4 py-1.5 rounded-full glass-panel border border-blue-500/30 text-blue-400 text-[10px] font-black tracking-[0.3em] uppercase animate-float">
-                                <span className="text-white">🚀 Ritesh Sir</span> Presents
-                            </div>
-                            
-                            <h1 className="font-cyber text-5xl md:text-8xl mb-4 text-white leading-tight glitch-wrapper">
-                                <span className="glitch-text block" data-text="SAFALTA">SAFALTA</span>
-                                <span className="text-4xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 block mt-2 font-black">EXPRESS 🚂</span>
-                            </h1>
-
-                            <p className="text-lg text-gray-300 mb-12 font-light max-w-2xl mx-auto leading-relaxed border-l-2 border-blue-500 pl-4 text-left md:text-center md:border-l-0 md:pl-0">
-                                The ultimate ecosystem for serious aspirants in Begusarai. 
-                                <span className="text-blue-400 font-bold block mt-2">Eat Better. Sleep Better. Study Harder.</span>
-                            </p>
-
-                            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                                <button 
-                                    onClick={() => {
-                                        document.getElementById('booking').scrollIntoView({behavior:'smooth'}); 
-                                        addXp(20, "Initiated Booking");
-                                        playSound('click');
-                                    }} 
-                                    className="group relative px-8 py-4 bg-blue-600 rounded-xl font-black text-white shadow-[0_0_30px_rgba(37,99,235,0.5)] overflow-hidden transition-transform hover:scale-105"
-                                >
-                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                                    <span className="relative flex items-center gap-2">BOOK SEAT <Zap size={18} className="fill-white"/></span>
-                                </button>
-                                
-                                <a href="tel:9122802016" onClick={() => addXp(5, "Called Office")} className="glass-panel px-8 py-4 rounded-xl font-bold text-white hover:bg-white/10 transition flex items-center gap-2 border border-white/20 hover:border-white">
-                                    <Phone size={18} /> Call Office
-                                </a>
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* LEGACY GRID */}
-                    <section className="py-20 px-4 bg-[#050505] relative">
-                        <div className="max-w-7xl mx-auto">
-                            <h2 className="font-cyber text-3xl text-center mb-16 text-white tracking-widest flex items-center justify-center gap-3">
-                                <MapPin className="text-red-500 animate-bounce" /> LOCATION INTEL
-                            </h2>
-                            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                                {[
-                                    {n:"GD College", d:"50m Campus", i:GraduationCap}, 
-                                    {n:"Kaushal Comm.", d:"Coaching Hub", i:BookOpen}, 
-                                    {n:"Trinity", d:"Classes", i:Library}, 
-                                    {n:"Industrial", d:"Area", i:Factory}, 
-                                    {n:"Readers Lib", d:"24/7 Zone", i:Building2}
-                                ].map((s,i) => (
-                                    <div key={i} className="glass-panel p-6 rounded-2xl text-center group hover:bg-blue-900/10 cursor-pointer transition-all duration-300" onMouseEnter={()=>playSound('hover')}>
-                                        <div className="bg-gradient-to-br from-gray-800 to-black w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-400 group-hover:text-white group-hover:scale-110 transition border border-white/10 group-hover:border-blue-500 shadow-lg">
-                                            <s.i size={24} />
-                                        </div>
-                                        <h4 className="font-bold text-sm text-gray-200 group-hover:text-blue-400">{s.n}</h4>
-                                        <p className="text-[10px] text-gray-500 mt-1 uppercase tracking-wider">{s.d}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* FOOD MENU */}
-                    <section id="menu" className="py-24 px-4 bg-black relative">
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-500/10 rounded-full blur-[100px] pointer-events-none"></div>
-                        <div className="max-w-6xl mx-auto relative z-10">
-                            <div className="text-center mb-12">
-                                <span className="text-yellow-500 text-xs font-black tracking-[0.3em] uppercase mb-2 block">Premium Mess</span>
-                                <h2 className="font-cyber text-4xl text-white glitch-text" data-text="BRAIN FUEL">BRAIN FUEL</h2>
-                            </div>
-                            
-                            {/* Days Selector */}
-                            <div className="flex gap-2 overflow-x-auto pb-8 scrollbar-hide justify-start md:justify-center px-2">
-                                {Object.keys(MENU).map(d => {
-                                    const isActive = d === 'Monday'; // Default to Monday for demo, better to use state
-                                    // Let's use internal state for this component
-                                    return <MenuButton key={d} day={d} current={'Monday'} onClick={()=>{}} /> // Placeholder, need real state
-                                })}
-                            </div>
-                            <MenuDisplay />
-                        </div>
-                    </section>
-
-                    {/* ROOMS */}
-                    <section className="py-24 px-4 bg-[#080808]">
-                        <div className="max-w-7xl mx-auto">
-                            <h2 className="font-cyber text-3xl text-center mb-16 text-white">STUDENT SUITES</h2>
-                            <div className="grid md:grid-cols-3 gap-8">
-                                {[IMG.room1, IMG.room2, IMG.room3].map((src, i) => (
-                                    <div key={i} className="h-72 glass-panel rounded-[2rem] overflow-hidden group border border-white/10 relative transform transition hover:-translate-y-2 hover:shadow-[0_10px_40px_rgba(0,243,255,0.15)]">
-                                        <img src={src} className="w-full h-full object-cover transition duration-700 group-hover:scale-110 opacity-60 group-hover:opacity-100" />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"></div>
-                                        <div className="absolute bottom-6 left-6">
-                                            <div className="bg-blue-600 text-white text-[10px] font-bold px-2 py-1 rounded mb-2 inline-block">TYPE {String.fromCharCode(65+i)}</div>
-                                            <h3 className="text-xl font-bold">Standard Bed</h3>
-                                            <p className="text-xs text-gray-400">Furnished • Ventilated</p>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* BOOKING */}
-                    <section id="booking" className="py-24 px-4 relative overflow-hidden">
-                        <div className="max-w-xl mx-auto glass-panel p-8 md:p-12 rounded-[3rem] text-center border border-blue-500/30 shadow-[0_0_80px_rgba(37,99,235,0.15)] relative">
-                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent"></div>
-                            
-                            <div className="bg-red-600/90 text-white text-[10px] font-black px-4 py-1.5 rounded-full inline-flex items-center gap-2 mb-8 animate-pulse shadow-[0_0_15px_rgba(220,38,38,0.5)]">
-                                <Flame size={12} className="fill-white" /> LIMITED SEATS LEFT
-                            </div>
-                            
-                            <h2 className="font-cyber text-4xl mb-2 text-white">ELITE PLAN</h2>
-                            <p className="text-gray-400 text-sm mb-8">Unlock your full potential.</p>
-                            
-                            <div className="flex flex-col items-center mb-10 relative">
-                                <span className="text-gray-600 text-2xl line-through decoration-red-500 decoration-2 font-mono mb-[-10px]">₹5500</span>
-                                <span className="text-7xl md:text-8xl font-cyber text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400 tracking-tighter" style={{textShadow: '0 0 30px rgba(255,255,255,0.2)'}}>₹4000</span>
-                                <span className="text-blue-400 text-xs tracking-[0.3em] font-bold uppercase mt-4 bg-blue-500/10 px-4 py-2 rounded-full border border-blue-500/20">/ Month (All Inclusive)</span>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-y-4 gap-x-8 text-left mb-12 max-w-xs mx-auto">
-                                {["3-Time Meals", "24/7 Power", "RO Water", "WiFi Zone", "Study Desk", "CCTV Security"].map(f => (
-                                    <div key={f} className="flex items-center gap-3 text-gray-300 text-sm font-bold group">
-                                        <CheckCircle size={16} className="text-green-500 group-hover:scale-125 transition" /> {f}
-                                    </div>
-                                ))}
-                            </div>
-
-                            <button onClick={()=>window.location.href="upi://pay?pa=riteshs9122@ybl&pn=SafaltaExpress&am=4000&cu=INR&tn=HostelSeatBooking"} className="w-full bg-gradient-to-r from-blue-600 to-purple-600 py-5 rounded-2xl font-black text-xl hover:scale-105 transition shadow-[0_10px_40px_rgba(37,99,235,0.3)] relative overflow-hidden group">
-                                <span className="relative z-10 flex items-center justify-center gap-3">PAY NOW <Sparkles size={20} className="animate-spin" /></span>
-                                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition duration-300"></div>
-                            </button>
-                            <p className="text-gray-500 text-[10px] mt-6 font-mono">UPI: riteshs9122@ybl</p>
-                        </div>
-                    </section>
-
-                    {/* FOOTER */}
-                    <footer className="py-20 px-4 bg-black border-t border-white/10 text-center">
-                        <div className="max-w-4xl mx-auto">
-                            <h3 className="font-cyber text-2xl mb-8 text-blue-500">CONTACT BASE</h3>
-                            <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
-                                <a href="tel:9122802016" className="glass-panel px-8 py-4 rounded-2xl flex items-center gap-4 hover:border-blue-500 transition w-full md:w-auto">
-                                    <Phone className="text-green-500" />
-                                    <div className="text-left">
-                                        <div className="text-xl font-black text-white">9122802016</div>
-                                        <span className="text-xs text-gray-500">Main Line</span>
-                                    </div>
-                                </a>
-                                <a href="mailto:riteshs9122@gmail.com" className="glass-panel px-8 py-4 rounded-2xl flex items-center gap-4 hover:border-purple-500 transition w-full md:w-auto">
-                                    <Mail className="text-purple-500" />
-                                    <div className="text-left">
-                                        <div className="text-sm font-bold text-white">riteshs9122@gmail.com</div>
-                                        <span className="text-xs text-gray-500">Email Support</span>
-                                    </div>
-                                </a>
-                            </div>
-                            <div className="mt-16 text-[10px] font-bold text-gray-700 tracking-[0.5em] uppercase">Safalta Express • Est 2024</div>
-                        </div>
-                    </footer>
-
-                    <a href="https://wa.me/919122802016" target="_blank" className="floating-wa">
-                        <MessageSquare size={28} fill="white" />
-                    </a>
-                    
-                    <GodModePanel config={config} setConfig={setConfig} applyConfig={()=>{addToast("System Rebooted", "success"); playSound('intro')}} />
-
-                    {/* App Modals */}
-                    {activeApp === 'planner' && <OrbitPlanner close={()=>setActiveApp(null)} addXp={addXp} />}
-                    {activeApp === 'mistake' && <MistakeVault close={()=>setActiveApp(null)} addXp={addXp} />}
-                    
-                    {/* Placeholder for other apps */}
-                    {(activeApp && activeApp !== 'planner' && activeApp !== 'mistake') && (
-                        <div className="fixed inset-0 z-[6000] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 animate-[fadeIn_0.3s]">
-                            <div className="max-w-lg w-full glass-panel p-8 rounded-3xl text-center border border-white/20 relative">
-                                <button onClick={()=>setActiveApp(null)} className="absolute top-4 right-4 text-gray-500 hover:text-white"><X/></button>
-                                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg">
-                                    <Activity size={32} className="text-white" />
-                                </div>
-                                <h2 className="font-cyber text-2xl text-white mb-2">{activeApp.toUpperCase()}</h2>
-                                <p className="text-gray-400 mb-8">This module is currently initializing. Please check back later or contact admin.</p>
-                                <button onClick={()=>setActiveApp(null)} className="bg-white/10 hover:bg-white/20 px-6 py-2 rounded-lg font-bold text-sm">Close Module</button>
-                            </div>
-                        </div>
-                    )}
-                </div>
+            return React.createElement('div', { className: "app-modal p-6" },
+                React.createElement('div', { className: "flex justify-between mb-8" }, React.createElement('h2', { className: "font-cyber text-2xl text-blue-400" }, "ORBIT PLANNER (AI)"), React.createElement('button', { onClick: close }, React.createElement(X))),
+                React.createElement('div', { className: "space-y-4" },
+                    tasks.map((t) => React.createElement('div', { key: t.id || t.ts, className: "glass-panel p-4 rounded-xl flex items-center justify-between" }, 
+                        React.createElement('div', { className: "flex items-center gap-3" }, 
+                            React.createElement('button', { className: `w-5 h-5 border rounded-full flex items-center justify-center ${t.c ? 'bg-green-500 border-green-500' : 'border-gray-500'}`, onClick: ()=>toggleTask(t.id||t.ts, t.c) }, t.c && React.createElement(Check, {size:12})), 
+                            React.createElement('span', { className: `font-bold ${t.c ? 'line-through text-gray-500' : ''}` }, t.t)
+                        ), 
+                        React.createElement('button', { onClick: ()=>deleteTask(t.id||t.ts), className: "text-red-500" }, React.createElement(Trash2, {size:16}))
+                    ))
+                ),
+                React.createElement('div', { className: "flex gap-2 mt-6" },
+                    React.createElement('input', { value:input, onChange:e=>setInput(e.target.value), className: "flex-1 bg-white/10 p-3 rounded-xl outline-none", placeholder: "Add task or ask AI to plan..." }),
+                    React.createElement('button', { onClick: generateSchedule, disabled: aiLoading, className: "bg-purple-600 px-4 rounded-xl font-bold" }, aiLoading ? "..." : React.createElement(Sparkles, {size:18})),
+                    React.createElement('button', { onClick: addTask, className: "bg-blue-600 px-6 rounded-xl font-bold" }, React.createElement(Plus))
+                )
             );
         };
 
-        // State Wrapper for Menu to avoid large re-renders
-        const MenuDisplay = () => {
-            const [day, setDay] = useState('Monday');
-            const menu = MENU[day];
+        const MistakeVault = ({ close, user }) => {
+            const [mistakes, setMistakes] = useState([]);
+            const [title, setTitle] = useState("");
+            const [desc, setDesc] = useState("");
+            const [loading, setLoading] = useState(false);
             
-            return (
-                <div>
-                     <div className="flex gap-2 overflow-x-auto pb-8 scrollbar-hide justify-start md:justify-center px-2 mb-4">
-                        {Object.keys(MENU).map(d => (
-                            <button 
-                                key={d} 
-                                onClick={() => setDay(d)} 
-                                className={`px-6 py-2 rounded-xl font-black text-xs uppercase whitespace-nowrap transition-all duration-300 ${day === d ? 'bg-yellow-500 text-black shadow-[0_0_20px_rgba(234,179,8,0.5)] scale-110' : 'glass-panel text-gray-400 hover:text-white hover:bg-white/10'}`}
-                            >
-                                {d}
-                            </button>
-                        ))}
-                    </div>
-                    
-                    <div className="grid md:grid-cols-3 gap-6 animate-[fadeIn_0.5s]">
-                        {[
-                            {t:"BREAKFAST", i:menu.b_img, n:menu.b, time:"8:30 AM"}, 
-                            {t:"LUNCH", i:menu.l_img, n:menu.l, time:"1:00 PM"}, 
-                            {t:"DINNER", i:menu.d_img, n:menu.d, time:"8:30 PM"}
-                        ].map((m, idx) => (
-                            <div key={idx} className="glass-panel p-5 rounded-3xl border-t-4 border-yellow-500 hover:transform hover:scale-105 transition duration-300">
-                                <div className="relative h-48 rounded-2xl overflow-hidden mb-4 group">
-                                    <img src={m.i} className="w-full h-full object-cover transition duration-700 group-hover:scale-110" onError={(e)=>{e.target.src=IMG.thali}} />
-                                    <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition"></div>
-                                    <div className="absolute top-2 left-2 bg-black/70 px-3 py-1 rounded-lg text-[10px] font-bold text-yellow-400 backdrop-blur-md border border-yellow-500/30">
-                                        {m.t}
-                                    </div>
-                                </div>
-                                <h4 className="text-xl font-bold text-white mb-1">{m.n}</h4>
-                                <div className="flex items-center gap-2 text-xs text-gray-500 font-mono">
-                                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div> Ready at {m.time}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+            useEffect(() => {
+                if(user && db) {
+                      const q = query(collection(db, 'artifacts', APP_ID, 'users', user.uid, 'mistakes'), orderBy('ts', 'desc'));
+                      const unsub = onSnapshot(q, s => setMistakes(s.docs.map(d=>({id:d.id, ...d.data()}))), e=>console.log('Vault offline'));
+                      return unsub;
+                }
+            }, [user]);
+
+            const saveMistake = async () => {
+                if(!title || !user || !db) return;
+                await addDoc(collection(db, 'artifacts', APP_ID, 'users', user.uid, 'mistakes'), { t:title, d:desc, ts: serverTimestamp() });
+                setTitle(""); setDesc("");
+            };
+
+            const analyzeAI = async () => {
+                if(!desc) return;
+                setLoading(true);
+                const advice = await callGemini("Analyze this student mistake and give brief advice on how to avoid it: " + desc);
+                setDesc(desc + "\n\n--- AI MENTOR ---\n" + advice);
+                setLoading(false);
+            };
+
+            return React.createElement('div', { className: "app-modal p-6" },
+                 React.createElement('div', { className: "flex justify-between mb-8" }, React.createElement('h2', { className: "font-cyber text-2xl text-purple-400" }, "MISTAKE VAULT"), React.createElement('button', { onClick: close }, React.createElement(X))),
+                 React.createElement('div', { className: "bg-white/5 p-4 rounded-xl mb-6" },
+                     React.createElement('input', { value:title, onChange:e=>setTitle(e.target.value), className: "w-full bg-transparent border-b border-white/20 p-2 outline-none mb-2", placeholder: "Mistake Title" }),
+                     React.createElement('textarea', { value:desc, onChange:e=>setDesc(e.target.value), className: "w-full bg-transparent p-2 outline-none h-32 text-sm", placeholder: "Description..." }),
+                     React.createElement('div', { className: "flex gap-2 mt-2" },
+                        React.createElement('button', { onClick: saveMistake, className: "flex-1 bg-purple-600 py-2 rounded-lg font-bold" }, "SAVE"),
+                        React.createElement('button', { onClick: analyzeAI, disabled: loading, className: "flex-1 bg-blue-600 py-2 rounded-lg font-bold flex items-center justify-center gap-2" }, loading ? "..." : React.createElement(Sparkles, {size:16}), "ANALYZE WITH AI")
+                     )
+                 ),
+                 React.createElement('div', { className: "space-y-4" },
+                     mistakes.map(m => React.createElement('div', { key:m.id, className: "glass-panel p-4 rounded-xl" },
+                         React.createElement('h4', { className: "font-bold text-yellow-400" }, m.t),
+                         React.createElement('p', { className: "text-xs text-gray-300 mt-1 whitespace-pre-wrap" }, m.d)
+                     ))
+                 )
+            );
+        };
+
+        const ZenithGrowth = ({ close }) => {
+            const [custom, setCustom] = useState(25);
+            const [time, setTime] = useState(25*60);
+            const [active, setActive] = useState(false);
+            useEffect(() => {
+                let i = null;
+                if(active && time > 0) i = setInterval(() => setTime(t=>t-1), 1000);
+                else if(time===0) setActive(false);
+                return () => clearInterval(i);
+            }, [active, time]);
+            const fmt = s => `${Math.floor(s/60)}:${s%60<10?'0'+s%60:s%60}`;
+            return React.createElement('div', { className: "app-modal p-6 flex flex-col items-center justify-center" },
+                React.createElement('button', { onClick: close, className: "absolute top-6 right-6" }, React.createElement(X)),
+                React.createElement(Leaf, { size: 64, className: "text-green-500 mb-6" }),
+                React.createElement('h2', { className: "font-cyber text-3xl mb-2" }, "ZENITH GROWTH"),
+                React.createElement('div', { className: "flex items-center gap-2 mb-4" }, 
+                    React.createElement('input', { type:"number", value:custom, onChange:e=>{setCustom(e.target.value); setTime(e.target.value*60)}, className: "bg-white/10 p-2 rounded text-center w-16" }),
+                    React.createElement('span', null, "mins")
+                ),
+                React.createElement('div', { className: "text-6xl font-mono font-bold mb-8 text-green-400" }, fmt(time)),
+                React.createElement('button', { onClick: ()=>setActive(!active), className: "bg-green-600 px-10 py-4 rounded-full font-bold text-xl" }, active ? "ABORT" : "PLANT SEED")
+            );
+        };
+
+        const NeuralNotes = ({ close }) => {
+             const [note, setNote] = useState(localStorage.getItem('safalta_notes') || "");
+             const save = () => { localStorage.setItem('safalta_notes', note); alert("Saved!"); };
+             const savePDF = () => { const el = document.getElementById('note-area'); html2pdf().from(el).save('Notes.pdf'); };
+             const summarize = async () => {
+                 if(!note) return;
+                 const summary = await callGemini("Summarize this note in bullet points: " + note);
+                 setNote(note + "\n\n--- AI SUMMARY ---\n" + summary);
+             };
+
+             return React.createElement('div', { className: "app-modal p-6" },
+                 React.createElement('div', { className: "flex justify-between mb-4" }, React.createElement('h2', { className: "font-cyber text-xl text-yellow-400" }, "NEURAL NOTES (AI)"), React.createElement('button', { onClick: close }, React.createElement(X))),
+                 React.createElement('textarea', { id: "note-area", value: note, onChange: e=>setNote(e.target.value), className: "w-full h-[60vh] bg-white/5 rounded-xl p-4 outline-none font-mono", placeholder: "Start typing..." }),
+                 React.createElement('div', { className: "flex gap-2 mt-4" },
+                     React.createElement('button', { onClick: save, className: "flex-1 bg-white/10 py-3 rounded-xl font-bold" }, "SAVE"),
+                     React.createElement('button', { onClick: summarize, className: "flex-1 bg-purple-600 py-3 rounded-xl font-bold text-white flex items-center justify-center gap-2" }, React.createElement(Sparkles, {size:16}), "AI SUMMARIZE"),
+                     React.createElement('button', { onClick: savePDF, className: "flex-1 bg-yellow-600 py-3 rounded-xl font-bold text-black" }, "PDF")
+                 )
+             );
+        };
+
+        const SonicCore = ({ close }) => {
+            const [playing, setPlaying] = useState(null);
+            const audioRef = useRef(new Audio());
+            // Updated URL to reliable source (MP3)
+            const tracks = [{n:"Deep Focus", u:"https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3"}, {n:"Rainfall", u:"https://cdn.pixabay.com/audio/2022/07/04/audio_2452e673f9.mp3"}];
+            const toggle = (t) => { if(playing===t.n){audioRef.current.pause();setPlaying(null)}else{audioRef.current.src=t.u;audioRef.current.play();setPlaying(t.n)} };
+            return React.createElement('div', { className: "app-modal top-align p-6 flex flex-col items-center" },
+                React.createElement('button', { onClick: close, className: "absolute top-6 right-6" }, React.createElement(X)),
+                React.createElement(Headphones, { size: 64, className: "text-pink-500 mb-6 animate-pulse mt-10" }),
+                React.createElement('h2', { className: "font-cyber text-2xl mb-8" }, "SONIC CORE"),
+                React.createElement('div', { className: "grid gap-6 w-full max-w-md" }, tracks.map((t,i) => React.createElement('button', { key: i, onClick: ()=>toggle(t), className: `p-6 rounded-2xl font-bold text-xl transition ${playing===t.n?'bg-pink-600':'bg-white/10'}` }, playing===t.n?"PAUSE "+t.n:"PLAY "+t.n)))
+            );
+        };
+
+        const Whiteboard = ({ close }) => {
+             const canvasRef = useRef(null);
+             const [isDrawing, setIsDrawing] = useState(false);
+             useEffect(() => { const cvs = canvasRef.current; cvs.width = cvs.parentElement.offsetWidth; cvs.height = 400; const ctx = cvs.getContext('2d'); ctx.strokeStyle = '#00f3ff'; ctx.lineWidth = 2; }, []);
+             const draw = (e) => { if(!isDrawing) return; const ctx = canvasRef.current.getContext('2d'); const rect = canvasRef.current.getBoundingClientRect(); ctx.lineTo((e.clientX||e.touches[0].clientX)-rect.left, (e.clientY||e.touches[0].clientY)-rect.top); ctx.stroke(); };
+             return React.createElement('div', { className: "app-modal p-6" },
+                 React.createElement('div', { className: "flex justify-between mb-4" }, React.createElement('h2', { className: "font-cyber text-xl" }, "WHITEBOARD"), React.createElement('button', { onClick: close }, React.createElement(X))),
+                 React.createElement('div', { className: "bg-black rounded-xl overflow-hidden touch-none h-[400px] border border-white/10" },
+                     React.createElement('canvas', { ref: canvasRef, onMouseDown:(e)=>{setIsDrawing(true);const ctx=canvasRef.current.getContext('2d');ctx.beginPath();ctx.moveTo(e.nativeEvent.offsetX,e.nativeEvent.offsetY)}, onMouseUp:()=>setIsDrawing(false), onMouseMove:(e)=>draw(e.nativeEvent), onTouchStart:(e)=>{setIsDrawing(true);const ctx=canvasRef.current.getContext('2d');const rect=e.target.getBoundingClientRect();ctx.beginPath();ctx.moveTo(e.touches[0].clientX-rect.left,e.touches[0].clientY-rect.top)}, onTouchEnd:()=>setIsDrawing(false), onTouchMove:draw, style:{width:'100%',height:'100%'} })
+                 ),
+                 React.createElement('button', { onClick:()=>{const cvs=canvasRef.current;cvs.getContext('2d').clearRect(0,0,cvs.width,cvs.height)}, className: "mt-4 text-red-500 font-bold" }, "CLEAR")
+             );
+        };
+        
+        const CommunityChat = ({ close, user }) => {
+            const [msg, setMsg] = useState('');
+            const [chats, setChats] = useState([]);
+            useEffect(() => {
+                if(!db) return;
+                try {
+                    const q = query(collection(db, 'artifacts', APP_ID, 'public', 'chat'), orderBy('ts', 'desc'), limit(20));
+                    onSnapshot(q, s => setChats(s.docs.map(d => d.data())));
+                } catch(e){}
+            }, []);
+            const send = async () => {
+                if(!msg || !user) return;
+                await addDoc(collection(db, 'artifacts', APP_ID, 'public', 'chat'), { u:user.displayName, m:msg, ts:serverTimestamp(), i:user.photoURL });
+                setMsg('');
+            };
+            return React.createElement('div', { className: "app-modal p-6 flex flex-col" },
+                 React.createElement('div', { className: "flex justify-between mb-4" }, React.createElement('h2', { className: "font-cyber text-xl text-blue-500" }, "GROUP STUDY"), React.createElement('button', { onClick: close }, React.createElement(X))),
+                 React.createElement('div', { className: "flex-1 overflow-y-auto flex flex-col-reverse gap-3 mb-4" },
+                     chats.map((c,i) => React.createElement('div', { key: i, className: "bg-white/5 p-3 rounded-xl flex gap-3" }, React.createElement('img', { src: c.i, className: "w-8 h-8 rounded-full" }), React.createElement('div', null, React.createElement('p', { className: "text-[10px] font-bold text-blue-300" }, c.u), React.createElement('p', { className: "text-sm" }, c.m))))
+                 ),
+                 React.createElement('div', { className: "flex gap-2" }, React.createElement('input', { value: msg, onChange: e=>setMsg(e.target.value), className: "flex-1 bg-white/5 rounded-xl px-4 outline-none", placeholder: "Type message..." }), React.createElement('button', { onClick: send, className: "bg-blue-600 p-3 rounded-xl" }, React.createElement(Send, {size:18})))
+            );
+        };
+        
+        const NexusLogs = ({close, user}) => {
+             const [log, setLog] = useState("");
+             const [logs, setLogs] = useState([]);
+             useEffect(() => {
+                 if(user && db) {
+                      const q = query(collection(db, 'artifacts', APP_ID, 'users', user.uid, 'logs'), orderBy('ts', 'desc'));
+                      return onSnapshot(q, s => setLogs(s.docs.map(d=>d.data())));
+                 }
+             }, [user]);
+             const save = async () => {
+                 if(!log || !user || !db) return;
+                 await addDoc(collection(db, 'artifacts', APP_ID, 'users', user.uid, 'logs'), { t:log, ts:serverTimestamp() });
+                 setLog("");
+             };
+             return React.createElement('div', { className: "app-modal p-6" },
+                 React.createElement('div', { className: "flex justify-between mb-4" }, React.createElement('h2', { className: "font-cyber text-xl text-green-400" }, "NEXUS LOGS"), React.createElement('button', { onClick: close }, React.createElement(X))),
+                 React.createElement('textarea', { value: log, onChange: e=>setLog(e.target.value), className: "w-full h-32 bg-white/5 rounded-xl p-4 outline-none mb-4", placeholder: "Dear Diary..." }),
+                 React.createElement('button', { onClick: save, className: "w-full bg-green-600 py-3 rounded-xl font-bold mb-6" }, "LOG ENTRY"),
+                 React.createElement('div', { className: "space-y-3" }, logs.map((l,i) => React.createElement('div', { key:i, className: "glass-panel p-3 rounded-xl" }, React.createElement('p', { className: "text-xs text-gray-500 mb-1" }, new Date(l.ts?.toDate()).toLocaleString()), React.createElement('p', null, l.t))))
+             );
+        };
+        
+        const FlashForge = ({close}) => {
+             const [flipped, setFlipped] = useState(false);
+             const [idx, setIdx] = useState(0);
+             const [topic, setTopic] = useState("");
+             const [cards, setCards] = useState([{q:"Force Formula?", a:"F = ma"}, {q:"Capital of Bihar?", a:"Patna"}, {q:"Pi Value?", a:"3.14"}]);
+             const [loading, setLoading] = useState(false);
+
+             const generateCards = async () => {
+                if(!topic) return;
+                setLoading(true);
+                const res = await callGemini(`Generate 5 flashcards for topic: "${topic}". Format exactly like this: Q: Question? A: Answer. | Q: Question? A: Answer. (Keep answers very short)`);
+                const newCards = res.split('|').map(s => {
+                    const parts = s.split('A:');
+                    return { q: parts[0]?.replace('Q:','').trim(), a: parts[1]?.trim() };
+                }).filter(c => c.q && c.a);
+                
+                if(newCards.length > 0) {
+                    setCards(newCards);
+                    setIdx(0);
+                    setFlipped(false);
+                }
+                setLoading(false);
+             };
+
+             return React.createElement('div', { className: "app-modal top-align p-6 flex flex-col items-center", onClick:()=>setFlipped(!flipped) },
+                 React.createElement('button', { onClick: (e)=>{e.stopPropagation();close()}, className: "absolute top-6 right-6" }, React.createElement(X)),
+                 React.createElement('h2', { className: "font-cyber text-2xl mb-4 mt-8" }, "FLASH FORGE AI"),
+                 
+                 React.createElement('div', { className: "flex gap-2 w-full max-w-sm mb-6", onClick:e=>e.stopPropagation() },
+                    React.createElement('input', { value: topic, onChange: e=>setTopic(e.target.value), className: "flex-1 bg-white/10 p-2 rounded-lg outline-none text-sm", placeholder: "Enter Topic (e.g. Thermodynamics)..." }),
+                    React.createElement('button', { onClick: generateCards, disabled: loading, className: "bg-yellow-500 text-black px-4 py-2 rounded-lg font-bold text-xs" }, loading ? "..." : "GENERATE")
+                 ),
+
+                 React.createElement('div', { className: "h-64 w-full max-w-sm glass-panel rounded-3xl flex items-center justify-center text-2xl font-bold text-center p-6 cursor-pointer tilt-card transition-all duration-500", style: { transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)" } }, 
+                    React.createElement('div', { style: { transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)" } }, flipped ? cards[idx].a : cards[idx].q)
+                 ),
+                 React.createElement('button', { onClick: (e)=>{e.stopPropagation();setIdx((idx+1)%cards.length);setFlipped(false)}, className: "mt-8 bg-white/10 border border-white/20 text-white px-8 py-3 rounded-xl font-bold hover:bg-white/20 transition" }, "NEXT CARD")
+             );
+        };
+
+        const OmniTutor = ({ close }) => {
+            const [input, setInput] = useState("");
+            const [chat, setChat] = useState([{r:"ai", t:"System Online. I am Omni Tutor AI. Ask me anything."}]);
+            const [loading, setLoading] = useState(false);
+            
+            const ask = async () => {
+                 if(!input) return;
+                 setLoading(true);
+                 const aiRes = await callGemini("Act as a strict but helpful hostel tutor. Answer this doubt briefly: " + input);
+                 setChat([...chat, {r:"u", t:input}, {r:"ai", t:aiRes}]);
+                 setInput("");
+                 setLoading(false);
+            };
+
+            return React.createElement('div', { className: "app-modal p-6 flex flex-col" },
+                React.createElement('div', { className: "flex justify-between items-center mb-6" }, React.createElement('h2', { className: "font-cyber text-xl text-purple-400" }, "OMNI TUTOR AI"), React.createElement('button', { onClick: close }, React.createElement(X))),
+                React.createElement('div', { className: "flex-1 overflow-y-auto space-y-4 mb-4" }, 
+                    chat.map((c,i) => React.createElement('div', { key: i, className: `p-4 rounded-2xl max-w-[80%] text-sm ${c.r==='ai'?'bg-white/10 mr-auto':'bg-purple-600 ml-auto'}` }, c.t)),
+                    loading && React.createElement('div', { className: "text-xs text-gray-500 animate-pulse" }, "AI Thinking...")
+                ),
+                React.createElement('div', { className: "flex gap-2" }, 
+                    React.createElement('input', { value: input, onChange: e=>setInput(e.target.value), className: "flex-1 bg-white/5 rounded-xl px-4 py-3 outline-none", placeholder: "Ask doubt..." }), 
+                    React.createElement('button', { onClick: ask, disabled: loading, className: "bg-purple-600 p-3 rounded-xl disabled:opacity-50" }, React.createElement(Save, {size:20}))
+                )
+            );
+        };
+
+        const MindFirewall = ({close}) => React.createElement('div', {className:"app-modal p-6 text-center pt-20"}, React.createElement('h2', {className:"font-cyber text-2xl"}, "MIND FIREWALL"), React.createElement('p', {className:"mt-4 text-gray-400"}, "Simulating App Block..."), React.createElement('button', {onClick:close, className:"mt-8 text-red-500"}, "Close"));
+        const StatCommand = ({close}) => React.createElement('div', {className:"app-modal p-6 text-center pt-20"}, React.createElement('h2', {className:"font-cyber text-2xl"}, "STAT COMMAND"), React.createElement('p', {className:"mt-4 text-gray-400"}, "Analytics Dashboard"), React.createElement('button', {onClick:close, className:"mt-8 text-red-500"}, "Close"));
+        const RankRise = ({close}) => React.createElement('div', {className:"app-modal p-6 text-center pt-20"}, React.createElement('h2', {className:"font-cyber text-2xl"}, "RANK RISE"), React.createElement('p', {className:"mt-4 text-gray-400"}, "Leaderboard System"), React.createElement('button', {onClick:close, className:"mt-8 text-red-500"}, "Close"));
+        const VoidLock = ({close}) => React.createElement('div', {className:"app-modal p-6 text-center pt-20"}, React.createElement('h2', {className:"font-cyber text-2xl"}, "VOID LOCK"), React.createElement('p', {className:"mt-4 text-gray-400"}, "Focus Mode Active"), React.createElement('button', {onClick:close, className:"mt-8 text-red-500"}, "Close"));
+
+
+        const App = () => {
+            const [user, setUser] = useState(null);
+            const [menuOpen, setMenuOpen] = useState(false);
+            const [activeApp, setActiveApp] = useState(null);
+            
+            useEffect(() => { 
+                if(auth) onAuthStateChanged(auth, setUser);
+                
+                // Initialize systems
+                initParticles();
+                initHackerRain();
+                
+                const obs = new IntersectionObserver(e => e.forEach(x => {
+                    if(x.isIntersecting) x.target.classList.add('visible');
+                }), {threshold: 0.1});
+                document.querySelectorAll('.scroll-reveal').forEach(x => { x.classList.add('scroll-reveal'); obs.observe(x); });
+            }, []);
+
+            const login = async () => { try { await signInWithPopup(auth, googleProvider); } catch {} };
+            const logout = async () => { await signOut(auth); };
+
+            return React.createElement('div', { className: "min-h-screen pb-20" },
+                React.createElement(CyberCursor), // New Living Element
+                React.createElement(Navbar, { user, login, toggleSidebar:()=>setMenuOpen(true) }),
+                React.createElement(Sidebar, { isOpen:menuOpen, close:()=>setMenuOpen(false), user, logout, openApp:setActiveApp }),
+                React.createElement(Hero),
+                React.createElement(LegacySection),
+                React.createElement(FoodMenu),
+                React.createElement(PromotionGallery), // NEW CLEAN STACK GALLERY
+                React.createElement(RoomSection),
+                React.createElement(Booking),
+                React.createElement(Footer),
+                
+                // GOD MODE SYSTEM
+                React.createElement(GodMode),
+                React.createElement(FloatingWhatsApp),
+
+                // MODALS
+                activeApp === 'detox' && React.createElement(MindFirewall, { close:()=>setActiveApp(null) }),
+                activeApp === 'planner' && React.createElement(OrbitPlanner, { close:()=>setActiveApp(null), user }),
+                activeApp === 'forest' && React.createElement(ZenithGrowth, { close:()=>setActiveApp(null) }),
+                activeApp === 'music' && React.createElement(SonicCore, { close:()=>setActiveApp(null) }),
+                activeApp === 'omni' && React.createElement(OmniTutor, { close:()=>setActiveApp(null) }),
+                activeApp === 'whiteboard' && React.createElement(Whiteboard, { close:()=>setActiveApp(null) }),
+                activeApp === 'notes' && React.createElement(NeuralNotes, { close:()=>setActiveApp(null) }),
+                activeApp === 'chat' && React.createElement(CommunityChat, { close:()=>setActiveApp(null), user }),
+                activeApp === 'ledger' && React.createElement(NexusLogs, { close:()=>setActiveApp(null), user }),
+                activeApp === 'flash' && React.createElement(FlashForge, { close:()=>setActiveApp(null) }),
+                activeApp === 'stats' && React.createElement(StatCommand, { close:()=>setActiveApp(null) }),
+                activeApp === 'rank' && React.createElement(RankRise, { close:()=>setActiveApp(null) }),
+                activeApp === 'lock' && React.createElement(VoidLock, { close:()=>setActiveApp(null) }),
+                activeApp === 'mistake' && React.createElement(MistakeVault, { close:()=>setActiveApp(null), user })
             );
         };
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<MainApp />);
-        
-        // --- CURSOR LOGIC OUTSIDE REACT FOR PERF ---
-        const cursorDot = document.getElementById('cursor-dot');
-        const cursorOut = document.getElementById('cursor-outline');
-        window.addEventListener('mousemove', (e) => {
-            const x = e.clientX; const y = e.clientY;
-            cursorDot.style.left = `${x}px`; cursorDot.style.top = `${y}px`;
-            cursorOut.animate({ left: `${x}px`, top: `${y}px` }, { duration: 500, fill: "forwards" });
-        });
-        window.addEventListener('mousedown', () => cursorOut.style.transform = "translate(-50%, -50%) scale(0.8)");
-        window.addEventListener('mouseup', () => cursorOut.style.transform = "translate(-50%, -50%) scale(1)");
-
+        root.render(React.createElement(App));
     </script>
 </body>
 </html>
