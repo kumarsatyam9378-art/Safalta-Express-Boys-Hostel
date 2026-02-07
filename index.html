@@ -425,11 +425,7 @@ const callGemini = async (prompt) => {
         return "AI Connection Failed.";
     }
 };
-                const data = await response.json();
-                return data.candidates?.[0]?.content?.parts?.[0]?.text || "AI Busy. Try again.";
-            } catch (error) { return "AI Connection Failed."; }
-        };
-
+               
         // --- PARTICLE SYSTEM ---
         const initParticles = () => {
             const canvas = document.getElementById('particles');
